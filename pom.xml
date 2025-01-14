@@ -26,7 +26,16 @@
 
     <build>
         <plugins>
-            <!-- Allows to use mvn exec:java` -->
+            <!-- Tell the compiler to use java 21 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.13.0</version>
+                <configuration>
+                    <release>21</release>
+                </configuration>
+            </plugin>
+            <!-- Allows to use `mvn exec:java` -->
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -34,12 +43,6 @@
                 <configuration>
                     <mainClass>no.ntnu.idatg1005.Launcher</mainClass>
                 </configuration>
-            </plugin>
-            <!-- uses mvn compiler -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.13.0</version>
             </plugin>
         </plugins>
     </build>

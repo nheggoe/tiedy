@@ -1,12 +1,3 @@
----
-name: Documentation
-about: Request or report issues related to the project's documentation
-title: 'doc: '
-labels: documentation
-assignees: ''
-
----
-
 ### Summary
 
 Provide a brief summary of the documentation request or issue.

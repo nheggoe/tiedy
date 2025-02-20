@@ -1,6 +1,6 @@
-package edu.ntnu.idi.bidata;
+package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.frontend.stage.JavaFXApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
 
 /**
  * For some reason, for JDKs that came without the built-in JavaFX library

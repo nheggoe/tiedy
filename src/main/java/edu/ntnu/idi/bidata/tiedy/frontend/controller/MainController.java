@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.frontend.controller;
+package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

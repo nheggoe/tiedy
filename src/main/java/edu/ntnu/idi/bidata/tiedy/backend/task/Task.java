@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.task;
 
 /**
  * The Task class represents a task with a description and a priority level.

@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>no.ntnu.idatg1005</groupId>
-    <artifactId>home-application</artifactId>
+    <groupId>edu.ntnu.idi.bidata</groupId>
+    <artifactId>Tiedy</artifactId>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
@@ -13,7 +13,7 @@
         <java.version>21</java.version>
         <javafx.version>23.0.2</javafx.version>
         <junit.version>5.11.4</junit.version>
-        <main.class>edu.ntnu.idi.bidata.Launcher</main.class>
+        <main.class>edu.ntnu.idi.bidata.tiedy.Launcher</main.class>
     </properties>
 
     <dependencies>

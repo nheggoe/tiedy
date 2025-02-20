@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.frontend.stage;
+package edu.ntnu.idi.bidata.tiedy.frontend.stage;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -23,7 +23,7 @@ public class JavaFXApp extends Application {
   @Override
   public void start(Stage stage) {
     try {
-      URL fxml = this.getClass().getResource("/edu/ntnu/idi/bidata/fxml/main-view.fxml");
+      URL fxml = this.getClass().getResource("/edu/ntnu/idi/bidata/tiedy/fxml/main-view.fxml");
       Label label = new Label("Hello world!");
       Group group = new Group();
       group.getChildren().add(label);

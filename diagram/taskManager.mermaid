@@ -1,0 +1,19 @@
+classDiagram
+    class TaskManager {
+        +assignTask()
+        +removeTask()
+        +updateTask()
+    }
+
+    class TaskApp {
+        +assignTask()
+        +removeTask()
+        +updateTask()
+        +getAllTasks()
+    }
+
+    <<interface>> TaskManager
+    TaskManager <|.. TaskApp
+    style TaskManager fill: #9ff, stroke: #369, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
+
+    class TaskApp:::Ash

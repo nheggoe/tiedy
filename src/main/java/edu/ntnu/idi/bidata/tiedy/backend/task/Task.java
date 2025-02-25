@@ -26,7 +26,7 @@ public class Task {
 
   /**
    * Sets the description for the task. The description must not be null
-   * or blank. If a null or blank value is provided, an IllegalArgumentException
+   * or blank. If a null or bl  ank value is provided, an IllegalArgumentException
    * is thrown.
    *
    * @param description the new description for the task

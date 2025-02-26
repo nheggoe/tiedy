@@ -29,10 +29,18 @@ public class Task {
     this.setPriority(priority);
   }
 
+  /**
+   * Accessor for task id
+   * @return id of the task
+   */
   public int getId() {
     return id;
   }
 
+  /**
+   * Mutator for task id
+   * @param id of the task
+   */
   public void setId(int id) {
     this.id = id;
   }

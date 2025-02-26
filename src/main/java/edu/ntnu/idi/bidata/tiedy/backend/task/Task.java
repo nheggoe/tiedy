@@ -21,7 +21,7 @@ public class Task {
   public Task(int id, String title, String description, Status status, User assignedTo, Date deadline, Priority priority) {
 
     this.setId(id);
-    this.title = title;
+    this.setTitle(title);
     this.setDescription(description);
     this.status = status;
     this.assignedTo = assignedTo;
@@ -43,6 +43,17 @@ public class Task {
    */
   public void setId(int id) {
     this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    if (title == null || title.isBlank()) {
+      throw new IllegalArgumentException("Title cannot be blank!");
+    }
+    this.title = title;
   }
 
   /**

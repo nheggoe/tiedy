@@ -24,7 +24,7 @@ public class Task {
     this.setTitle(title);
     this.setDescription(description);
     this.setStatus(status);
-    this.assignedTo = assignedTo;
+    this.setAssignedTo(assignedTo);
     this.deadline = deadline;
     this.setPriority(priority);
   }
@@ -108,6 +108,14 @@ public class Task {
    */
   public void setStatus(Status status) {
     this.status = status;
+  }
+
+  public User getAssignedTo() {
+    return assignedTo;
+  }
+
+  public void setAssignedTo(User assignedTo) {
+    this.assignedTo = assignedTo;
   }
 
   /**

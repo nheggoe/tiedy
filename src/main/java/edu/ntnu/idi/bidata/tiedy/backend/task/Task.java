@@ -1,7 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 /**
  * The Task class represents a task with values like id, title, description, status,
@@ -17,7 +16,7 @@ public class Task {
   private String description;
   private Status status;
   private User assignedTo;
-  private Date deadline;
+  private LocalDate deadline;
   private Priority priority;
 
   /**
@@ -31,7 +30,7 @@ public class Task {
    * @param deadline date for completion of task
    * @param priority of the task
    */
-  public Task(int id, String title, String description, Status status, User assignedTo, Date deadline, Priority priority) {
+  public Task(int id, String title, String description, Status status, User assignedTo, LocalDate deadline, Priority priority) {
 
     this.setId(id);
     this.setTitle(title);
@@ -150,7 +149,7 @@ public class Task {
    *
    * @return date for deadline
    */
-  public Date getDeadline() {
+  public LocalDate getDeadline() {
     return deadline;
   }
 
@@ -160,11 +159,11 @@ public class Task {
    * @param deadline for task
    * @throws IllegalArgumentException if deadline is null or in the past
    */
-  public void setDeadline(Date deadline) {
+  public void setDeadline(LocalDate deadline) {
     if (deadline == null) {
       throw new IllegalArgumentException("Deadline cannot be null");
     }
-    if (deadline.before(LocalDate.now())) {
+    if (deadline.isBefore(LocalDate.now())) {
       throw new IllegalArgumentException("Deadline cannot be in the past");
     }
     this.deadline = deadline;

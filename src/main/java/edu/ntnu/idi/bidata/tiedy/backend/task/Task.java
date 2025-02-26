@@ -18,6 +18,17 @@ public class Task {
   private Date deadline;
   private Priority priority;
 
+  /**
+   * Constructor to assign a task with these values
+   *
+   * @param id id to identify the task
+   * @param title of the task
+   * @param description of the task
+   * @param status completion status for the task
+   * @param assignedTo which user the task is assigned to
+   * @param deadline date for completion of task
+   * @param priority of the task
+   */
   public Task(int id, String title, String description, Status status, User assignedTo, Date deadline, Priority priority) {
 
     this.setId(id);

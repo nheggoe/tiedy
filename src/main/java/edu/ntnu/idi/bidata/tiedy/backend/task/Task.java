@@ -20,13 +20,21 @@ public class Task {
 
   public Task(int id, String title, String description, Status status, User assignedTo, Date deadline, Priority priority) {
 
-    this.id = id;
+    this.setId(id);
     this.title = title;
     this.setDescription(description);
     this.status = status;
     this.assignedTo = assignedTo;
     this.deadline = deadline;
     this.setPriority(priority);
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
   }
 
   /**

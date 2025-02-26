@@ -128,6 +128,14 @@ public class Task {
     this.assignedTo = assignedTo;
   }
 
+  public Date getDeadline() {
+    return deadline;
+  }
+
+  public void setDeadline(Date deadline) {
+    this.deadline = deadline;
+  }
+
   /**
    * Retrieves the priority of the task.
    *

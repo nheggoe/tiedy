@@ -45,10 +45,19 @@ public class Task {
     this.id = id;
   }
 
+  /**
+   * Accessor for task title
+   * @return title of task
+   */
   public String getTitle() {
     return title;
   }
 
+  /**
+   * Mutator for title
+   * @param title of task
+   * @throws IllegalArgumentException if the title is null or blank
+   */
   public void setTitle(String title) {
     if (title == null || title.isBlank()) {
       throw new IllegalArgumentException("Title cannot be blank!");

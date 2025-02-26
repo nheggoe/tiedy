@@ -36,7 +36,7 @@ public class Task {
     this.setDescription(description);
     this.setStatus(status);
     this.setAssignedTo(assignedTo);
-    this.deadline = deadline;
+    this.setDeadline(deadline);
     this.setPriority(priority);
   }
 

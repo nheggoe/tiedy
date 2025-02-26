@@ -92,10 +92,20 @@ public class Task {
     this.description = description;
   }
 
+  /**
+   * Retrieves the status of the task
+   *
+   * @return status of the task
+   */
   public Status getStatus() {
     return status;
   }
 
+  /**
+   * Sets the status for the task
+   *
+   * @param status of the task
+   */
   public void setStatus(Status status) {
     this.status = status;
   }

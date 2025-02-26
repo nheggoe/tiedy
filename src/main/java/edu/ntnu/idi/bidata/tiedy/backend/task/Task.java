@@ -110,10 +110,20 @@ public class Task {
     this.status = status;
   }
 
+  /**
+   * Retrieves which user the task is assigned to
+   *
+   * @return user task is assigned to
+   */
   public User getAssignedTo() {
     return assignedTo;
   }
 
+  /**
+   * Sets which user the task is assigned to
+   *
+   * @param assignedTo user task is assigned to
+   */
   public void setAssignedTo(User assignedTo) {
     this.assignedTo = assignedTo;
   }

@@ -1,18 +1,32 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import java.util.Date;
+
 /**
  * The Task class represents a task with a description and a priority level.
  * It provides methods to retrieve and update the task's description and priority.
  *
- * @author Nick Heggø
- * @version 2025.02.11
+ * @author Nick Heggø and Ida Løvås
+ * @version 2025.02.26
  */
 public class Task {
+  private int id;
+  private String title;
   private String description;
+  private Status status;
+  private User assignedTo;
+  private Date deadline;
   private Priority priority;
 
-  public Task(String description) {
-    setDescription(description);
+  public Task(int id, String title, String description, Status status, User assignedTo, Date deadline, Priority priority) {
+
+    this.id = id;
+    this.title = title;
+    this.setDescription(description);
+    this.status = status;
+    this.assignedTo = assignedTo;
+    this.deadline = deadline;
+    this.setPriority(priority);
   }
 
   /**

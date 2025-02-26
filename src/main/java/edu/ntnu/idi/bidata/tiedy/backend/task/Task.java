@@ -23,7 +23,7 @@ public class Task {
     this.setId(id);
     this.setTitle(title);
     this.setDescription(description);
-    this.status = status;
+    this.setStatus(status);
     this.assignedTo = assignedTo;
     this.deadline = deadline;
     this.setPriority(priority);
@@ -39,6 +39,7 @@ public class Task {
 
   /**
    * Mutator for task id
+   *
    * @param id of the task
    */
   public void setId(int id) {
@@ -47,6 +48,7 @@ public class Task {
 
   /**
    * Accessor for task title
+   *
    * @return title of task
    */
   public String getTitle() {
@@ -55,6 +57,7 @@ public class Task {
 
   /**
    * Mutator for title
+   *
    * @param title of task
    * @throws IllegalArgumentException if the title is null or blank
    */
@@ -87,6 +90,14 @@ public class Task {
       throw new IllegalArgumentException("Task description cannot be blank!");
     }
     this.description = description;
+  }
+
+  public Status getStatus() {
+    return status;
+  }
+
+  public void setStatus(Status status) {
+    this.status = status;
   }
 
   /**

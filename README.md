@@ -79,16 +79,12 @@ classDiagram
     Task --> Severity: has
     User <|-- Admin
     User <|-- RegularUser
-    ScoreBoard --> User
+    ScoreBoard --> User: has
     style Task fill: #bfb, stroke: #6f6, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
     style User fill: #bfb, stroke: #6f6, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
     style TaskManager fill: #9ff, stroke: #369, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
     style Status fill: #ffb, stroke: #663, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
     style Severity fill: #ffb, stroke: #663, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
-
-    class Admin:::Ash
-    class RegularUser:::Ash
-    class TaskApp:::Ash
 ```
 
 Running the project

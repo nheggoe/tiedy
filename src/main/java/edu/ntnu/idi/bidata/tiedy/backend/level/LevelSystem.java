@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.level;
 
 /**
  * The LevelSystem class represent a users level and experience.

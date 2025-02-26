@@ -1,5 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+
 import java.time.LocalDate;
 
 /**
@@ -22,13 +24,13 @@ public class Task {
   /**
    * Constructor to assign a task with these values
    *
-   * @param id id to identify the task
-   * @param title of the task
+   * @param id          id to identify the task
+   * @param title       of the task
    * @param description of the task
-   * @param status completion status for the task
-   * @param assignedTo which user the task is assigned to
-   * @param deadline date for completion of task
-   * @param priority of the task
+   * @param status      completion status for the task
+   * @param assignedTo  which user the task is assigned to
+   * @param deadline    date for completion of task
+   * @param priority    of the task
    */
   public Task(int id, String title, String description, Status status, User assignedTo, LocalDate deadline, Priority priority) {
 
@@ -43,6 +45,7 @@ public class Task {
 
   /**
    * Accessor for task id
+   *
    * @return id of the task
    */
   public int getId() {

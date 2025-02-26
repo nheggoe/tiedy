@@ -128,10 +128,20 @@ public class Task {
     this.assignedTo = assignedTo;
   }
 
+  /**
+   * Retrieves the date for deadline for task completion
+   *
+   * @return date for deadline
+   */
   public Date getDeadline() {
     return deadline;
   }
 
+  /**
+   * Sets the deadline of a task
+   *
+   * @param deadline for task
+   */
   public void setDeadline(Date deadline) {
     this.deadline = deadline;
   }

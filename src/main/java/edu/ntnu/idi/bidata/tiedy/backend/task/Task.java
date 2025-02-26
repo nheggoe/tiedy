@@ -1,10 +1,12 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
- * The Task class represents a task with a description and a priority level.
- * It provides methods to retrieve and update the task's description and priority.
+ * The Task class represents a task with values like id, title, description, status,
+ * who it`s assigned to, deadline and priority.
+ * It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
  * @version 2025.02.26
@@ -52,8 +54,12 @@ public class Task {
    * Mutator for task id
    *
    * @param id of the task
+   * @throws IllegalArgumentException if task id is less or equal to 0
    */
   public void setId(int id) {
+    if (id <= 0) {
+      throw new IllegalArgumentException("Task id need to be a positive number");
+    }
     this.id = id;
   }
 
@@ -152,8 +158,15 @@ public class Task {
    * Sets the deadline of a task
    *
    * @param deadline for task
+   * @throws IllegalArgumentException if deadline is null or in the past
    */
   public void setDeadline(Date deadline) {
+    if (deadline == null) {
+      throw new IllegalArgumentException("Deadline cannot be null");
+    }
+    if (deadline.before(LocalDate.now())) {
+      throw new IllegalArgumentException("Deadline cannot be in the past");
+    }
     this.deadline = deadline;
   }
 
@@ -170,8 +183,12 @@ public class Task {
    * Sets the priority for the task.
    *
    * @param priority the new priority for the task, represented as a Priority enum value
+   * @throws IllegalArgumentException if the priority is null
    */
   public void setPriority(Priority priority) {
+    if (priority == null) {
+      throw new IllegalArgumentException("Priority cannot be null");
+    }
     this.priority = priority;
   }
 }

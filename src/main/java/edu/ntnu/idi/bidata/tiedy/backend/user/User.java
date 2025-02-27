@@ -1,7 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
-import jakarta.mail.internet.AddressException;
-import jakarta.mail.internet.InternetAddress;
+import java.util.regex.Pattern;
 
 /**
  * @author Odin Arvhage and Nick Heggø
@@ -78,20 +77,20 @@ public class User {
 
   /**
    * Validates if the provided email address adheres to a standard email format.
-   * See <a href="https://stackoverflow.com/a/5931718">this StackOverflow answer</a>
    *
    * @param emailAddress the email address to be validated
    * @return true if the email address is valid, false otherwise
    */
   private boolean isEmailAddressValid(String emailAddress) {
-    boolean result = true;
-    try {
-      InternetAddress emailAddr = new InternetAddress(emailAddress);
-      emailAddr.validate();
-    } catch (AddressException e) {
-      result = false;
+    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    Pattern pattern = Pattern.compile(emailRegex);
+    if (emailAddress == null) {
+      throw new NullPointerException("email address cannot be null!");
     }
-    return result;
+    if (!pattern.matcher(emailAddress).matches()) {
+      throw new IllegalArgumentException("Invalid email format");
+    }
+    return true;
   }
 
   @Override

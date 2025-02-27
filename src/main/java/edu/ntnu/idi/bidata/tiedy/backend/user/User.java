@@ -18,8 +18,12 @@ public class User {
 
   public void login(String userName, String emailAddress, int userID) {
     if(isUserInformationCorrect(userName, emailAddress, userID)){
-      System.out.println("You have successfully logged in.");
+      //grant access to the application
     }
+  }
+
+  public void logout() {
+    //revoke access to the application and
   }
 
   public boolean isUserInformationCorrect(String userName, String emailAddress, int userID) {

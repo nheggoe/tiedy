@@ -1,23 +1,25 @@
 package edu.ntnu.idi.bidata.tiedy.backend.level;
 
 /**
- * The LevelSystem class represent a users level and experience.
- * It contains methods to get and set level and experience, and to calculate the amount needed for the next level.
+ * The LevelSystem class represent a user's level and experience.
+ * It contains methods to get and set level and experience,
+ * and to calculate the amount needed for the next level.
  *
  * @author Odin Arvhage
  * @version 2025.02.25
  */
 public class LevelSystem {
+
   private int level;
   private int experience;
   private int experienceToNextLevel;
 
-
   /**
-   * Creates an instance of the LevelSystem class with the provided level, experience and experience to next level.
+   * Creates an instance of the LevelSystem class with the provided level,
+   * experience and experience to the next level.
    *
    * @param level                 The level that the user will have.
-   * @param experience            The current amount of experience accumulated. Will always be set to 0 outside of exceptions.
+   * @param experience            The current amount of experience accumulated.
    * @param experienceToNextLevel The experience that is needed to reach the next level.
    */
   public LevelSystem(int level, int experience, int experienceToNextLevel) {
@@ -83,26 +85,26 @@ public class LevelSystem {
   /**
    * Calculates the amount of experience needed to reach the next level based on the increment.
    *
-   * @param increment The amount of experience the next level up will be incremented by.
+   * @param increment The amount of experience at the next level up will be incremented by.
    */
   public void calculateExperienceToNextLevel(int increment) {
     this.experienceToNextLevel += increment;
   }
 
   /**
-   * Resets the users experience to 0. To be used when a level up happens.
+   * Resets the user's experience to 0. To be used when a level up happens.
    */
   public void resetExperience() {
     this.experience = 0;
   }
 
   /**
-   * Checks the users current experience against the amount of experience needed for the next level.
+   * Checks if the user has the amount of experience needed for the next level.
    * To be used each time the experience of a user is updated.
    *
-   * @return True if the user has enough experience to level up, false otherwise.
+   * @return True, if the user has enough experience to level up, false otherwise.
    */
-  public boolean checkLevelUp() {
+  public boolean isReadyForLevelUp() {
     return getExperience() >= getExperienceToNextLevel();
   }
 
@@ -117,10 +119,10 @@ public class LevelSystem {
    * Levels up the user by increasing the level by 1 and resets the experience to 0.
    * Calculates the amount of experience needed for the next level based on the increment.
    *
-   * @param increment The amount of experience the next level up will be incremented by.
+   * @param increment The amount of experience at the next level up will be incremented by.
    */
   public void levelUp(int increment) {
-    if (checkLevelUp()) {
+    if (isReadyForLevelUp()) {
       increaseLevelByOne();
       resetExperience();
       calculateExperienceToNextLevel(increment);

@@ -39,8 +39,8 @@ class LevelSystemTest {
 
 
   @Test
-  void testCheckLevelUp() {
-    assertFalse(levelSystem.checkLevelUp());
+  void testIsReadyForLevelUp() {
+    assertFalse(levelSystem.isReadyForLevelUp());
   }
 
 
@@ -113,8 +113,8 @@ class LevelSystemTest {
   }
 
   @Test
-  void testCheckLevelUpAtBoundary() {
+  void testIsReadyForLevelUpAtBoundary() {
     levelSystem.setExperience(100);
-    assertTrue(levelSystem.checkLevelUp());
+    assertTrue(levelSystem.isReadyForLevelUp());
   }
 }

@@ -93,6 +93,22 @@ public class User {
     }
     return result;
   }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof User user)) {
+      return false;
+    }
+    return userID == user.userID && userName.equals(user.userName) && emailAddress.equals(user.emailAddress);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = userID;
+    result = 31 * result + userName.hashCode();
+    result = 31 * result + emailAddress.hashCode();
+    return result;
+  }
 }
 
 

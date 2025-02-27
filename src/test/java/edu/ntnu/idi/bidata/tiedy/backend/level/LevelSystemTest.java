@@ -14,7 +14,6 @@ class LevelSystemTest {
 
   @Test
   void testGetLevelWrong() {
-
     assertNotEquals(0, levelSystem.getLevel());
   }
 
@@ -93,5 +92,29 @@ class LevelSystemTest {
     levelSystem.setExperience(100);
     levelSystem.levelUp(10);
     assertNotEquals(1, levelSystem.getLevel());
+  }
+
+  @Test
+  void testResetExperience() {
+    levelSystem.resetExperience();
+    assertEquals(0, levelSystem.getExperience());
+  }
+
+  @Test
+  void testCalculateExperienceToNextLevel() {
+    levelSystem.calculateExperienceToNextLevel(50);
+    assertEquals(150, levelSystem.getExperienceToNextLevel());
+  }
+
+  @Test
+  void testIncreaseLevelByOne() {
+    levelSystem.increaseLevelByOne();
+    assertEquals(2, levelSystem.getLevel());
+  }
+
+  @Test
+  void testCheckLevelUpAtBoundary() {
+    levelSystem.setExperience(100);
+    assertTrue(levelSystem.checkLevelUp());
   }
 }

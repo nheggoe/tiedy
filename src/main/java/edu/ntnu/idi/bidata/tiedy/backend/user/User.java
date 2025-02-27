@@ -1,7 +1,10 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
+import jakarta.mail.internet.AddressException;
+import jakarta.mail.internet.InternetAddress;
+
 /**
- * @author Nick Heggø
+ * @author Odin Arvhage and Nick Heggø
  * @version 2025.02.26
  */
 public class User {
@@ -17,20 +20,19 @@ public class User {
   }
 
   public void login(String userName, String emailAddress, int userID) {
-    if(isUserInformationCorrect(userName, emailAddress, userID)){
-      //grant access to the application
+    if (isUserInformationCorrect(userName, emailAddress, userID)) {
+      // grant access to the application
     }
   }
 
   public void logout() {
-    //revoke access to the application and
+    // revoke access to the application and
   }
 
   public boolean isUserInformationCorrect(String userName, String emailAddress, int userID) {
-    if (isUserNameCorrect(userName) && isEmailAddressCorrect(emailAddress)) {
-      return isUserIDCorrect(userID);
-    }
-    return false;
+    return isUserNameCorrect(userName)
+        && isEmailAddressCorrect(emailAddress)
+        && isUserIDCorrect(userID);
   }
 
   public boolean isEmailAddressCorrect(String emailAddress) {
@@ -38,11 +40,11 @@ public class User {
   }
 
   public boolean isUserIDCorrect(int userID) {
-    return(userID == getUserID());
+    return userID == getUserID();
   }
 
   public boolean isUserNameCorrect(String userName) {
-    return(userName.equals(getUserName()));
+    return userName.equals(getUserName());
   }
 
   public String getUserName() {
@@ -50,6 +52,9 @@ public class User {
   }
 
   public void setUserName(String userName) {
+    if (userName == null || userName.isBlank()) {
+      throw new IllegalArgumentException("User name cannot be empty!");
+    }
     this.userName = userName;
   }
 
@@ -58,7 +63,9 @@ public class User {
   }
 
   public void setEmailAddress(String emailAddress) {
-    this.emailAddress = emailAddress;
+    if (isEmailAddressValid(emailAddress)) {
+      this.emailAddress = emailAddress;
+    }
   }
 
   public int getUserID() {
@@ -67,6 +74,24 @@ public class User {
 
   public void setUserID(int userID) {
     this.userID = userID;
+  }
+
+  /**
+   * Validates if the provided email address adheres to a standard email format.
+   * See <a href="https://stackoverflow.com/a/5931718">this StackOverflow answer</a>
+   *
+   * @param emailAddress the email address to be validated
+   * @return true if the email address is valid, false otherwise
+   */
+  private boolean isEmailAddressValid(String emailAddress) {
+    boolean result = true;
+    try {
+      InternetAddress emailAddr = new InternetAddress(emailAddress);
+      emailAddr.validate();
+    } catch (AddressException e) {
+      result = false;
+    }
+    return result;
   }
 }
 

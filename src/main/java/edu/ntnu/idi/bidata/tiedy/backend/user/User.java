@@ -11,6 +11,9 @@ public class User {
   private String userName;
   private String emailAddress;
 
+  public User() {
+
+  }
 
   public User(String userName, String emailAddress, int userID) {
     setUserName(userName);
@@ -109,5 +112,3 @@ public class User {
     return result;
   }
 }
-
-

@@ -17,27 +17,27 @@ public class User {
   }
 
   public void login(String userName, String emailAddress, int userID) {
-    if(checkUserInformation(userName, emailAddress, userID)){
-      //give access to the application
+    if(isUserInformationCorrect(userName, emailAddress, userID)){
+      System.out.println("You have successfully logged in.");
     }
   }
 
-  public boolean checkUserInformation(String userName, String emailAddress, int userID) {
-    if (checkUserName(userName) && checkEmailAddress(emailAddress)) {
-      return checkUserID(userID);
+  public boolean isUserInformationCorrect(String userName, String emailAddress, int userID) {
+    if (isUserNameCorrect(userName) && isEmailAddressCorrect(emailAddress)) {
+      return isUserIDCorrect(userID);
     }
     return false;
   }
 
-  public boolean checkEmailAddress(String emailAddress) {
+  public boolean isEmailAddressCorrect(String emailAddress) {
     return emailAddress.equals(getEmailAddress());
   }
 
-  public boolean checkUserID(int userID) {
+  public boolean isUserIDCorrect(int userID) {
     return(userID == getUserID());
   }
 
-  public boolean checkUserName(String userName) {
+  public boolean isUserNameCorrect(String userName) {
     return(userName.equals(getUserName()));
   }
 

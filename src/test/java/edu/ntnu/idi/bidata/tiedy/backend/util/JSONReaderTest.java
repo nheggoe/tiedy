@@ -8,31 +8,35 @@ import org.junit.jupiter.api.Test;
 import java.io.File;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-/**
- * @author Nick Heggø
- * @version 2025.02.27
- */
+import static org.junit.jupiter.api.Assertions.*;
 
 class JSONReaderTest {
 
-  ObjectMapper objectMapper = new ObjectMapper();
+  final String userJsonFile = "src/main/resources/edu/ntnu/idi/bidata/tiedy/json/users.json";
+  final ObjectMapper objectMapper = new ObjectMapper();
 
   @Test
-  void whenSerializeAndDeserializeUsingJackson_thenCorrect() {
-    List<User> users = assertDoesNotThrow(() ->
-        objectMapper.readValue(
-            new File("src/main/resources/edu/ntnu/idi/bidata/tiedy/json/users.json"),
-            new TypeReference<>() {}));
+  void verifiesUserNamesFromJSONFile() {
 
-    List<String> names = users.stream().map(User::getUserName).toList();
-    assertTrue(names.contains("John Doe"));
-    assertTrue(names.contains("Jane Smith"));
-    assertTrue(names.contains("Alex Johnson"));
-    assertTrue(names.contains("Emily Davis"));
-    assertTrue(names.contains("Michael Brown"));
+    List<User> users = assertDoesNotThrow(() -> objectMapper.readValue(
+        new File(userJsonFile),
+        new TypeReference<>() {}));
+
+    List<String> userNames = users.stream()
+        .map(User::getUserName)
+        .toList();
+
+    List<String> expectedUserNames = List.of(
+        "John Doe",
+        "Jane Smith",
+        "Alex Johnson",
+        "Emily Davis",
+        "Michael Brown");
+
+    expectedUserNames.forEach(expectedName ->
+        assertTrue(userNames.contains(expectedName), "Expected user name not found: " + expectedName));
+
+    assertFalse(userNames.contains("Odin"), "User list should not contain 'Odin'");
   }
 
 }

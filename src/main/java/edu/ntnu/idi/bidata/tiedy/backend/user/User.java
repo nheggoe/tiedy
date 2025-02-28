@@ -1,14 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
+import java.util.UUID;
 import java.util.regex.Pattern;
 
 /**
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.02.26
+ * @version 2025.02.28
  */
 public class User {
 
-  private int userID;
+  private UUID userID;
   private String userName;
   private String emailAddress;
 
@@ -21,32 +22,25 @@ public class User {
    *
    * @param userName     the name of the user
    * @param emailAddress the email address of the user
-   * @param userID       the id of the user
    */
-  public User(String userName, String emailAddress, int userID) {
+  public User(String userName, String emailAddress) {
     setUserName(userName);
     setEmailAddress(emailAddress);
-    setUserID(userID);
+    userID = UUID.randomUUID();
   }
 
   /**
    * Method to grant a user access to the application if the terms are met.
-   *
-   * @param userName     name of the user
-   * @param emailAddress email address of the user
-   * @param userID       internal ID of the user
    */
-  public void login(String userName, String emailAddress, int userID) {
-    if (isUserInformationCorrect(userName, emailAddress, userID)) {
-      // grant access to the application
-    }
+  public void login() {
+    // TODO grant access to the application
   }
 
   /**
    * Method to revoke access to the application.
    */
   public void logout() {
-    // revoke access to the application and
+    // TODO revoke access to the application and
   }
 
   /**
@@ -57,10 +51,9 @@ public class User {
    * @param userID       internal ID of the user
    * @return true if the information is correct, false otherwise
    */
-  public boolean isUserInformationCorrect(String userName, String emailAddress, int userID) {
+  public boolean isUserInformationCorrect(String userName, String emailAddress) {
     return isUserNameCorrect(userName)
-        && isEmailAddressCorrect(emailAddress)
-        && isUserIDCorrect(userID);
+        && isEmailAddressCorrect(emailAddress);
   }
 
   /**
@@ -79,8 +72,8 @@ public class User {
    * @param userID the user ID to check
    * @return true if the user ID is correct, false otherwise
    */
-  public boolean isUserIDCorrect(int userID) {
-    return userID == getUserID();
+  public boolean isUserIDCorrect(UUID userID) {
+    return userID.equals(getUserID());
   }
 
   /**
@@ -129,9 +122,8 @@ public class User {
    * @param emailAddress the email address to be set
    */
   public void setEmailAddress(String emailAddress) {
-    if (isEmailAddressValid(emailAddress)) {
-      this.emailAddress = emailAddress;
-    }
+    validateEmail(emailAddress);
+    this.emailAddress = emailAddress;
   }
 
   /**
@@ -139,26 +131,23 @@ public class User {
    *
    * @return the user ID
    */
-  public int getUserID() {
+  public UUID getUserID() {
     return userID;
   }
 
   /**
-   * Sets the user ID.
-   *
-   * @param userID the user ID to be set
+   * Generates a random UUID
    */
-  public void setUserID(int userID) {
-    this.userID = userID;
+  public void setUserID() {
+    this.userID = UUID.randomUUID();
   }
 
   /**
    * Validates if the provided email address adheres to a standard email format.
    *
    * @param emailAddress the email address to be validated
-   * @return true if the email address is valid, false otherwise
    */
-  private boolean isEmailAddressValid(String emailAddress) {
+  private void validateEmail(String emailAddress) {
     String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     Pattern pattern = Pattern.compile(emailRegex);
     if (emailAddress == null) {
@@ -167,26 +156,33 @@ public class User {
     if (!pattern.matcher(emailAddress).matches()) {
       throw new IllegalArgumentException("Invalid email format");
     }
-    return true;
-  }
-
-  // TODO add documentation for this method.
-  @Override
-  public final boolean equals(Object o) {
-    if (!(o instanceof User user)) {
-      return false;
-    }
-    return userID == user.userID && userName.equals(user.userName) && emailAddress.equals(user.emailAddress);
   }
 
   /**
-   * Generates a hash code for the user.
+   * Compares this User object to the specified object for equality.
    *
-   * @return the hash code
+   * @param o the object to be compared for equality with this User
+   * @return true if the specified object is equal to this User, false otherwise
+   */
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof User user)) return false;
+
+    return userID.equals(user.userID) && userName.equals(user.userName) && emailAddress.equals(user.emailAddress);
+  }
+
+  /**
+   * Computes the hash code for the User object based on its fields.
+   * <p>
+   * The hash code is calculated using the hash codes of the userID, userName,
+   * and emailAddress fields, combined with a multiplier to ensure a unique
+   * and consistent hash code for each object state.
+   *
+   * @return an integer value representing the hash code of the User object
    */
   @Override
   public int hashCode() {
-    int result = userID;
+    int result = userID.hashCode();
     result = 31 * result + userName.hashCode();
     result = 31 * result + emailAddress.hashCode();
     return result;

@@ -8,7 +8,6 @@ import java.io.File;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 
 class JSONWriterTest {
 
@@ -16,28 +15,14 @@ class JSONWriterTest {
   final ObjectMapper objectMapper = new ObjectMapper();
 
   final List<User> users = List.of(
-      new User("John Doe", "johndoe@example.com"),
-      new User("Jane Smith", "janesmith@example.com"),
-      new User("Alex Johnson", "alexjohnson@example.com"),
-      new User("Emily Davis", "emilydavis@example.com"),
-      new User("Michael Brown", "michaelbrown@example.com"));
+      new User("John Doe", PasswordUtil.hashPassword("verysafe"), "johndoe@example.com"),
+      new User("Jane Smith", PasswordUtil.hashPassword("OdinIsBest"), "janesmith@example.com"),
+      new User("Alex Johnson", PasswordUtil.hashPassword("nice"), "alexjohnson@example.com"),
+      new User("Emily Davis", PasswordUtil.hashPassword("strongPassword"), "emilydavis@example.com"),
+      new User("Michael Brown", PasswordUtil.hashPassword("notPlainText"), "michaelbrown@example.com"));
 
   @Test
   void testWriteToResource() {
     assertDoesNotThrow(() -> objectMapper.writeValue(new File(userJsonFile), users));
   }
-
-  void test() {
-    List<String> style1 = List.of(
-        "one",
-        "two",
-        "tree");
-
-    List<String> style2 = List.of(
-        "one",
-        "two",
-        "tree"
-    );
-  }
-
 }

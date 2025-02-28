@@ -23,7 +23,7 @@ class JSONReaderTest {
         new TypeReference<>() {}));
 
     List<String> userNames = users.stream()
-        .map(User::getUserName)
+        .map(User::getUsername)
         .toList();
 
     List<String> expectedUserNames = List.of(

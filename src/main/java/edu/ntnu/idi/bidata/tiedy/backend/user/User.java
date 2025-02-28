@@ -7,16 +7,21 @@ import java.util.regex.Pattern;
  * @version 2025.02.26
  */
 public class User {
+
   private int userID;
   private String userName;
   private String emailAddress;
 
+  private User() {
+    // a default constructor is needed for the jackson JSON library
+  }
+
   /**
    * Constructor to create users with the given arguments
    *
-   * @param userName the name of the user
+   * @param userName     the name of the user
    * @param emailAddress the email address of the user
-   * @param userID the id of the user
+   * @param userID       the id of the user
    */
   public User(String userName, String emailAddress, int userID) {
     setUserName(userName);
@@ -27,9 +32,9 @@ public class User {
   /**
    * Method to grant a user access to the application if the terms are met.
    *
-   * @param userName name of the user
+   * @param userName     name of the user
    * @param emailAddress email address of the user
-   * @param userID internal ID of the user
+   * @param userID       internal ID of the user
    */
   public void login(String userName, String emailAddress, int userID) {
     if (isUserInformationCorrect(userName, emailAddress, userID)) {
@@ -45,11 +50,11 @@ public class User {
   }
 
   /**
-   * Method to check if the users information is correct.
+   * Method to check if the user's information is correct.
    *
-   * @param userName name of the user
+   * @param userName     name of the user
    * @param emailAddress email address of the user
-   * @param userID internal ID of the user
+   * @param userID       internal ID of the user
    * @return true if the information is correct, false otherwise
    */
   public boolean isUserInformationCorrect(String userName, String emailAddress, int userID) {
@@ -90,6 +95,7 @@ public class User {
 
   /**
    * Retrieves the username of the user.
+   *
    * @return the username of the user
    */
   public String getUserName() {
@@ -98,6 +104,7 @@ public class User {
 
   /**
    * Sets the username of the user.
+   *
    * @param userName the username to be set
    */
   public void setUserName(String userName) {
@@ -109,6 +116,7 @@ public class User {
 
   /**
    * Retrieves the email address of the user.
+   *
    * @return the email address of the user
    */
   public String getEmailAddress() {
@@ -117,6 +125,7 @@ public class User {
 
   /**
    * Sets the email address of the user.
+   *
    * @param emailAddress the email address to be set
    */
   public void setEmailAddress(String emailAddress) {
@@ -127,6 +136,7 @@ public class User {
 
   /**
    * Retrieves the user ID.
+   *
    * @return the user ID
    */
   public int getUserID() {
@@ -135,6 +145,7 @@ public class User {
 
   /**
    * Sets the user ID.
+   *
    * @param userID the user ID to be set
    */
   public void setUserID(int userID) {
@@ -159,7 +170,7 @@ public class User {
     return true;
   }
 
-  //TODO add documentation for this method.
+  // TODO add documentation for this method.
   @Override
   public final boolean equals(Object o) {
     if (!(o instanceof User user)) {
@@ -170,6 +181,7 @@ public class User {
 
   /**
    * Generates a hash code for the user.
+   *
    * @return the hash code
    */
   @Override

@@ -12,7 +12,6 @@ public class LevelSystem {
   private int experience;
   private int experienceToNextLevel;
 
-
   /**
    * Creates an instance of the LevelSystem class with the provided level, experience and experience to next level.
    *
@@ -127,4 +126,3 @@ public class LevelSystem {
     }
   }
 }
-

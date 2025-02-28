@@ -4,8 +4,8 @@ import java.util.List;
 
 public class Admin extends User {
 
-  public Admin(String userName, String emailAddress, int userID) {
-    super(userName, emailAddress, userID);
+  public Admin(String userName, String emailAddress) {
+    super(userName, emailAddress);
   }
 
   public void manageUsers(List<User> users) {

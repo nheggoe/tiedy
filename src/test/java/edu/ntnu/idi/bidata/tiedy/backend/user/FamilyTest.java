@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FamilyTest {
 
-  final String userJsonFile = "src/main/resources/edu/ntnu/idi/bidata/tiedy/json/users.json";
+  final String userJsonFile = "src/test/resources/edu/ntnu/idi/bidata/tiedy/json/users.json";
   final ObjectMapper objectMapper = new ObjectMapper();
   final List<User> users;
 

@@ -38,4 +38,20 @@ class TaskTest {
         assertThrows(IllegalArgumentException.class, () -> task.setId(0));
         assertThrows(IllegalArgumentException.class, () -> task.setId(-1));
     }
+
+    @Test
+    void testGetTitle() {
+        assertEquals("Test Task", task.getTitle());
+    }
+
+    @Test
+    void testSetTitle() {
+        task.setTitle("New Test Title");
+        assertEquals("New Task Title", task.getTitle());
+    }
+
+    @Test
+    void testSetInvalidTitle() {
+        assertThrows(IllegalArgumentException.class, () -> task.setTitle(""));
+    }
 }

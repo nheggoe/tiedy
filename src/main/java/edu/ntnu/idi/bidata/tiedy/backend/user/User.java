@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.user;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -98,4 +99,20 @@ public class User {
     // TODO add a specification for the password strength
   }
 
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof User user)) return false;
+
+    return id == user.id && username.equals(user.username) && password.equals(user.password) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id;
+    result = 31 * result + username.hashCode();
+    result = 31 * result + password.hashCode();
+    result = 31 * result + Objects.hashCode(email);
+    result = 31 * result + Objects.hashCode(createdAt);
+    return result;
+  }
 }

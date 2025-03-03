@@ -4,17 +4,8 @@ import java.util.List;
 
 public class Admin extends User {
 
-  public Admin(String userName, String emailAddress) {
-    super(userName, emailAddress);
+  public Admin(String userName, String password, String email) {
+    super(userName, password, email);
   }
 
-  public void manageUsers(List<User> users) {
-    listUsers(users);
-  }
-
-  private void listUsers(List<User> users) {
-    for (User user : users) {
-      System.out.println(user.getUserName());
-    }
-  }
 }

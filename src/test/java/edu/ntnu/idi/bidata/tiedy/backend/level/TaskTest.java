@@ -46,7 +46,7 @@ class TaskTest {
 
     @Test
     void testSetTitle() {
-        task.setTitle("New Test Title");
+        task.setTitle("New Task Title");
         assertEquals("New Task Title", task.getTitle());
     }
 
@@ -103,7 +103,8 @@ class TaskTest {
 
     @Test
     void testSetInvalidDeadline() {
-        assertThrows(IllegalArgumentException.class, () -> task.setDeadline(LocalDate.now().minusDays(3)));
+        LocalDate pastDate = LocalDate.now().minusDays(3);
+        assertThrows(IllegalArgumentException.class, () -> task.setDeadline(pastDate));
     }
 
     @Test

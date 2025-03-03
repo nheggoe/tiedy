@@ -81,4 +81,11 @@ class TaskTest {
         task.setStatus(Status.CLOSED);
         assertEquals(Status.CLOSED, task.getStatus());
     }
+
+    @Test
+    void testGetAssignedTo() {
+        assertEquals(user, task.getAssignedTo());
+    }
+
+    //Add testSetAssignedTo when user class is more developed
 }

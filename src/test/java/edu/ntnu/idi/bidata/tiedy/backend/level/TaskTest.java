@@ -54,4 +54,20 @@ class TaskTest {
     void testSetInvalidTitle() {
         assertThrows(IllegalArgumentException.class, () -> task.setTitle(""));
     }
+
+    @Test
+    void testGetDescription() {
+        assertEquals("Task used for testing", task.getDescription());
+    }
+
+    @Test
+    void testSetDescription() {
+        task.setDescription("New task description");
+        assertEquals("New task description", task.getDescription());
+    }
+
+    @Test
+    void testInvalidDescription() {
+        assertThrows(IllegalArgumentException.class, () -> task.setDescription(""));
+    }
 }

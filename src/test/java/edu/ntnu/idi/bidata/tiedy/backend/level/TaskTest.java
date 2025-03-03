@@ -70,4 +70,15 @@ class TaskTest {
     void testInvalidDescription() {
         assertThrows(IllegalArgumentException.class, () -> task.setDescription(""));
     }
+
+    @Test
+    void testGetStatus() {
+        assertEquals(Status.IN_PROGRESS, task.getStatus());
+    }
+
+    @Test
+    void testSetStatus() {
+        task.setStatus(Status.CLOSED);
+        assertEquals(Status.CLOSED, task.getStatus());
+    }
 }

@@ -1,4 +1,8 @@
-image: maven:latest
+image: maven:3-eclipse-temurin-21
+
+variables:
+  MAVEN_OPTS: "-Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository"
+  MAVEN_CLI_OPTS: "-B --errors --fail-at-end --show-version"
 
 stages:
   - compile
@@ -6,9 +10,10 @@ stages:
   - verify
 
 cache:
+  key: ${CI_COMMIT_REF_SLUG}-maven-cache
   paths:
     - .m2/repository
-  key: ${CI_COMMIT_REF_SLUG}
+  policy: pull-push
 
 before_script:
   - mkdir -p .m2/repository  # Ensure the directory exists
@@ -16,14 +21,20 @@ before_script:
 compile-job:
   stage: compile
   script:
-    - mvn clean compile -B -Dmaven.repo.local=.m2/repository
+    - mvn clean compile $MAVEN_CLI_OPTS
+  artifacts:
+    paths:
+      - target/  # Save compiled artifacts for later stages
+    expire_in: 2 hours
+    when: always
 
 unit-test-job:
   stage: test
   script:
-    - mvn test -B -Dmaven.repo.local=.m2/repository
+    - mvn test $MAVEN_CLI_OPTS
 
 verify-job:
+  allow_failure: false
   stage: verify
   script:
-    - mvn verify -B -Dmaven.repo.local=.m2/repository
+    - mvn verify $MAVEN_CLI_OPTS

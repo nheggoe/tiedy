@@ -11,6 +11,13 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Test class for Task class
+ * Unit tests to check functionality of Task class
+ *
+ * @author Ida Løvås
+ * @version 2025.03.03
+ */
 class TaskTest {
     private Task task;
     private User user;

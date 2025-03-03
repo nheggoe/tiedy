@@ -1,0 +1,21 @@
+package edu.ntnu.idi.bidata.tiedy.backend.level;
+
+import edu.ntnu.idi.bidata.tiedy.backend.task.Priority;
+import edu.ntnu.idi.bidata.tiedy.backend.task.Status;
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import org.junit.jupiter.api.BeforeEach;
+
+import java.time.LocalDate;
+
+class TaskTest {
+    private Task task;
+    private User user;
+
+    @BeforeEach
+    void setUp() {
+        user = new User();
+        task = new Task(1,"Test Task","Task used for testing"
+                , Status.IN_PROGRESS, user, LocalDate.now().plusDays(7), Priority.HIGH);
+    }
+}

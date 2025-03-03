@@ -105,4 +105,20 @@ class TaskTest {
     void testSetInvalidDeadline() {
         assertThrows(IllegalArgumentException.class, () -> task.setDeadline(LocalDate.now().minusDays(3)));
     }
+
+    @Test
+    void testGetPriority() {
+        assertEquals(Priority.HIGH, task.getPriority());
+    }
+
+    @Test
+    void testSetPriority() {
+        task.setPriority(Priority.LOW);
+        assertEquals(Priority.LOW, task.getPriority());
+    }
+
+    @Test
+    void testSetInvalidPriority() {
+        assertThrows(IllegalArgumentException.class, () -> task.setPriority(null));
+    }
 }

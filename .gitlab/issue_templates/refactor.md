@@ -1,12 +1,3 @@
----
-name: Refactoring
-about: Request code improvements or refactoring of specific areas
-title: 'refactor: '
-labels: refactoring
-assignees: ''
-
----
-
 ### Summary
 
 Provide a brief summary of the refactoring request. For example, which area or module needs improvement and why.

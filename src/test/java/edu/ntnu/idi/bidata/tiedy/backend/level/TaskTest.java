@@ -88,4 +88,21 @@ class TaskTest {
     }
 
     //Add testSetAssignedTo when user class is more developed
+
+    @Test
+    void testGetDeadline() {
+        assertEquals(LocalDate.now().plusDays(7), task.getDeadline());
+    }
+
+    @Test
+    void testSetDeadline() {
+        LocalDate newDeadline = LocalDate.now().plusDays(1);
+        task.setDeadline(newDeadline);
+        assertEquals(newDeadline, task.getDeadline());
+    }
+
+    @Test
+    void testSetInvalidDeadline() {
+        assertThrows(IllegalArgumentException.class, () -> task.setDeadline(LocalDate.now().minusDays(3)));
+    }
 }

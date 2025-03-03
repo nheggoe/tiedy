@@ -1,11 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,17 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class FamilyTest {
 
-  final String userJsonFile = "src/test/resources/edu/ntnu/idi/bidata/tiedy/json/users.json";
-  final ObjectMapper objectMapper = new ObjectMapper();
-  final List<User> users;
-
-  {
-    try {
-      users = objectMapper.readValue(new File(userJsonFile), new TypeReference<>() {});
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-  }
+  // switch to JSON when it is fully implemented
+  User user1 = new User("John Doe", "johndoe@example.com");
+  User user2 = new User("Jane Smith", "janesmith@example.com");
+  User user3 = new User("Alex Johnson", "alexjohnson@example.com");
+  User user4 = new User("Emily Davis", "emilydavis@example.com");
+  User user5 = new User("Michael Brown", "michaelbrown@example.com");
 
   @Test
   void testCreateAnEmptyFamily() {
@@ -32,39 +23,38 @@ class FamilyTest {
 
   @Test
   void testRemoveNullFamilyMember() {
-    Family family = new Family(users.getFirst());
+    Family family = new Family(user1);
 
     assertThrows(NullPointerException.class, () -> family.removeFamilyMember(null));
   }
 
   @Test
   void testNullDoesNotExistInFamily() {
-    Family family = new Family(users.getFirst());
+    Family family = new Family(user1);
 
     assertFalse(family.getFamilyMembers().contains(null));
   }
 
   @Test
   void testRemoveExistingFamilyMember() {
-    Family family = new Family(List.of(users.get(1), users.get(2), users.get(3)));
+    Family family = new Family(List.of(user1, user2));
 
-    family.removeFamilyMember(users.get(3));
+    family.removeFamilyMember(user1);
 
-    assertFalse(family.getFamilyMembers().contains(users.get(3)));
-    assertTrue(family.getFamilyMembers().contains(users.get(2)));
-    assertTrue(family.getFamilyMembers().contains(users.get(1)));
+    assertFalse(family.getFamilyMembers().contains(user1));
+    assertTrue(family.getFamilyMembers().contains(user2));
   }
 
   @Test
   void testRemoveNonExistentFamilyMember() {
-    Family family = new Family(users);
+    Family family = new Family(List.of(user1, user2, user3));
 
-    family.removeFamilyMember(users.get(4));
+    family.removeFamilyMember(user5);
 
-    assertEquals(4, family.getFamilyMembers().size());
-    assertTrue(family.getFamilyMembers().contains(users.getFirst()));
-    assertTrue(family.getFamilyMembers().contains(users.get(2)));
-    assertTrue(family.getFamilyMembers().contains(users.get(3)));
+    assertEquals(3, family.getFamilyMembers().size());
+    assertTrue(family.getFamilyMembers().contains(user1));
+    assertTrue(family.getFamilyMembers().contains(user2));
+    assertTrue(family.getFamilyMembers().contains(user3));
   }
 
 }

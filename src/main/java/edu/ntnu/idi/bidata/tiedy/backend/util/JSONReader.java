@@ -1,7 +1,0 @@
-package edu.ntnu.idi.bidata.tiedy.backend.util;
-
-/**
- * @version 2025.02.27
- */
-public class JSONReader {
-}

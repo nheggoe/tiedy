@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.backend.util.DatabaseUtil;
 import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
 
 /**
@@ -32,7 +31,6 @@ public class Launcher {
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    DatabaseUtil.initDatabase();
     JavaFXApp.main(args);
   }
 }

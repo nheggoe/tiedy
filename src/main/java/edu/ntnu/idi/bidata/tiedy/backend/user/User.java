@@ -1,38 +1,53 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
-
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
  * The object that represents the customers of the application.
  *
- *
  * @author Odin Arvhage and Nick Heggø
  * @version 2025.02.28
  */
 public class User {
 
+  private final List<Task> tasks;
+
+  @JsonProperty("id")
   private int id;
+
+  @JsonProperty("username")
   private String username;
+
+  @JsonProperty("password")
   private String password;
+
+  @JsonProperty("email")
   private String email;
+
+  @JsonProperty("created_at")
   private LocalDateTime createdAt;
 
-  /**
-   * Default constructor
-   */
-  public User() {}
+  /** Default constructor */
+  public User() {
+    tasks = new ArrayList<>();
+    createdAt = LocalDateTime.now();
+  }
 
   /**
    * Constructor to create users with the given arguments
    *
    * @param username the name of the user
-   * @param email    the email address of the user
+   * @param email the email address of the user
    */
   public User(String username, String plainTextPassword, String email) {
+    this();
     setUsername(username);
     setPassword(plainTextPassword);
     setEmail(email);
@@ -85,7 +100,8 @@ public class User {
    * @param emailAddress the email address to be validated
    */
   private void validateEmailFormat(String emailAddress) {
-    String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+    String emailRegex =
+        "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     Pattern pattern = Pattern.compile(emailRegex);
     if (emailAddress == null) {
       throw new NullPointerException("email address cannot be null!");
@@ -103,7 +119,11 @@ public class User {
   public final boolean equals(Object o) {
     if (!(o instanceof User user)) return false;
 
-    return id == user.id && username.equals(user.username) && password.equals(user.password) && Objects.equals(email, user.email) && Objects.equals(createdAt, user.createdAt);
+    return id == user.id
+        && username.equals(user.username)
+        && password.equals(user.password)
+        && Objects.equals(email, user.email)
+        && Objects.equals(createdAt, user.createdAt);
   }
 
   @Override

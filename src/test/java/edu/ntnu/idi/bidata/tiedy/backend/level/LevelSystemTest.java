@@ -1,8 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.backend.level;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class LevelSystemTest {
   LevelSystem levelSystem = new LevelSystem(1, 40, 100);

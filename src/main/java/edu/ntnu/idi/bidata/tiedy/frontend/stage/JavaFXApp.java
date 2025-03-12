@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.stage;
 
+import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Group;
@@ -8,13 +9,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
-import java.net.URL;
-
 /**
- * MainApplication serves as the entry point for a JavaFX application.
- * It initializes the JavaFX application stage and sets up the user interface components.
- * This class extends the Application class from the JavaFX framework, providing
- * the necessary lifecycle methods such as start.
+ * MainApplication serves as the entry point for a JavaFX application. It initializes the JavaFX
+ * application stage and sets up the user interface components. This class extends the Application
+ * class from the JavaFX framework, providing the necessary lifecycle methods such as start.
  *
  * @author Nick Heggø
  * @version 2025.02.04
@@ -38,5 +36,4 @@ public class JavaFXApp extends Application {
   public static void main(String[] args) {
     launch();
   }
-
 }

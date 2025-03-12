@@ -1,13 +1,11 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-
 import java.time.LocalDate;
 
 /**
- * The Task class represents a task with values like id, title, description, status,
- * who it`s assigned to, deadline and priority.
- * It provides methods to retrieve and update the task's values.
+ * The Task class represents a task with values like id, title, description, status, who it`s
+ * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
  * @version 2025.02.26
@@ -24,15 +22,22 @@ public class Task {
   /**
    * Constructor to assign a task with these values
    *
-   * @param id          id to identify the task
-   * @param title       of the task
+   * @param id id to identify the task
+   * @param title of the task
    * @param description of the task
-   * @param status      completion status for the task
-   * @param assignedTo  which user the task is assigned to
-   * @param deadline    date for completion of task
-   * @param priority    of the task
+   * @param status completion status for the task
+   * @param assignedTo which user the task is assigned to
+   * @param deadline date for completion of task
+   * @param priority of the task
    */
-  public Task(int id, String title, String description, Status status, User assignedTo, LocalDate deadline, Priority priority) {
+  public Task(
+      int id,
+      String title,
+      String description,
+      Status status,
+      User assignedTo,
+      LocalDate deadline,
+      Priority priority) {
 
     this.setId(id);
     this.setTitle(title);
@@ -97,9 +102,8 @@ public class Task {
   }
 
   /**
-   * Sets the description for the task. The description must not be null
-   * or blank. If a null or bl  ank value is provided, an IllegalArgumentException
-   * is thrown.
+   * Sets the description for the task. The description must not be null or blank. If a null or bl
+   * ank value is provided, an IllegalArgumentException is thrown.
    *
    * @param description the new description for the task
    * @throws IllegalArgumentException if the description is null or blank

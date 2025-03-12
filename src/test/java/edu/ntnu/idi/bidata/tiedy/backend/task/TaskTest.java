@@ -1,16 +1,14 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 /**
- * Test class for Task class
- * Unit tests to check functionality of Task class
+ * Test class for Task class Unit tests to check functionality of Task class
  *
  * @author Ida Løvås
  * @version 2025.03.03
@@ -23,8 +21,15 @@ class TaskTest {
   @BeforeEach
   void setUp() {
     user = new User();
-    task = new Task(1, "Test Task", "Task used for testing"
-        , Status.IN_PROGRESS, user, LocalDate.now().plusDays(7), Priority.HIGH);
+    task =
+        new Task(
+            1,
+            "Test Task",
+            "Task used for testing",
+            Status.IN_PROGRESS,
+            user,
+            LocalDate.now().plusDays(7),
+            Priority.HIGH);
   }
 
   @Test

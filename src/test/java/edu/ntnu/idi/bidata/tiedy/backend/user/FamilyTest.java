@@ -1,20 +1,21 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
-import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
-import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
 
 class FamilyTest {
 
   User user1 = new User("John Doe", PasswordUtil.hashPassword("safe"), "johndoe@example.com");
   User user2 = new User("Jane Smith", PasswordUtil.hashPassword("safe"), "janesmith@example.com");
-  User user3 = new User("Alex Johnson", PasswordUtil.hashPassword("safe"), "alexjohnson@example.com");
+  User user3 =
+      new User("Alex Johnson", PasswordUtil.hashPassword("safe"), "alexjohnson@example.com");
   User user4 = new User("Emily Davis", PasswordUtil.hashPassword("safe"), "emilydavis@example.com");
-  User user5 = new User("Michael Brown", PasswordUtil.hashPassword("safe"), "michaelbrown@example.com");
+  User user5 =
+      new User("Michael Brown", PasswordUtil.hashPassword("safe"), "michaelbrown@example.com");
 
   @Test
   void testCreateAnEmptyFamily() {
@@ -56,5 +57,4 @@ class FamilyTest {
     assertTrue(family.getFamilyMembers().contains(user2));
     assertTrue(family.getFamilyMembers().contains(user3));
   }
-
 }

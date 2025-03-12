@@ -35,5 +35,5 @@ build/
 .DS_Store
 
 ### Local JSON ###
-/src/main/resources/edu/ntnu/idi/bidata/tiedy/json/
-/src/test/resources/userTest.json
+/data/
+/src/test/resources/json/

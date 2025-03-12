@@ -1,6 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 /**
  * Singleton utility class that provides a single instance of {@link ObjectMapper}. This class
@@ -25,7 +27,10 @@ public class JsonMapper {
    */
   public static ObjectMapper getInstance() {
     if (objectMapper == null) {
-      objectMapper = new ObjectMapper();
+      objectMapper =
+          new ObjectMapper()
+              .registerModule(new JavaTimeModule())
+              .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     }
     return objectMapper;
   }

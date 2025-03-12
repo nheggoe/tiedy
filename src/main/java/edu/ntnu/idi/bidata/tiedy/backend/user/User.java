@@ -1,10 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.deser.std.DateDeserializers;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
-
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.regex.Pattern;
  */
 public class User {
 
-  private List<Task> tasks;
+  private final List<Task> tasks;
 
   @JsonProperty("id")
   private int id;

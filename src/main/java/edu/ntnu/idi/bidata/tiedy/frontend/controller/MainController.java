@@ -5,15 +5,14 @@ import javafx.fxml.FXML;
 import javafx.scene.shape.Circle;
 
 /**
- * This class serves solely as a demonstration of the FXML action listening feature.
- * MainController is responsible for managing the movement of a Circle object in a graphical user interface.
- * This class interacts with JavaFX application components using the @FXML annotation and processes
+ * This class serves solely as a demonstration of the FXML action listening feature. MainController
+ * is responsible for managing the movement of a Circle object in a graphical user interface. This
+ * class interacts with JavaFX application components using the @FXML annotation and processes
  * ActionEvent triggers to manipulate the Circle's position, as a reference example.
  */
 public class MainController {
 
-  @FXML
-  private Circle myCircle;
+  @FXML private Circle myCircle;
   private double x;
   private double y;
   private final int pixelToMove = 4;
@@ -61,5 +60,4 @@ public class MainController {
     down(e);
     right(e);
   }
-
 }

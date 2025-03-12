@@ -1,8 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util;
 
-import org.junit.jupiter.api.Test;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
 
 class PasswordUtilTest {
 

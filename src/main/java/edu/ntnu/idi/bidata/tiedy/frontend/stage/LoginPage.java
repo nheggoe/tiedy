@@ -6,9 +6,7 @@ public class LoginPage {
 
   private Stage stage;
 
-  public LoginPage() {
-
-  }
+  public LoginPage() {}
 
   public Stage getStage() {
     return stage;

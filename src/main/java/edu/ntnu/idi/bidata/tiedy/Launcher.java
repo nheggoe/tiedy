@@ -25,8 +25,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
 public class Launcher {
 
   /**
-   * On start, it will create a new local database if it is not present and Launch the JavaFX main
-   * stage.
+   * On start, it will Launch the JavaFX main stage.
    *
    * @param args the command-line arguments passed to the application
    */

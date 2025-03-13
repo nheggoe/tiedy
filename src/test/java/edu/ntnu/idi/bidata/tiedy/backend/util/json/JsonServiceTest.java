@@ -9,13 +9,15 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class JsonServiceTest {
+
   private static final JsonService testPlayerJsonService = new JsonService(User.class, true);
 
   @BeforeAll
   static void setUp() throws IOException {
+    User user1 = new User("User1", "strongPassword", "email@example.com");
     var users =
         Stream.of(
-            new User("User1", "strongPassword", "email@example.com"),
+            user1,
             new User("User2", "strongPassword", "email@example.com"),
             new User("User3", "strongPassword", "email@example.com"));
     testPlayerJsonService.writeCollection(users);
@@ -30,4 +32,17 @@ class JsonServiceTest {
       fail(e);
     }
   }
+
+  /*
+    @Test
+    void testRetrieveTaskFromUser(){
+
+      try {
+
+      } catch (IOException e){
+        fail(e);
+      }
+
+    }
+  */
 }

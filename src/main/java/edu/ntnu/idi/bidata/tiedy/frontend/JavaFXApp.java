@@ -23,7 +23,7 @@ public class JavaFXApp extends Application {
   @Override
   public void start(Stage primaryStage) {
     try {
-      URL fxml = this.getClass().getResource("/edu/ntnu/idi/bidata/tiedy/fxml/main-view.fxml");
+      URL fxml = this.getClass().getResource("/edu/ntnu/idi/bidata/tiedy/fxml/login-view.fxml");
       Label label = new Label("Hello world!");
       Group group = new Group();
       group.getChildren().add(label);

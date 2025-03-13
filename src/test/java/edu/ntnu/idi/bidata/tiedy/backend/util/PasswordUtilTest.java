@@ -49,8 +49,7 @@ class PasswordUtilTest {
     boolean passwordMatches = PasswordUtil.checkPassword(incorrectPassword, hashedPassword);
 
     assertFalse(
-        passwordMatches,
-        "The checkPassword method should return false for an incorrect password.");
+        passwordMatches, "The checkPassword method should return false for an incorrect password.");
   }
 
   @Test

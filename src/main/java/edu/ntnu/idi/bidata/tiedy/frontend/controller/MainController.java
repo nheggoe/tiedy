@@ -12,7 +12,7 @@ public class MainController {
   @FXML private Label welcomeLabel;
 
   public MainController() {
-    this.user = new User();
+    this.user = new User("test", "strongValipasswrod");
   }
 
   private void setUser(User user) {

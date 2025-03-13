@@ -2,9 +2,9 @@ package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
 import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Spliterator;
 import java.util.Spliterators;
 import java.util.stream.Stream;
@@ -76,15 +76,8 @@ public class JsonReader {
    *     from the file
    */
   public <T> Stream<T> parseJsonStream() throws IOException {
-    Path jsonFilePath = JsonPathUtil.getJsonFilePath(targetClass, isTest);
-    File file = jsonFilePath.toFile();
-    File parentDir = file.getParentFile();
-    if (!parentDir.exists() && !parentDir.mkdirs()) {
-      throw new IOException("Failed to create directory: " + parentDir.getAbsolutePath());
-    }
-    if (file.createNewFile()) {
-      return Stream.empty();
-    }
+    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
+    FileUtil.ensureFileAndDirectoryExists(file);
 
     MappingIterator<T> iterator = objectMapper.readerFor(targetClass).readValues(file);
 

@@ -14,8 +14,8 @@ class JsonPathUtilTest {
     Class<?> targetClass = User.class;
     User classInstance = new User();
     Path expectedJsonPath = Path.of("src/test/resources/json/User.json");
-    assertEquals(expectedJsonPath, JsonPathUtil.getJsonFilePath(targetClass, isTest));
-    assertEquals(expectedJsonPath, JsonPathUtil.getJsonFilePath(classInstance, isTest));
+    assertEquals(expectedJsonPath, JsonPathUtil.generateJsonPath(targetClass, isTest));
+    assertEquals(expectedJsonPath, JsonPathUtil.generateJsonPath(classInstance, isTest));
   }
 
   @Test
@@ -24,7 +24,7 @@ class JsonPathUtilTest {
     Class<?> targetClass = User.class;
     User classInstance = new User();
     Path expectedJsonPath = Path.of("data/json/User.json");
-    assertEquals(expectedJsonPath, JsonPathUtil.getJsonFilePath(targetClass, isTest));
-    assertEquals(expectedJsonPath, JsonPathUtil.getJsonFilePath(classInstance, isTest));
+    assertEquals(expectedJsonPath, JsonPathUtil.generateJsonPath(targetClass, isTest));
+    assertEquals(expectedJsonPath, JsonPathUtil.generateJsonPath(classInstance, isTest));
   }
 }

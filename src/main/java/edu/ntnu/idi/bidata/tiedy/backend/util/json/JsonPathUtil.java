@@ -30,7 +30,7 @@ public class JsonPathUtil {
    * @return the file path to the JSON resource associated with the object's class name
    * @throws IllegalArgumentException if the provided object is null
    */
-  public static <T> Path getJsonFilePath(T obj, boolean isTest) {
+  public static <T> Path generateJsonPath(T obj, boolean isTest) {
     if (obj == null) {
       throw new IllegalArgumentException("Object cannot be null");
     }
@@ -51,7 +51,7 @@ public class JsonPathUtil {
    *     production resources (false)
    * @return the file path to the JSON resource associated with the specified class name
    */
-  public static <T> Path getJsonFilePath(Class<T> targetClass, boolean isTest) {
+  public static <T> Path generateJsonPath(Class<T> targetClass, boolean isTest) {
     return isTest
         ? Path.of(TEST_JSON_DIR_TEMPLATE.formatted(targetClass.getSimpleName()))
         : Path.of(JSON_DIR_TEMPLATE.formatted(targetClass.getSimpleName()));

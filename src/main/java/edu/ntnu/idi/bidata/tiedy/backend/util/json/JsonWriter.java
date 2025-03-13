@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
 
@@ -57,17 +57,8 @@ public class JsonWriter {
    * @throws IOException if an I/O error occurs during file creation or writing
    */
   public <T> void writeJsonFile(Stream<T> stream) throws IOException {
-    Path jsonFilePath = JsonPathUtil.getJsonFilePath(targetClass, isTest);
-    File file = jsonFilePath.toFile();
-    File parentDir = file.getParentFile();
-    if (!parentDir.exists()) {
-      if (parentDir.mkdirs()) {
-        LOGGER.info("Created directory: " + parentDir.getAbsolutePath());
-      } else {
-        throw new IOException("Failed to create directory: " + parentDir.getAbsolutePath());
-      }
-    }
-
+    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
+    FileUtil.ensureFileAndDirectoryExists(file);
     objectMapper.writeValue(file, stream.toList());
   }
 

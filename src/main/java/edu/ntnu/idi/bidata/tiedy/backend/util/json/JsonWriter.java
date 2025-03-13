@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Utility class for writing collections of objects to JSON files. The JSON files are created
@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * individual objects directly.
  *
  * @author Nick Heggø
- * @version 2025.03.12
+ * @version 2025.03.13
  */
 public class JsonWriter {
 
@@ -47,17 +47,16 @@ public class JsonWriter {
   }
 
   /**
-   * Serializes the provided collection of objects into a JSON file. The JSON file is created at a
+   * Serializes the provided stream of objects into a JSON file. The JSON file is created at a
    * location determined based on the target class type and whether the operation is performed in a
    * test or production environment. The method ensures that the necessary directory structure
    * exists before writing the file.
    *
-   * @param <T> the type of elements in the collection to be serialized
-   * @param collection the list of objects to serialize and write into the JSON file; must not be
-   *     null
+   * @param <T> the type of elements in the stream to be serialized
+   * @param stream the list of objects to serialize and write into the JSON file; must not be null
    * @throws IOException if an I/O error occurs during file creation or writing
    */
-  public <T> void writeJsonFile(List<T> collection) throws IOException {
+  public <T> void writeJsonFile(Stream<T> stream) throws IOException {
     Path jsonFilePath = JsonPathUtil.getJsonFilePath(targetClass, isTest);
     File file = jsonFilePath.toFile();
     File parentDir = file.getParentFile();
@@ -65,10 +64,11 @@ public class JsonWriter {
       if (parentDir.mkdirs()) {
         LOGGER.info("Created directory: " + parentDir.getAbsolutePath());
       } else {
-        LOGGER.warning("Failed to create directory: " + parentDir.getAbsolutePath());
+        throw new IOException("Failed to create directory: " + parentDir.getAbsolutePath());
       }
     }
-    objectMapper.writeValue(file, collection);
+
+    objectMapper.writeValue(file, stream.toList());
   }
 
   private void setTargetClass(Class<?> targetClass) {

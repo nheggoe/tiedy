@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import java.io.IOException;
-import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +14,7 @@ class JsonServiceTest {
   @BeforeAll
   static void setUp() throws IOException {
     var users =
-        List.of(
+        Stream.of(
             new User("User1", "strongPassword", "email@example.com"),
             new User("User2", "strongPassword", "email@example.com"),
             new User("User3", "strongPassword", "email@example.com"));
@@ -23,11 +23,9 @@ class JsonServiceTest {
 
   @Test
   void testReadPlayers() {
-    List<User> users;
     try {
-      users = testPlayerJsonService.loadCollection();
-      assertFalse(users.isEmpty());
-      assertEquals(3, users.size());
+      assertTrue(testPlayerJsonService.streamUsers().findAny().isPresent());
+      assertEquals(3, testPlayerJsonService.streamUsers().count());
     } catch (IOException e) {
       fail(e);
     }

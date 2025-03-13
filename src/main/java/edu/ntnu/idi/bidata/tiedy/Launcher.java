@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.JavaFXApp;
 
 /**
  *

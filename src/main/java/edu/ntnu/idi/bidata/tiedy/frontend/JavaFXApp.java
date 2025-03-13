@@ -1,5 +1,6 @@
-package edu.ntnu.idi.bidata.tiedy.frontend.stage;
+package edu.ntnu.idi.bidata.tiedy.frontend;
 
+import java.io.IOException;
 import java.net.URL;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -18,19 +19,24 @@ import javafx.stage.Stage;
  * @version 2025.02.04
  */
 public class JavaFXApp extends Application {
+
   @Override
-  public void start(Stage stage) {
+  public void start(Stage primaryStage) {
     try {
       URL fxml = this.getClass().getResource("/edu/ntnu/idi/bidata/tiedy/fxml/main-view.fxml");
       Label label = new Label("Hello world!");
       Group group = new Group();
       group.getChildren().add(label);
-      Parent parent = FXMLLoader.load(fxml);
-      stage.setScene(new Scene(parent));
-      stage.show();
-    } catch (Exception e) {
-      e.printStackTrace();
+      Parent root = FXMLLoader.load(fxml);
+
+      primaryStage.setScene(new Scene(root));
+      primaryStage.setTitle("Tiedy – Your personal task manager");
+      primaryStage.show();
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
     }
+
+    primaryStage.show();
   }
 
   public static void main(String[] args) {

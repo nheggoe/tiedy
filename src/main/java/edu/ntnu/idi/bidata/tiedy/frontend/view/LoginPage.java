@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.frontend.stage;
+package edu.ntnu.idi.bidata.tiedy.frontend.view;
 
 import javafx.stage.Stage;
 

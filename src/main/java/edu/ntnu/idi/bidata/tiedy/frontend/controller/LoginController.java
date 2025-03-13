@@ -2,18 +2,15 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
-import edu.ntnu.idi.bidata.tiedy.frontend.view.LoginView;
 import java.io.IOException;
 import java.util.stream.Stream;
 import javafx.fxml.FXML;
 
 public class LoginController {
   private final JsonService userService;
-  private final LoginView view;
 
   public LoginController() {
     userService = new JsonService(User.class);
-    view = new LoginView();
   }
 
   @FXML

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.AnchorPane?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #9A9696;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
+    <children>
+        <AnchorPane layoutX="142.0" layoutY="107.0" prefHeight="206.0" prefWidth="336.0">
+            <children>
+                <PasswordField id="passwordField" fx:id="passwordField" layoutX="136.0" layoutY="70.0" prefHeight="33.0"
+                               prefWidth="160.0" style="-fx-background-color: #D9D9D9;"/>
+                <TextField id="usernameField" fx:id="usernameField" layoutX="136.0" layoutY="14.0" prefHeight="33.0"
+                           prefWidth="160.0" style="-fx-background-color: #D9D9D9;"/>
+                <Label layoutX="40.0" layoutY="14.0" style="-fx-background-color: #D9D9D9;" text="username">
+                    <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                    </padding>
+                </Label>
+                <Label layoutX="40.0" layoutY="70.0" style="-fx-background-color: #D9D9D9;" text="password">
+                    <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                    </padding>
+                </Label>
+                <Button id="loginButton" layoutX="137.0" layoutY="193.0" mnemonicParsing="false"
+                        onAction="#registerUser" text="Register"/>
+                <Label layoutX="40.0" layoutY="123.0" prefHeight="33.0" prefWidth="71.0"
+                       style="-fx-background-color: #D9D9D9;" text="confirm" textAlignment="CENTER">
+                    <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                    </padding>
+                </Label>
+                <PasswordField id="passwordField" fx:id="passwordRepeatField" layoutX="136.0" layoutY="123.0"
+                               prefHeight="33.0" prefWidth="160.0" style="-fx-background-color: #D9D9D9;"/>
+            </children>
+        </AnchorPane>
+        <Button layoutX="31.0" layoutY="41.0" mnemonicParsing="false" onAction="#backToLogin" text="Back"/>
+    </children>
+</AnchorPane>

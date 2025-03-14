@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
+import com.fasterxml.jackson.annotation.JsonSetter;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
@@ -60,8 +61,8 @@ public class User {
    *
    * @param task the Task object to be added to the "reminders" list
    */
-  public void addTask(Task task) {
-    taskLists
+  public boolean addTask(Task task) {
+    return taskLists
         .computeIfAbsent(MapUtil.generateMapKey("Reminders"), k -> new ArrayList<>())
         .add(task);
   }
@@ -129,6 +130,11 @@ public class User {
     return password;
   }
 
+  @JsonSetter("password")
+  private void setHashedPassword(String hashedPassword) {
+    this.password = hashedPassword;
+  }
+
   public void setPassword(String plainTextPassword) {
     validatePasswordStrength(plainTextPassword);
     validatePasswordFormat(plainTextPassword);
@@ -157,10 +163,7 @@ public class User {
     String emailRegex =
         "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
     Pattern pattern = Pattern.compile(emailRegex);
-    if (emailAddress == null) {
-      throw new NullPointerException("email address cannot be null!");
-    }
-    if (!pattern.matcher(emailAddress).matches()) {
+    if (emailAddress != null && !pattern.matcher(emailAddress).matches()) {
       throw new IllegalArgumentException("Invalid email format");
     }
   }

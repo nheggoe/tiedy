@@ -3,6 +3,8 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import java.io.IOException;
 import java.util.Optional;
@@ -23,33 +25,6 @@ public class LoginController {
   @FXML private PasswordField passwordField;
 
   public LoginController() {}
-
-  @FXML
-  public void registerUser(String userName, String password, String email) {
-    if (userName == null || userName.isBlank()) {
-      throw new IllegalArgumentException("Username cannot be empty");
-    }
-    if (password == null || password.isBlank()) {
-      throw new IllegalArgumentException("Password cannot be empty");
-    }
-    if (email == null || email.isBlank()) {
-      throw new IllegalArgumentException("Email cannot be empty");
-    }
-
-    try {
-      Stream<User> userStream = userService.loadJsonAsStream();
-      boolean isUserNameTaken = userStream.anyMatch(user -> user.getUsername().equals(userName));
-      if (isUserNameTaken) {
-        throw new IllegalArgumentException("Username already taken");
-      }
-      User newUser = new User(userName, password, email);
-      Stream<User> updatedStream =
-          Stream.concat(userService.loadJsonAsStream(), Stream.of(newUser));
-      userService.writeCollection(updatedStream);
-    } catch (IOException e) {
-      throw new IllegalStateException("Cannot save user", e);
-    }
-  }
 
   @FXML
   public void loginUser() {
@@ -78,6 +53,11 @@ public class LoginController {
     }
   }
 
+  @FXML
+  public void goToRegisterPage() {
+    TiedyApp.getSceneManager().switchScene(SceneName.REGISTER);
+  }
+
   private void validateCredential(Stream<User> users, String username, String password) {
     Optional<User> foundUser =
         users.filter(user -> user.getUsername().equals(username)).findFirst();
@@ -91,12 +71,17 @@ public class LoginController {
           user -> {
             boolean isCorrectPassword =
                 PasswordUtil.checkPassword(passwordField.getText(), user.getPassword());
+            LOGGER.info("Checking password for user " + user.getUsername());
+            LOGGER.info("Provided password: " + password);
+            LOGGER.info("Stored password: " + user.getPassword());
+            LOGGER.info("Password check result: " + isCorrectPassword);
             if (isCorrectPassword) {
               UserSession.createSession(user);
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
               alert.setTitle("Login successful");
               alert.setContentText("Login successful");
               alert.showAndWait();
+              TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
             } else {
               Alert alert = new Alert(Alert.AlertType.INFORMATION);
               alert.setTitle("Incorrect password");

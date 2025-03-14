@@ -27,5 +27,6 @@
                         text="Login"/>
             </children>
         </AnchorPane>
+        <Button layoutX="506.0" layoutY="37.0" mnemonicParsing="false" onAction="#goToRegisterPage" text="Register"/>
     </children>
 </AnchorPane>

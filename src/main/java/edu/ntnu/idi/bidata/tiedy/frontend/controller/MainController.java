@@ -8,6 +8,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import java.util.List;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -23,11 +24,13 @@ public class MainController {
 
   @FXML private FlowPane flowPane;
   @FXML private Label info;
+  @FXML private Button newTaskButton;
 
   @FXML
   public void initialize() {
     UserSession session = UserSession.getInstance();
     if (session == null) {
+      newTaskButton.setDisable(true);
       info.setText("No user logged in");
     } else {
       User user = session.getCurrentUser();
@@ -47,7 +50,7 @@ public class MainController {
     Pane cardPane = new Pane();
     cardPane.setPrefSize(120, 80);
 
-    Rectangle taskBg = new Rectangle(0, 0, 80, 120);
+    Rectangle taskBg = new Rectangle(0, 0, 120, 80);
     taskBg.setFill(Color.WHITE);
     taskBg.setStroke(Color.BLACK);
     taskBg.setArcWidth(10);

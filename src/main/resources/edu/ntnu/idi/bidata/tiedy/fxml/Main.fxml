@@ -44,8 +44,8 @@
                         </Label>
                     </children>
                 </FlowPane>
-                <Button mnemonicParsing="false" onAction="#addTask" style="-fx-background-color: #D9D9D9;"
-                        text="Add Task"/>
+                <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#addTask"
+                        style="-fx-background-color: #D9D9D9;" text="Add Task"/>
             </children>
         </AnchorPane>
     </center>

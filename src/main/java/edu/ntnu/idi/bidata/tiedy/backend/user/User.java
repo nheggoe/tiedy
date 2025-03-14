@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
@@ -16,7 +17,9 @@ import java.util.regex.Pattern;
  */
 public class User {
 
+  @JsonInclude(JsonInclude.Include.ALWAYS)
   private final Map<String, List<Task>> taskLists;
+
   private final String id = UUID.randomUUID().toString();
   private final LocalDateTime createdAt = LocalDateTime.now();
 

@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -14,11 +15,12 @@ import java.util.UUID;
  * @author Nick Heggø and Ida Løvås
  * @version 2025.03.13
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
 
-  private final List<User> assignedUsers = new ArrayList<>();
-  private final String id = UUID.randomUUID().toString();
-  private final LocalDateTime createdAt = LocalDateTime.now();
+  private List<User> assignedUsers;
+  private String id;
+  private LocalDateTime createdAt;
 
   private Status status = Status.OPEN;
   private Priority priority = Priority.NONE;
@@ -32,6 +34,17 @@ public class Task {
   public Task(String title, String description) {
     setTitle(title);
     setDescription(description);
+    createdAt = LocalDateTime.now();
+    id = UUID.randomUUID().toString();
+    assignedUsers = new ArrayList<>();
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
   /**

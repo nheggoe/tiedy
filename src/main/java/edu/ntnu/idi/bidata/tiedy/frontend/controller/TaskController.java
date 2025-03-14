@@ -2,14 +2,21 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
 
 public class TaskController {
+
+  private JsonService userService = new JsonService(User.class);
+
   @FXML private TextField taskName;
   @FXML private TextField taskDescription;
 
@@ -26,6 +33,16 @@ public class TaskController {
       }
       User user = UserSession.getInstance().getCurrentUser();
       boolean success = user.addTask(new Task(name, description));
+      /*
+      FIXME need to update JSON file with the newly added task
+      FIXME Currently there is no data persistence.
+      */
+      Stream<User> userStream = userService.loadJsonAsStream();
+      var users = new ArrayList<>(userStream.toList());
+      users.removeIf(u -> u.getId().equals(user.getId()));
+      users.add(user);
+      userService.writeCollection(users.stream());
+
       if (success) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task added");
@@ -40,6 +57,10 @@ public class TaskController {
       alert.setTitle("Warning");
       alert.setContentText(e.getMessage());
       alert.show();
+    } catch (IOException e) {
+      Alert alert = new Alert(Alert.AlertType.ERROR);
+      alert.setTitle("Error");
+      alert.setContentText("Error while saving task");
     }
   }
 

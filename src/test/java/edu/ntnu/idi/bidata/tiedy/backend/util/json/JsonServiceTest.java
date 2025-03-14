@@ -26,8 +26,8 @@ class JsonServiceTest {
   @Test
   void testReadPlayers() {
     try {
-      assertTrue(testPlayerJsonService.streamUsers().findAny().isPresent());
-      assertEquals(3, testPlayerJsonService.streamUsers().count());
+      assertTrue(testPlayerJsonService.loadJsonAsStream().findAny().isPresent());
+      assertEquals(3, testPlayerJsonService.loadJsonAsStream().count());
     } catch (IOException e) {
       fail(e);
     }

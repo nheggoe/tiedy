@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * flag for distinguishing between test and production environments.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.14
  */
 public class JsonService {
 
@@ -62,7 +62,7 @@ public class JsonService {
    *     newly created
    * @throws IOException if an error occurs during the file creation or reading process
    */
-  public <T> Stream<T> streamUsers() throws IOException {
+  public <T> Stream<T> loadJsonAsStream() throws IOException {
     return jsonReader.parseJsonStream();
   }
 

@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import javafx.application.Application;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 /**
@@ -39,6 +40,8 @@ public class TiedyApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    primaryStage.setTitle("Tiedy");
+    primaryStage.getIcons().add(new Image("images/TiedyIcon.png"));
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.MAIN);
   }

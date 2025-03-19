@@ -32,17 +32,4 @@ class JsonServiceTest {
       fail(e);
     }
   }
-
-  /*
-    @Test
-    void testRetrieveTaskFromUser(){
-
-      try {
-
-      } catch (IOException e){
-        fail(e);
-      }
-
-    }
-  */
 }

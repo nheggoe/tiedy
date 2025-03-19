@@ -7,7 +7,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
  *
  * <h2>The entry point for the {@code Tiedy} application.</h2>
  *
- * This application uses JDK 21.
+ * <p>This application uses JDK 21.
  *
  * <p>When using Java Development Kits (JDKs) that does not include the built-in JavaFX library,
  * you'll see an 'Unsupported JavaFX configuration' warning if you run this application through the

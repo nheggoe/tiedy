@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.UUID;
 
 /**
- * The Task class represents a task with values like id, title, description, status, who it`s
+ * The Task class represents a task with values like id, title, description, status, who it's
  * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
@@ -29,8 +29,22 @@ public class Task {
   private String description;
   private LocalDate deadline;
 
+  /**
+   * Default constructor for the Task class. This constructor initializes an empty instance of the
+   * Task with default values for its fields. It can be used as a starting point to configure the
+   * task's properties through its setter methods.
+   */
   public Task() {}
 
+  /**
+   * Constructs a new Task instance with the specified title and description. This constructor
+   * initializes the task's title and description, sets the creation date to the current date and
+   * time, generates a unique task ID, and prepares an empty list for assigned users.
+   *
+   * @param title the title of the task; must not be null or blank
+   * @param description the description of the task; must not be null or blank
+   * @throws IllegalArgumentException if the title or description is null or blank
+   */
   public Task(String title, String description) {
     setTitle(title);
     setDescription(description);
@@ -103,7 +117,7 @@ public class Task {
   }
 
   /**
-   * Retrieves the status of the task
+   * Retrieves the status of the task.
    *
    * @return status of the task
    */
@@ -153,7 +167,7 @@ public class Task {
   }
 
   /**
-   * Retrieves the date for deadline for task completion
+   * Retrieves the date for the deadline for task completion.
    *
    * @return date for deadline
    */

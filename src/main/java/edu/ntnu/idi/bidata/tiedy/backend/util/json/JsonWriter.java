@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 /**
@@ -23,8 +22,6 @@ import java.util.stream.Stream;
  * @version 2025.03.13
  */
 public class JsonWriter {
-
-  private static final Logger LOGGER = Logger.getLogger(JsonWriter.class.getName());
 
   private final ObjectMapper objectMapper = JsonMapper.getInstance();
   private Class<?> targetClass;

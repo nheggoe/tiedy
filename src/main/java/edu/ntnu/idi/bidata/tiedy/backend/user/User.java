@@ -13,12 +13,14 @@ import java.util.regex.Pattern;
  * The object that represents the customers of the application.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.19
  */
 public class User {
 
   @JsonInclude(JsonInclude.Include.ALWAYS)
   private final Map<String, List<Task>> taskLists;
+
+  @JsonInclude private final Map<Group, Boolean> groupRoles;
 
   private final String id = UUID.randomUUID().toString();
   private final LocalDateTime createdAt = LocalDateTime.now();
@@ -29,6 +31,7 @@ public class User {
 
   private User() {
     taskLists = new HashMap<>();
+    groupRoles = new HashMap<>();
     taskLists.put("reminders", new ArrayList<>());
   }
 
@@ -138,21 +141,46 @@ public class User {
     this.password = hashedPassword;
   }
 
+  /**
+   * Sets the user's password after validating its strength and format. The password is securely
+   * hashed before being stored.
+   *
+   * @param plainTextPassword the plain-text password to be validated and hashed
+   * @throws IllegalArgumentException if the password is null, blank, or does not meet strength or
+   *     format requirements
+   */
   public void setPassword(String plainTextPassword) {
     validatePasswordStrength(plainTextPassword);
     validatePasswordFormat(plainTextPassword);
     this.password = PasswordUtil.hashPassword(plainTextPassword);
   }
 
+  /**
+   * Retrieves the email address associated with the user.
+   *
+   * @return the email address as a String
+   */
   public String getEmail() {
     return email;
   }
 
+  /**
+   * Sets the email address for the user. The email format will be validated before it is updated.
+   *
+   * @param email the email address to set for the user
+   * @throws IllegalArgumentException if the provided email address does not match the standard
+   *     email format
+   */
   public void setEmail(String email) {
     validateEmailFormat(email);
     this.email = email;
   }
 
+  /**
+   * Retrieves the creation timestamp for this user.
+   *
+   * @return the creation date and time as a {@link LocalDateTime} object.
+   */
   public LocalDateTime getCreatedAt() {
     return createdAt;
   }
@@ -171,6 +199,15 @@ public class User {
     }
   }
 
+  /**
+   * Validates the strength of a given plain-text password. Ensures the password meets certain
+   * criteria, including: being non-null, not blank, at least 8 characters long, and containing at
+   * least one lowercase letter.
+   *
+   * @param plainTextPassword the plain-text password to be validated
+   * @throws IllegalArgumentException if the password is null, blank, shorter than 8 characters, or
+   *     does not contain at least one lowercase letter
+   */
   private void validatePasswordStrength(String plainTextPassword) {
     if (plainTextPassword == null || plainTextPassword.isBlank()) {
       throw new IllegalArgumentException("Password cannot be blank!");
@@ -183,6 +220,14 @@ public class User {
     }
   }
 
+  /**
+   * Validates the format of a provided plain-text password to ensure it does not contain any
+   * special characters and is not blank or null.
+   *
+   * @param plainTextPassword the plain-text password to be validated
+   * @throws IllegalArgumentException if the password is null, blank, or contains invalid special
+   *     characters
+   */
   private void validatePasswordFormat(String plainTextPassword) {
     String invalidChars = "(){}[]|`¬¦!'£%^&*\"<>:;#~\\_-+=,@ \t";
     if (plainTextPassword == null || plainTextPassword.isBlank()) {
@@ -200,22 +245,25 @@ public class User {
     if (!(o instanceof User user)) {
       return false;
     }
+
     return Objects.equals(taskLists, user.taskLists)
-        && id.equals(user.id)
-        && username.equals(user.username)
-        && password.equals(user.password)
-        && Objects.equals(email, user.email)
-        && createdAt.equals(user.createdAt);
+        && Objects.equals(groupRoles, user.groupRoles)
+        && Objects.equals(id, user.id)
+        && createdAt.equals(user.createdAt)
+        && Objects.equals(username, user.username)
+        && Objects.equals(password, user.password)
+        && Objects.equals(email, user.email);
   }
 
   @Override
   public int hashCode() {
     int result = Objects.hashCode(taskLists);
-    result = 31 * result + id.hashCode();
-    result = 31 * result + username.hashCode();
-    result = 31 * result + password.hashCode();
-    result = 31 * result + Objects.hashCode(email);
+    result = 31 * result + Objects.hashCode(groupRoles);
+    result = 31 * result + Objects.hashCode(id);
     result = 31 * result + createdAt.hashCode();
+    result = 31 * result + Objects.hashCode(username);
+    result = 31 * result + Objects.hashCode(password);
+    result = 31 * result + Objects.hashCode(email);
     return result;
   }
 }

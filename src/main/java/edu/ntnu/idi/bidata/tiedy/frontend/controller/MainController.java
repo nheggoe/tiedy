@@ -6,6 +6,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,6 +19,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+/**
+ * The MainController class is responsible for handling user interactions and managing the
+ * application's main scene. This controller uses JavaFX components to display user tasks and
+ * provides methods for initializing the view, navigating to other scenes, and adding tasks.
+ *
+ * @author Nick Heggø
+ * @version 2025.03.19
+ */
 public class MainController {
 
   private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
@@ -26,6 +35,17 @@ public class MainController {
   @FXML private Label info;
   @FXML private Button newTaskButton;
 
+  /**
+   * Initializes the main scene by checking the current user session and updating the view
+   * accordingly.
+   *
+   * <p>If no user is logged in, it disables the task creation button and displays an informational
+   * message.
+   *
+   * <p>If a user is logged in, it retrieves the user's list of tasks under the "reminders"
+   * category, logs the number of loaded tasks, and dynamically populates the task display area with
+   * the corresponding task panes.
+   */
   @FXML
   public void initialize() {
     UserSession session = UserSession.getInstance();
@@ -36,14 +56,38 @@ public class MainController {
       User user = session.getCurrentUser();
       flowPane.getChildren().clear();
       List<Task> tasks = user.getTaskLists("reminders");
-      LOGGER.info("Found " + tasks.size() + " tasks for user " + user.getUsername());
+      LOGGER.log(
+          Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
       tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
     }
   }
 
+  /**
+   * Handles the event triggered by pressing the login button in the main scene.
+   *
+   * <p>This method switches the current scene of the application to the login scene. It utilizes
+   * the SceneManager to load the LOGIN scene from its associated FXML file, updating the
+   * application's UI to display the login interface.
+   *
+   * <p>This method is typically invoked when a user attempts to navigate to the login view.
+   */
   @FXML
   public void onLoginButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
+  }
+
+  /**
+   * Navigates the application to the task creation scene.
+   *
+   * <p>This method is triggered as a response to user events (e.g., clicking the "Add Task" button)
+   * and utilizes the SceneManager to switch the current scene to the Task scene.
+   *
+   * <p>It ensures that the application's UI updates to display the task creation interface,
+   * allowing users to add a new task.
+   */
+  @FXML
+  public void addTask() {
+    TiedyApp.getSceneManager().switchScene(SceneName.TASK);
   }
 
   private Pane createTaskPane(Task task) {
@@ -61,10 +105,5 @@ public class MainController {
 
     cardPane.getChildren().addAll(taskBg, rankText);
     return cardPane;
-  }
-
-  @FXML
-  public void addTask() {
-    TiedyApp.getSceneManager().switchScene(SceneName.TASK);
   }
 }

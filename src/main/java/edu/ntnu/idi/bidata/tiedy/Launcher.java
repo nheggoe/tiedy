@@ -1,13 +1,13 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 
 /**
  *
  *
  * <h2>The entry point for the {@code Tiedy} application.</h2>
  *
- * This application uses JDK 21.
+ * <p>This application uses JDK 21.
  *
  * <p>When using Java Development Kits (JDKs) that does not include the built-in JavaFX library,
  * you'll see an 'Unsupported JavaFX configuration' warning if you run this application through the
@@ -25,12 +25,11 @@ import edu.ntnu.idi.bidata.tiedy.frontend.stage.JavaFXApp;
 public class Launcher {
 
   /**
-   * On start, it will create a new local database if it is not present and Launch the JavaFX main
-   * stage.
+   * On start, it will Launch the JavaFX main stage.
    *
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    JavaFXApp.main(args);
+    TiedyApp.main(args);
   }
 }

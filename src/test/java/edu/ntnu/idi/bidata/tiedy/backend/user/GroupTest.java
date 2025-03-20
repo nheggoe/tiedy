@@ -3,11 +3,12 @@ package edu.ntnu.idi.bidata.tiedy.backend.user;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 
-class FamilyTest {
+class GroupTest {
 
   User user1 = new User("John Doe", PasswordUtil.hashPassword("safe"), "johndoe@example.com");
   User user2 = new User("Jane Smith", PasswordUtil.hashPassword("safe"), "janesmith@example.com");
@@ -19,42 +20,43 @@ class FamilyTest {
 
   @Test
   void testCreateAnEmptyFamily() {
-    assertThrows(IllegalStateException.class, () -> new Family((Collections.emptyList())));
+    Collection<User> emptyCollection = Collections.emptyList();
+    assertThrows(IllegalStateException.class, () -> new Group(emptyCollection));
   }
 
   @Test
   void testRemoveNullFamilyMember() {
-    Family family = new Family(user1);
+    Group group = new Group(user1);
 
-    assertThrows(NullPointerException.class, () -> family.removeFamilyMember(null));
+    assertThrows(NullPointerException.class, () -> group.removeFamilyMember(null));
   }
 
   @Test
   void testNullDoesNotExistInFamily() {
-    Family family = new Family(user4);
+    Group group = new Group(user4);
 
-    assertFalse(family.getFamilyMembers().contains(null));
+    assertFalse(group.getMembers().contains(null));
   }
 
   @Test
   void testRemoveExistingFamilyMember() {
-    Family family = new Family(List.of(user1, user2));
+    Group group = new Group(List.of(user1, user2));
 
-    family.removeFamilyMember(user1);
+    group.removeFamilyMember(user1);
 
-    assertFalse(family.getFamilyMembers().contains(user1));
-    assertTrue(family.getFamilyMembers().contains(user2));
+    assertFalse(group.getMembers().contains(user1));
+    assertTrue(group.getMembers().contains(user2));
   }
 
   @Test
   void testRemoveNonExistentFamilyMember() {
-    Family family = new Family(List.of(user1, user2, user3));
+    Group group = new Group(List.of(user1, user2, user3));
 
-    family.removeFamilyMember(user5);
+    group.removeFamilyMember(user5);
 
-    assertEquals(3, family.getFamilyMembers().size());
-    assertTrue(family.getFamilyMembers().contains(user1));
-    assertTrue(family.getFamilyMembers().contains(user2));
-    assertTrue(family.getFamilyMembers().contains(user3));
+    assertEquals(3, group.getMembers().size());
+    assertTrue(group.getMembers().contains(user1));
+    assertTrue(group.getMembers().contains(user2));
+    assertTrue(group.getMembers().contains(user3));
   }
 }

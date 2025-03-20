@@ -13,11 +13,11 @@
         <AnchorPane prefHeight="63.0" prefWidth="556.0" style="-fx-background-color: #a5c6d7;" BorderPane.alignment="CENTER">
             <children>
                 <Button alignment="CENTER" contentDisplay="CENTER" layoutX="22.0" layoutY="19.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Home" />
-                <Button contentDisplay="CENTER" layoutX="177.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Family" />
-                <Button layoutX="260.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Stats" />
                 <Button layoutX="98.0" layoutY="19.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Tasks" />
-                <Button layoutX="506.0" layoutY="15.0" mnemonicParsing="false" onAction="#onLoginButtonPress" prefHeight="34.0" prefWidth="60.0" style="-fx-background-color: #f5f5f5;" text="Profile" />
+                <Button contentDisplay="CENTER" layoutX="177.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Group" />
+                <Button layoutX="260.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Stats" />
                 <Button fx:id="newTaskButton" layoutX="322.0" layoutY="20.0" mnemonicParsing="false" onAction="#addTask" style="-fx-background-color: #f5f5f5;" text="Add Task" />
+                <Button layoutX="506.0" layoutY="15.0" mnemonicParsing="false" onAction="#onProfileButtonPress" prefHeight="34.0" prefWidth="60.0" style="-fx-background-color: #f5f5f5;" text="Profile" />
             </children>
             <padding>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

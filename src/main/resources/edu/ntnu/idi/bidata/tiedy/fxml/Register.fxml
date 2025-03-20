@@ -5,11 +5,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #69a1bd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
     <children>
+      <ImageView fitHeight="376.0" fitWidth="388.0" layoutX="112.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../images/TiedySnakes.png" />
+         </image>
+      </ImageView>
         <AnchorPane layoutX="142.0" layoutY="107.0" prefHeight="206.0" prefWidth="336.0">
             <children>
                 <Label layoutY="123.0" prefHeight="33.0" prefWidth="130.0" style="-fx-background-color: #f5f5f5;" text="Confirm password :" textAlignment="CENTER">
@@ -39,9 +46,15 @@
                 <TextField id="usernameField" fx:id="usernameField" layoutX="136.0" layoutY="14.0" prefHeight="33.0" prefWidth="160.0" promptText="Username" style="-fx-background-color: #f5f5f5;" />
                 <PasswordField id="passwordField" fx:id="passwordField" layoutX="136.0" layoutY="70.0" prefHeight="33.0" prefWidth="160.0" promptText="Password" style="-fx-background-color: #f5f5f5;" />
                 <PasswordField id="passwordField" fx:id="passwordRepeatField" layoutX="136.0" layoutY="123.0" prefHeight="33.0" prefWidth="160.0" promptText="Confirm password" style="-fx-background-color: #f5f5f5;" />
-                <Button id="loginButton" layoutX="130.0" layoutY="173.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="33.0" prefWidth="76.0" text="Register" />
+                <Button id="loginButton" layoutX="130.0" layoutY="173.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="33.0" prefWidth="76.0" text="Register">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Button>
             </children>
         </AnchorPane>
-        <Button layoutX="31.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" text="Back" />
+        <Button layoutX="516.0" layoutY="33.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" text="Back">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font></Button>
     </children>
 </AnchorPane>

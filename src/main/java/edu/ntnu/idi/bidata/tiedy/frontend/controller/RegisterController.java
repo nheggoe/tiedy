@@ -53,6 +53,7 @@ public class RegisterController {
       alert.showAndWait();
       Stream<User> updatedStream = Stream.concat(userService.loadJsonAsStream(), Stream.of(user));
       new JsonService(User.class).writeCollection(updatedStream);
+      backToLogin();
     } catch (IllegalArgumentException e) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning");

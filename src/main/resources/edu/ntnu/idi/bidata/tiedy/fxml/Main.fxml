@@ -16,7 +16,7 @@
                 <Button contentDisplay="CENTER" layoutX="177.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Family" />
                 <Button layoutX="260.0" layoutY="20.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Stats" />
                 <Button layoutX="98.0" layoutY="19.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Tasks" />
-                <Button layoutX="506.0" layoutY="15.0" mnemonicParsing="false" onAction="#onLoginButtonPress" prefHeight="34.0" prefWidth="60.0" style="-fx-background-color: #f5f5f5;" text="Profile" />
+                <Button layoutX="506.0" layoutY="15.0" mnemonicParsing="false" onAction="#onProfileButtonPress" prefHeight="34.0" prefWidth="60.0" style="-fx-background-color: #f5f5f5;" text="Profile" />
                 <Button fx:id="newTaskButton" layoutX="322.0" layoutY="20.0" mnemonicParsing="false" onAction="#addTask" style="-fx-background-color: #f5f5f5;" text="Add Task" />
             </children>
             <padding>

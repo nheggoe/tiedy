@@ -47,7 +47,7 @@
             <Font name="Impact" size="69.0" />
          </font>
       </Text>
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="90.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="245.0" fitWidth="288.0" layoutX="48.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../../../images/TiedyLogo.png" />
          </image>

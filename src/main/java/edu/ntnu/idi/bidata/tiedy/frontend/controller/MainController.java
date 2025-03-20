@@ -63,18 +63,19 @@ public class MainController {
   }
 
   /**
-   * Handles the event triggered by pressing the login button in the main scene.
+   * Handles the event triggered by pressing the profile button in the main scene.
    *
-   * <p>This method switches the current scene of the application to the login scene. It utilizes
-   * the SceneManager to load the LOGIN scene from its associated FXML file, updating the
-   * application's UI to display the login interface.
+   * <p>This method switches the current scene of the application to the profile scene. It utilizes
+   * the SceneManager to load the PROFILE scene from its associated FXML file, updating the
+   * application's UI to display the profile interface.
    *
-   * <p>This method is typically invoked when a user attempts to navigate to the login view.
+   * <p>This method is typically invoked when a user attempts to navigate to the profile view.
    */
   @FXML
-  public void onLoginButtonPress() {
-    TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
+  public void onProfileButtonPress() {
+    TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
   }
+
 
   /**
    * Navigates the application to the task creation scene.

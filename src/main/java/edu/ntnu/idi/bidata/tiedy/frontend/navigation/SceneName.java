@@ -22,7 +22,8 @@ public enum SceneName {
   LOGIN("Login"),
   MAIN("Main"),
   REGISTER("Register"),
-  TASK("Task");
+  TASK("Task"),
+  PROFILE("Profile");
 
   private static final String FXML_PATH =
       "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/%s.fxml";

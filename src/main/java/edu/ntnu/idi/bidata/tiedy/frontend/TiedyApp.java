@@ -41,7 +41,7 @@ public class TiedyApp extends Application {
   @Override
   public void start(Stage primaryStage) {
     primaryStage.setTitle("Tiedy");
-    primaryStage.getIcons().add(new Image("images/TiedyIcon.png"));
+    primaryStage.getIcons().add(new Image("images/TiedyApplicationIcon.png"));
     primaryStage.setResizable(false);
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);

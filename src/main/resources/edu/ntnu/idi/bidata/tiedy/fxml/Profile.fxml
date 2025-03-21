@@ -7,37 +7,46 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: #69a1bd;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.ProfileController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.ProfileController">
    <children>
-      <ImageView fitHeight="406.0" fitWidth="381.0" layoutX="92.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" style="-fx-rotate: 0;">
-         <image>
-            <Image url="@../../../../../../images/TiedySnakes.png" />
-         </image>
-      </ImageView>
-      <Button layoutX="508.0" layoutY="20.0" mnemonicParsing="false" onAction="#onBackButtonPress" prefHeight="38.0" prefWidth="62.0" text="Back">
+      <Button layoutX="502.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonPress" prefHeight="38.0" prefWidth="62.0" style="-fx-background-color: fff8dc;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
+         <graphic>
+            <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../images/buttons/BackButton_32px.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <AnchorPane layoutX="161.0" layoutY="79.0" prefHeight="221.0" prefWidth="278.0">
+      <AnchorPane layoutX="161.0" layoutY="79.0" prefHeight="221.0" prefWidth="278.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
          <children>
-            <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="117.0" layoutY="20.0" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: #f5f5f5;" />
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="20.0" prefHeight="38.0" prefWidth="85.0" style="-fx-background-color: #f5f5f5;" text="Profile:">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="14.0" layoutY="83.0" prefHeight="38.0" prefWidth="85.0" style="-fx-background-color: #f5f5f5;" text="Tasks done :">
-               <font>
-                  <Font name="Arial Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="117.0" layoutY="83.0" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: #f5f5f5;" text="TaskDisplay" />
-            <Button layoutX="73.0" layoutY="157.0" mnemonicParsing="false" onAction="#onLogoutButtonPress" prefHeight="38.0" prefWidth="133.0" text="Log out">
+            <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="9.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../images/TasksDoneLabel.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="nameLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="139.0" layoutY="20.0" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 10;" />
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="139.0" layoutY="83.0" prefHeight="38.0" prefWidth="124.0" style="-fx-background-color: #f5f5f5; -fx-background-radius: 10;" text="TaskDisplay" />
+            <Button layoutX="65.0" layoutY="155.0" mnemonicParsing="false" onAction="#onLogoutButtonPress" prefHeight="38.0" prefWidth="133.0" style="-fx-background-color: #6495ed;">
                <font>
                   <Font name="System Bold" size="15.0" />
                </font>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../../images/buttons/LogoutButton.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
+            <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="9.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../../../../images/UsernameLabel.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

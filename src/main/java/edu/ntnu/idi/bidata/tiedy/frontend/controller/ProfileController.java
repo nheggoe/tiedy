@@ -56,7 +56,7 @@ public class ProfileController {
                   user.getTaskLists("reminder").stream()
                       .filter(t -> t.getStatus() == Status.CLOSED)
                       .count();
-              tasksLabel.setText("You have completed " + taskCount + " tasks");
+              tasksLabel.setText("" + taskCount);
             });
   }
 

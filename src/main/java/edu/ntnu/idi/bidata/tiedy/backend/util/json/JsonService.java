@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 /**
  * Service class for reading from and writing to JSON files. This class utilizes {@link JsonReader}
  * for deserializing JSON content into objects and {@link JsonWriter} for serializing objects into
- * JSON files. It offers functionality to handle collections of a specified type.
+ * JSON files. It offers functionality to handle collections of specified types.
  *
  * <p>The behavior of the JSON operations is determined by the associated class type and an optional
  * flag for distinguishing between test and production environments.
@@ -35,7 +35,7 @@ public class JsonService {
 
   /**
    * Constructs a new instance of the JsonService class for reading from and writing to JSON files.
-   * This service is designed to handle collections of a specified type. It utilizes {@link
+   * This service is designed to handle collections of specified types. It utilizes {@link
    * JsonReader} to deserialize JSON content into objects and {@link JsonWriter} to serialize
    * objects into JSON files.
    *
@@ -55,7 +55,7 @@ public class JsonService {
    * Loads a collection of objects from a JSON file. The JSON file is dynamically located based on
    * the target class type and whether the operation is performed in a test or production
    * environment. If the file does not exist, it is created and an empty list is returned. If the
-   * file exists, the data in the file is deserialized into a list of objects of the specified type.
+   * file exists, the data in the file is deserialized into a list.
    *
    * @param <T> the type of objects to be loaded from the JSON file
    * @return a list of objects deserialized from the JSON file, or an empty list if the file is

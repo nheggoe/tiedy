@@ -84,7 +84,7 @@ public class LevelSystem {
   /**
    * Calculates the amount of experience needed to reach the next level based on the increment.
    *
-   * @param increment The amount of experience at the next level up will be incremented by.
+   * @param increment The amount of experience at the next level up will be increased by.
    */
   public void calculateExperienceToNextLevel(int increment) {
     this.experienceToNextLevel += increment;
@@ -114,7 +114,7 @@ public class LevelSystem {
    * Levels up the user by increasing the level by 1 and resets the experience to 0. Calculates the
    * amount of experience needed for the next level based on the increment.
    *
-   * @param increment The amount of experience at the next level up will be incremented by.
+   * @param increment The amount of experience at the next level up will be increased by.
    */
   public void levelUp(int increment) {
     if (isReadyForLevelUp()) {

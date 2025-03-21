@@ -48,6 +48,14 @@ public class JavaFxFactory {
     return alert;
   }
 
+  /**
+   * Generates a JavaFX information alert displaying the details of a provided task. The alert
+   * includes the task's title, description, status, priority, and due date.
+   *
+   * @param task the Task object containing the details to be displayed; must not be null
+   * @return an Alert object of type INFORMATION preconfigured with the task's details
+   * @throws IllegalArgumentException if the task parameter is null
+   */
   public static Alert generateTaskDialog(Task task) {
     var dialog = new Alert(Alert.AlertType.INFORMATION);
     dialog.setTitle("Task details");

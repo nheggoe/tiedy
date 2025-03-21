@@ -146,7 +146,7 @@ public class User {
    * hashed before being stored.
    *
    * @param plainTextPassword the plain-text password to be validated and hashed
-   * @throws IllegalArgumentException if the password is null, blank, or does not meet strength or
+   * @throws IllegalArgumentException if the password is null, blank or does not meet strength or
    *     format requirements
    */
   public void setPassword(String plainTextPassword) {
@@ -201,11 +201,11 @@ public class User {
 
   /**
    * Validates the strength of a given plain-text password. Ensures the password meets certain
-   * criteria, including: being non-null, not blank, at least 8 characters long, and containing at
+   * criteria, including being non-null, not blank, at least 8 characters long and containing at
    * least one lowercase letter.
    *
    * @param plainTextPassword the plain-text password to be validated
-   * @throws IllegalArgumentException if the password is null, blank, shorter than 8 characters, or
+   * @throws IllegalArgumentException if the password is null, blank, shorter than 8 characters or
    *     does not contain at least one lowercase letter
    */
   private void validatePasswordStrength(String plainTextPassword) {
@@ -225,7 +225,7 @@ public class User {
    * special characters and is not blank or null.
    *
    * @param plainTextPassword the plain-text password to be validated
-   * @throws IllegalArgumentException if the password is null, blank, or contains invalid special
+   * @throws IllegalArgumentException if the password is null, blank or contains invalid special
    *     characters
    */
   private void validatePasswordFormat(String plainTextPassword) {

@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import javafx.scene.control.Alert;
 
 /**
@@ -45,5 +46,24 @@ public class JavaFxFactory {
     alert.setTitle("Error");
     alert.setContentText(message);
     return alert;
+  }
+
+  public static Alert generateTaskDialog(Task task) {
+    var dialog = new Alert(Alert.AlertType.INFORMATION);
+    dialog.setTitle("Task details");
+    String template =
+        """
+        Description: %s
+        Status: %s
+        Priority: %s
+        Due date: %s""";
+    dialog.setHeaderText(task.getTitle());
+    dialog.setContentText(
+        template.formatted(
+            task.getDescription(),
+            task.getStatus().toString(),
+            task.getPriority().toString(),
+            task.getDeadline().toString()));
+    return dialog;
   }
 }

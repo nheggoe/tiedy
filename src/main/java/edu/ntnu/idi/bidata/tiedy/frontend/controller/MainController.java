@@ -6,6 +6,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -159,6 +160,7 @@ public class MainController {
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
     cardPane.getChildren().addAll(taskBg, rankText);
+    cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
     return cardPane;
   }
 }

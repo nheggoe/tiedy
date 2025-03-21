@@ -1,5 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import java.time.LocalDate;
+
 /**
  * The TaskBuilder class is a utility class for creating and configuring instances of the {@link
  * Task} class. It provides methods to set various properties of a task, such as title, description,
@@ -80,6 +82,18 @@ public class TaskBuilder {
    */
   public void setStatus(Status status) {
     task.setStatus(status);
+  }
+
+  /**
+   * Sets the deadline for the task being built. The deadline must not be null and must not be a
+   * date in the past. If a null or past date is provided, the underlying Task class will throw an
+   * IllegalArgumentException.
+   *
+   * @param deadline the new deadline to assign to the task, represented as a LocalDate object
+   * @throws IllegalArgumentException if the deadline is null or a past date
+   */
+  public void setDeadline(LocalDate deadline) {
+    task.setDeadline(deadline);
   }
 
   /**

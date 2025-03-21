@@ -9,7 +9,7 @@
     <top>
         <AnchorPane prefHeight="63.0" prefWidth="556.0" style="-fx-background-color: #6495ed;" BorderPane.alignment="CENTER">
             <children>
-                <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="22.0" layoutY="19.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
+                <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="108.0" layoutY="20.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -18,8 +18,7 @@
                   </ImageView>
                </graphic>
             </Button>
-                <Button layoutX="418.0" layoutY="47.0" mnemonicParsing="false" style="-fx-background-color: #f5f5f5;" text="Tasks" />
-                <Button layoutX="116.0" layoutY="19.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
+                <Button layoutX="202.0" layoutY="20.0" mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -27,7 +26,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-                <Button fx:id="newTaskButton" layoutX="213.0" layoutY="20.0" mnemonicParsing="false" onAction="#addTask" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
+                <Button fx:id="newTaskButton" layoutX="299.0" layoutY="21.0" mnemonicParsing="false" onAction="#addTask" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: fff8dc;">
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -35,7 +34,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-                <Button layoutX="306.0" layoutY="19.0" mnemonicParsing="false" onAction="#onProfileButtonPress" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #fff8dc;">
+                <Button layoutX="392.0" layoutY="20.0" mnemonicParsing="false" onAction="#onProfileButtonPress" prefHeight="64.0" prefWidth="64.0" style="-fx-background-color: #fff8dc;">
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -55,9 +54,9 @@
     <center>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
             <children>
-                <FlowPane fx:id="flowPane" alignment="CENTER" layoutX="27.0" layoutY="22.0" prefHeight="270.0" prefWidth="526.0">
+                <FlowPane fx:id="flowPane" alignment="CENTER" layoutX="27.0" layoutY="11.0" prefHeight="270.0" prefWidth="526.0">
                     <children>
-                        <Label fx:id="info" contentDisplay="CENTER" text="tmp">
+                        <Label fx:id="info" contentDisplay="CENTER">
                             <font>
                                 <Font size="53.0" />
                             </font>

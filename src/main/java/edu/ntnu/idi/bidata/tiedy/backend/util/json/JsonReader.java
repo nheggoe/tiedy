@@ -31,21 +31,6 @@ public class JsonReader {
   private final boolean isTest;
 
   /**
-   * Constructs a new JsonReader instance for reading JSON files and deserializing their content
-   * into objects of the specified target class type. The JSON file location is determined
-   * dynamically based on the provided target class and is designed for use in a production
-   * environment by default.
-   *
-   * @param <T> the type of the objects that will be deserialized
-   * @param targetClass the class type of the objects to be deserialized; must not be null
-   * @throws IllegalArgumentException if the targetClass parameter is null
-   */
-  public <T> JsonReader(Class<T> targetClass) {
-    setTargetClass(targetClass);
-    this.isTest = false;
-  }
-
-  /**
    * Constructs a new instance of the JsonReader class for reading JSON files and deserializing
    * their content into objects of the specified target class type. The JSON file location is
    * determined dynamically based on the provided target class and whether the operation is

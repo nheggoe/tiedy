@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
@@ -25,6 +26,8 @@ import javafx.scene.control.TextField;
  * @version 2025.03.19
  */
 public class TaskController {
+
+  private final JsonService taskService = new JsonService(Task.class);
 
   @FXML private TextField taskName;
   @FXML private TextField taskDescription;

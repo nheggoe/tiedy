@@ -11,7 +11,7 @@ import javafx.stage.Stage;
  * It encapsulates the logic necessary to load FXML files and update the primary stage with the
  * specified scene, enabling seamless navigation between different user interface views.
  *
- * <p>This class is typically utilized as a singleton, allowing centralized control of scene
+ * <p>This class is typically used as a singleton, allowing centralized control of scene
  * transitions.
  *
  * @author Nick Heggø

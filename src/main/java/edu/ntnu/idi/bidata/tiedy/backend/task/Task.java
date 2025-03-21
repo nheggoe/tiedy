@@ -39,7 +39,7 @@ public class Task {
   /**
    * Constructs a new Task instance with the specified title and description. This constructor
    * initializes the task's title and description, sets the creation date to the current date and
-   * time, generates a unique task ID, and prepares an empty list for assigned users.
+   * time, generates a unique task ID and prepares an empty list for assigned users.
    *
    * @param title the title of the task; must not be null or blank
    * @param description the description of the task; must not be null or blank

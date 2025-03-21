@@ -1,6 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.session;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import java.util.Optional;
 
 /**
  * The UserSession class is responsible for managing a single user session in the application. This
@@ -44,8 +45,8 @@ public class UserSession {
    *
    * @return the User object representing the current user, or null if no user is set.
    */
-  public User getCurrentUser() {
-    return currentUser;
+  public Optional<User> getCurrentUser() {
+    return Optional.of(currentUser);
   }
 
   /**

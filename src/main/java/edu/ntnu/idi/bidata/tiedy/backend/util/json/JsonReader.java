@@ -63,11 +63,11 @@ public class JsonReader {
   }
 
   /**
-   * Parses a JSON file into a stream of objects of the specified target class type. The JSON file
-   * is located at a dynamically determined path based on the class name and an environment flag
-   * (test or production). If the directory structure for the file does not exist, it will be
-   * created. If the file does not exist, it will be created as an empty file and an empty stream is
-   * returned. Otherwise, the JSON content will be deserialized into objects of the target class.
+   * Parses a JSON file into a stream of the specified target class type. The JSON file is located
+   * at a dynamically determined path based on the class name and an environment flag (test or
+   * production). If the directory structure for the file does not exist, it will be created. If the
+   * file does not exist, it will be created as an empty file and an empty stream is returned.
+   * Otherwise, the JSON content will be deserialized into objects of the target class.
    *
    * @param <T> the type of the objects to be deserialized
    * @return a stream of objects deserialized from the JSON file; an empty stream if the file is

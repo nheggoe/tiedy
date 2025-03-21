@@ -59,13 +59,13 @@ public class MainController {
    */
   @FXML
   public void initialize() {
-    UserSession session = UserSession.getInstance();
-    if (session == null) {
+    var optionalUser = UserSession.getInstance().getCurrentUser();
+    if (optionalUser.isEmpty()) {
       newTaskButton.setDisable(true);
       taskFilter.setDisable(true);
       info.setText("No user logged in");
     } else {
-      User user = session.getCurrentUser();
+      User user = optionalUser.get();
       flowPane.getChildren().clear();
       List<Task> tasks = user.getTaskLists("reminders");
       LOGGER.log(
@@ -73,7 +73,7 @@ public class MainController {
       tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
     }
 
-    User user = UserSession.getInstance().getCurrentUser();
+    User user = UserSession.getInstance().getCurrentUser().get();
     allTasks.setOnAction(
         e -> {
           var tasks = user.getTaskLists("reminders");
@@ -121,8 +121,8 @@ public class MainController {
   /**
    * Handles the event triggered by pressing the profile button in the main scene.
    *
-   * <p>This method switches the current scene of the application to the profile scene. It utilizes
-   * the SceneManager to load the PROFILE scene from its associated FXML file, updating the
+   * <p>This method switches the current scene of the application to the profile scene. It uses the
+   * SceneManager to load the PROFILE scene from its associated FXML file, updating the
    * application's UI to display the profile interface.
    *
    * <p>This method is typically invoked when a user attempts to navigate to the profile view.
@@ -136,7 +136,7 @@ public class MainController {
    * Navigates the application to the task creation scene.
    *
    * <p>This method is triggered as a response to user events (e.g., clicking the "Add Task" button)
-   * and utilizes the SceneManager to switch the current scene to the Task scene.
+   * and uses the SceneManager to switch the current scene to the Task scene.
    *
    * <p>It ensures that the application's UI updates to display the task creation interface,
    * allowing users to add a new task.

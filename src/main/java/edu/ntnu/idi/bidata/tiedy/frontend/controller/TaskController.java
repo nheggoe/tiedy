@@ -54,7 +54,7 @@ public class TaskController {
 
       // FIXME need to update JSON file with the newly added task
       // FIXME Currently there is no data persistence.
-      User user = UserSession.getInstance().getCurrentUser();
+      User user = UserSession.getInstance().getCurrentUser().get();
       boolean success = user.addTask(builder.getTask());
       if (success) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

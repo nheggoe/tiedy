@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import java.io.IOException;
 import java.util.stream.Stream;
@@ -31,5 +32,17 @@ class JsonServiceTest {
     } catch (IOException e) {
       fail(e);
     }
+  }
+
+  @Test
+  void testWriteTaskToJson() throws IOException {
+    User user = new User("Test", "123123123u23");
+    var taskService = new JsonService(Task.class, true);
+    var task1 = new Task(user, "Test task1", "Task 1");
+    var task2 = new Task(user, "Test task 2", "The description of test task 2");
+    var tasks = Stream.of(task1, task2);
+    taskService.writeCollection(tasks);
+    assertTrue(taskService.loadJsonAsStream().toList().contains(task1));
+    assertTrue(taskService.loadJsonAsStream().toList().contains(task2));
   }
 }

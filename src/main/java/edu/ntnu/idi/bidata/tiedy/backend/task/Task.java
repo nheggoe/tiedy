@@ -1,11 +1,13 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -45,12 +47,27 @@ public class Task {
    * @param description the description of the task; must not be null or blank
    * @throws IllegalArgumentException if the title or description is null or blank
    */
-  public Task(String title, String description) {
+  public Task(User user, String title, String description) {
+    id = UUID.randomUUID().toString();
+    createdAt = LocalDateTime.now();
+    assignedUsers = new ArrayList<>();
+    assignedUsers.add(user);
     setTitle(title);
     setDescription(description);
-    createdAt = LocalDateTime.now();
-    id = UUID.randomUUID().toString();
-    assignedUsers = new ArrayList<>();
+  }
+
+  @Override
+  public String toString() {
+    return "Task{"
+        + "assignedUsers="
+        + assignedUsers
+        + ", id='"
+        + id
+        + '\''
+        + ", title='"
+        + title
+        + '\''
+        + '}';
   }
 
   public LocalDateTime getCreatedAt() {
@@ -162,6 +179,7 @@ public class Task {
    *
    * @return true if the task's deadline is before the current date, false otherwise
    */
+  @JsonIgnore
   public boolean isOverdue() {
     return deadline.isBefore(LocalDate.now());
   }
@@ -183,9 +201,6 @@ public class Task {
    * @throws IllegalArgumentException if the deadline is null or a past date
    */
   public void setDeadline(LocalDate deadline) {
-    if (deadline == null) {
-      throw new IllegalArgumentException("Deadline cannot be null");
-    }
     this.deadline = deadline;
   }
 
@@ -196,6 +211,33 @@ public class Task {
    */
   public Priority getPriority() {
     return priority;
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Task task)) return false;
+
+    return Objects.equals(assignedUsers, task.assignedUsers)
+        && Objects.equals(id, task.id)
+        && Objects.equals(createdAt, task.createdAt)
+        && status == task.status
+        && priority == task.priority
+        && Objects.equals(title, task.title)
+        && Objects.equals(description, task.description)
+        && Objects.equals(deadline, task.deadline);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = Objects.hashCode(assignedUsers);
+    result = 31 * result + Objects.hashCode(id);
+    result = 31 * result + Objects.hashCode(createdAt);
+    result = 31 * result + Objects.hashCode(status);
+    result = 31 * result + Objects.hashCode(priority);
+    result = 31 * result + Objects.hashCode(title);
+    result = 31 * result + Objects.hashCode(description);
+    result = 31 * result + Objects.hashCode(deadline);
+    return result;
   }
 
   /**

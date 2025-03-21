@@ -7,6 +7,8 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import java.io.IOException;
+import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextField;
@@ -24,6 +26,8 @@ import javafx.scene.control.TextField;
  * @version 2025.03.19
  */
 public class TaskController {
+
+  private final JsonService taskService = new JsonService(Task.class);
 
   @FXML private TextField taskName;
   @FXML private TextField taskDescription;
@@ -53,10 +57,11 @@ public class TaskController {
         throw new IllegalArgumentException("Task description cannot be empty");
       }
       User user = UserSession.getInstance().getCurrentUser();
-      boolean success = user.addTask(new Task(name, description));
+      var task = new Task(user, name, description);
+      boolean success = user.addTask(task);
+      var tasks = taskService.loadJsonAsStream();
+      taskService.writeCollection(Stream.concat(tasks, Stream.of(tasks)));
 
-      // FIXME need to update JSON file with the newly added task
-      // FIXME Currently there is no data persistence.
       if (success) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Task added");
@@ -68,6 +73,8 @@ public class TaskController {
       }
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+    } catch (IOException e) {
+      JavaFxFactory.generateErrorAlert("Cannot write to JSON, please try again").showAndWait();
     }
   }
 

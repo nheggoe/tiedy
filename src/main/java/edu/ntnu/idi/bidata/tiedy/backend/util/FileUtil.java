@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -23,11 +24,17 @@ public class FileUtil {
    *
    * @param file the file whose existence (and its parent directories) should be ensured; must not
    *     be null
-   * @throws IOException if an error occurs during the creation of the file or directories
    */
-  public static void ensureFileAndDirectoryExists(File file) throws IOException {
-    createDirectory(file);
-    createFile(file);
+  public static void ensureFileAndDirectoryExists(File file) {
+    try {
+      if (file == null) {
+        throw new IllegalStateException("The file cannot be null");
+      }
+      createDirectory(file);
+      createFile(file);
+    } catch (IOException e) {
+      LOGGER.log(Level.SEVERE, () -> "Cannot create file: " + file);
+    }
   }
 
   private static void createDirectory(File file) {

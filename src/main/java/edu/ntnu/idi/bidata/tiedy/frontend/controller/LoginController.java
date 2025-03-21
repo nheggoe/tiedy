@@ -76,7 +76,7 @@ public class LoginController {
   /**
    * Navigates the user to the register page.
    *
-   * <p>This method triggers the scene transition to the register page by utilizing the SceneManager
+   * <p>This method triggers the scene transition to the register page by using the SceneManager
    * from the TiedyApp class. The navigation process involves switching the current scene to the one
    * associated with the {@code SceneName.REGISTER} enumeration value.
    *

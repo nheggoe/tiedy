@@ -1,16 +1,20 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
+import edu.ntnu.idi.bidata.tiedy.backend.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -35,6 +39,13 @@ public class MainController {
   @FXML private Label info;
   @FXML private Button newTaskButton;
 
+  @FXML private MenuButton taskFilter;
+  @FXML private MenuItem allTasks;
+  @FXML private MenuItem openTasks;
+  @FXML private MenuItem inProgressTasks;
+  @FXML private MenuItem postponedTasks;
+  @FXML private MenuItem closedTasks;
+
   /**
    * Initializes the main scene by checking the current user session and updating the view
    * accordingly.
@@ -51,6 +62,7 @@ public class MainController {
     UserSession session = UserSession.getInstance();
     if (session == null) {
       newTaskButton.setDisable(true);
+      taskFilter.setDisable(true);
       info.setText("No user logged in");
     } else {
       User user = session.getCurrentUser();
@@ -60,6 +72,50 @@ public class MainController {
           Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
       tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
     }
+
+    User user = UserSession.getInstance().getCurrentUser();
+    allTasks.setOnAction(
+        e -> {
+          var tasks = user.getTaskLists("reminders");
+          updateFlowPane(tasks);
+        });
+    openTasks.setOnAction(
+        e -> {
+          var tasks =
+              user.getTaskLists("reminders").stream()
+                  .filter(t -> t.getStatus() == Status.OPEN)
+                  .toList();
+          updateFlowPane(tasks);
+        });
+    inProgressTasks.setOnAction(
+        e -> {
+          var tasks =
+              user.getTaskLists("reminders").stream()
+                  .filter(t -> t.getStatus() == Status.IN_PROGRESS)
+                  .toList();
+          updateFlowPane(tasks);
+        });
+    closedTasks.setOnAction(
+        e -> {
+          var tasks =
+              user.getTaskLists("reminders").stream()
+                  .filter(t -> t.getStatus() == Status.CLOSED)
+                  .toList();
+          updateFlowPane(tasks);
+        });
+    postponedTasks.setOnAction(
+        e -> {
+          var tasks =
+              user.getTaskLists("reminders").stream()
+                  .filter(t -> t.getStatus() == Status.POSTPONED)
+                  .toList();
+          updateFlowPane(tasks);
+        });
+  }
+
+  private void updateFlowPane(List<Task> tasks) {
+    flowPane.getChildren().clear();
+    tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
 
   /**
@@ -75,7 +131,6 @@ public class MainController {
   public void onProfileButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
   }
-
 
   /**
    * Navigates the application to the task creation scene.
@@ -105,6 +160,7 @@ public class MainController {
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
     cardPane.getChildren().addAll(taskBg, rankText);
+    cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
     return cardPane;
   }
 }

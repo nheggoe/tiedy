@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import org.junit.jupiter.api.Test;
 
 class PasswordUtilTest {
@@ -49,8 +50,7 @@ class PasswordUtilTest {
     boolean passwordMatches = PasswordUtil.checkPassword(incorrectPassword, hashedPassword);
 
     assertFalse(
-        passwordMatches,
-        "The checkPassword method should return false for an incorrect password.");
+        passwordMatches, "The checkPassword method should return false for an incorrect password.");
   }
 
   @Test
@@ -69,5 +69,12 @@ class PasswordUtilTest {
     assertFalse(
         PasswordUtil.checkPassword(null, null),
         "The checkPassword method should return false if both inputs are null.");
+  }
+
+  @Test
+  void testUserRegisterProcess() {
+    String plainTextPassword = "strongPassword";
+    User testUser = new User("testUser123", plainTextPassword);
+    assertTrue(PasswordUtil.checkPassword(plainTextPassword, testUser.getPassword()));
   }
 }

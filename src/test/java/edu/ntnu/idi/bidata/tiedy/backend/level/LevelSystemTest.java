@@ -37,12 +37,10 @@ class LevelSystemTest {
     assertNotEquals(0, levelSystem.getExperienceToNextLevel());
   }
 
-
   @Test
   void testIsReadyForLevelUp() {
     assertFalse(levelSystem.isReadyForLevelUp());
   }
-
 
   @Test
   void testSetLevel() {

@@ -7,90 +7,31 @@ Project Structure
 =================
 
 ```mermaid
-classDiagram
-    class Task {
-        -int id
-        -String title
-        -String description
-        -Status status
-        -User assignedTo
-        -Date deadline
-        -start()
-        -complete()
-    }
+flowchart LR
+    subgraph JavaFX UI
+        FXMLViews[.fxml Files]
+        Controllers[Controllers]
+    end
 
-    class User {
-        -int userId
-        -String username
-        -String email
-        +login()
-        +logout()
-    }
+    subgraph Backend Logic
+        Service[Application Logic]
+        JBCrypt[JBcrypt for Password Hashing]
+        Jackson[Jackson JSON APIs]
+        JSONFiles[(JSON File Storage)]
+    end
 
-    class Admin {
-        +manageUsers()
-        +viewAllTasks()
-    }
-
-    class RegularUser {
-        +viewAssignedTasks()
-        +updateTaskStatus()
-    }
-
-    class TaskManager {
-        +assignTask()
-        +removeTask()
-        +updateTask()
-    }
-
-    class TaskApp {
-        +assignTask()
-        +removeTask()
-        +updateTask()
-        +getAllTasks()
-    }
-
-    class Status {
-        New
-        Open
-        In Progress
-        Postponed
-        Closed
-    }
-    class Severity {
-        Critical
-        High
-        Medium
-        Low
-    }
-
-    class ScoreBoard {
-        -List<User> users
-        +showTopUsers()
-    }
-
-    <<Abstract>> User
-    <<interface>> TaskManager
-    <<enumeration>> Status
-    <<enumeration>> Severity
-    TaskManager <|.. TaskApp
-    Task --> User: assignedTo
-    Task --> Status: has
-    Task --> Severity: has
-    User <|-- Admin
-    User <|-- RegularUser
-    ScoreBoard --> User: has
-    style Task fill: #bfb, stroke: #6f6, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
-    style User fill: #bfb, stroke: #6f6, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
-    style TaskManager fill: #9ff, stroke: #369, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
-    style Status fill: #ffb, stroke: #663, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
-    style Severity fill: #ffb, stroke: #663, stroke-width: 2px, color: #000, stroke-dasharray: 5 5
+    FXMLViews --> Controllers
+    Controllers --> Service
+    Service --> JBCrypt
+    Service --> Jackson
+    Jackson --> JSONFiles
 ```
 
 Running the project
 ===================
-This project uses JDK 21 and maven 3.9.9 as the build system.
-To build and run the program from scratch, clone the repository and run the following maven command:
+Java 21 is required to run this project.
+After ensuring the correct java version has been installed, run the following commands:
+
 ```bash
-mvn -q clean javafx:run
+./mvnw -q
 ```

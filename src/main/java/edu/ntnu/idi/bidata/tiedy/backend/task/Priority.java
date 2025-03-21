@@ -6,10 +6,11 @@ package edu.ntnu.idi.bidata.tiedy.backend.task;
  * importance or urgency.
  *
  * @author Nick Heggø
- * @version 2025.02.11
+ * @version 2025.03.13
  */
 public enum Priority {
   HIGH,
   MEDIUM,
-  LOW
+  LOW,
+  NONE
 }

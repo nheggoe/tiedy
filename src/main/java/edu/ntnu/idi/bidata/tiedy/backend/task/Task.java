@@ -1,88 +1,89 @@
 package edu.ntnu.idi.bidata.tiedy.backend.task;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 /**
- * The Task class represents a task with values like id, title, description, status, who it`s
+ * The Task class represents a task with values like id, title, description, status, who it's
  * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
- * @version 2025.02.26
+ * @version 2025.03.13
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
-  private int id;
+
+  private List<User> assignedUsers;
+  private String id;
+  private LocalDateTime createdAt;
+
+  private Status status = Status.OPEN;
+  private Priority priority = Priority.NONE;
+
   private String title;
   private String description;
-  private Status status;
-  private User assignedTo;
   private LocalDate deadline;
-  private Priority priority;
 
   /**
-   * Constructor to assign a task with these values
-   *
-   * @param id id to identify the task
-   * @param title of the task
-   * @param description of the task
-   * @param status completion status for the task
-   * @param assignedTo which user the task is assigned to
-   * @param deadline date for completion of task
-   * @param priority of the task
+   * Default constructor for the Task class. This constructor initializes an empty instance of the
+   * Task with default values for its fields. It can be used as a starting point to configure the
+   * task's properties through its setter methods.
    */
-  public Task(
-      int id,
-      String title,
-      String description,
-      Status status,
-      User assignedTo,
-      LocalDate deadline,
-      Priority priority) {
+  public Task() {}
 
-    this.setId(id);
-    this.setTitle(title);
-    this.setDescription(description);
-    this.setStatus(status);
-    this.setAssignedTo(assignedTo);
-    this.setDeadline(deadline);
-    this.setPriority(priority);
+  /**
+   * Constructs a new Task instance with the specified title and description. This constructor
+   * initializes the task's title and description, sets the creation date to the current date and
+   * time, generates a unique task ID and prepares an empty list for assigned users.
+   *
+   * @param title the title of the task; must not be null or blank
+   * @param description the description of the task; must not be null or blank
+   * @throws IllegalArgumentException if the title or description is null or blank
+   */
+  public Task(String title, String description) {
+    setTitle(title);
+    setDescription(description);
+    createdAt = LocalDateTime.now();
+    id = UUID.randomUUID().toString();
+    assignedUsers = new ArrayList<>();
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public void setCreatedAt(LocalDateTime createdAt) {
+    this.createdAt = createdAt;
   }
 
   /**
-   * Accessor for task id
+   * Retrieves the unique identifier of the task.
    *
-   * @return id of the task
+   * @return the unique identifier of the task as a String.
    */
-  public int getId() {
+  public String getId() {
     return id;
   }
 
   /**
-   * Mutator for task id
+   * Retrieves the title of the task.
    *
-   * @param id of the task
-   * @throws IllegalArgumentException if task id is less or equal to 0
-   */
-  public void setId(int id) {
-    if (id <= 0) {
-      throw new IllegalArgumentException("Task id need to be a positive number");
-    }
-    this.id = id;
-  }
-
-  /**
-   * Accessor for task title
-   *
-   * @return title of task
+   * @return the title of the task as a String.
    */
   public String getTitle() {
     return title;
   }
 
   /**
-   * Mutator for title
+   * Sets the title for the task. The title must not be null or blank. If a null or blank value is
+   * provided, an IllegalArgumentException is thrown.
    *
-   * @param title of task
+   * @param title the new title for the task
    * @throws IllegalArgumentException if the title is null or blank
    */
   public void setTitle(String title) {
@@ -102,8 +103,8 @@ public class Task {
   }
 
   /**
-   * Sets the description for the task. The description must not be null or blank. If a null or bl
-   * ank value is provided, an IllegalArgumentException is thrown.
+   * Sets the description for the task. The description must not be null or blank. If a null or
+   * blank value is provided, an IllegalArgumentException is thrown.
    *
    * @param description the new description for the task
    * @throws IllegalArgumentException if the description is null or blank
@@ -116,7 +117,7 @@ public class Task {
   }
 
   /**
-   * Retrieves the status of the task
+   * Retrieves the status of the task.
    *
    * @return status of the task
    */
@@ -125,34 +126,48 @@ public class Task {
   }
 
   /**
-   * Sets the status for the task
+   * Sets the status of the task. The provided status must not be null. If a null value is supplied,
+   * an IllegalArgumentException is thrown.
    *
-   * @param status of the task
+   * @param status the new status for the task, represented as a Status enum value
+   * @throws IllegalArgumentException if the status is null
    */
   public void setStatus(Status status) {
+    if (status == null) {
+      throw new IllegalArgumentException("Status cannot be null");
+    }
     this.status = status;
   }
 
   /**
-   * Retrieves which user the task is assigned to
+   * Retrieves an unmodifiable list of users assigned to the task.
    *
-   * @return user task is assigned to
+   * @return a List of User objects currently assigned to the task.
    */
-  public User getAssignedTo() {
-    return assignedTo;
+  public List<User> getAssignedUsers() {
+    return List.copyOf(assignedUsers);
   }
 
   /**
-   * Sets which user the task is assigned to
+   * Adds a user to the list of users assigned to this task.
    *
-   * @param assignedTo user task is assigned to
+   * @param assignedTo the user to be added to the assigned users of this task
    */
-  public void setAssignedTo(User assignedTo) {
-    this.assignedTo = assignedTo;
+  public void addAssignedUser(User assignedTo) {
+    assignedUsers.add(assignedTo);
   }
 
   /**
-   * Retrieves the date for deadline for task completion
+   * Determines whether the task is overdue by comparing its deadline with the current date.
+   *
+   * @return true if the task's deadline is before the current date, false otherwise
+   */
+  public boolean isOverdue() {
+    return deadline.isBefore(LocalDate.now());
+  }
+
+  /**
+   * Retrieves the date for the deadline for task completion.
    *
    * @return date for deadline
    */
@@ -161,17 +176,15 @@ public class Task {
   }
 
   /**
-   * Sets the deadline of a task
+   * Updates the deadline for the task. The deadline must not be null and should not be a date in
+   * the past. If a null or past date is provided, an IllegalArgumentException will be thrown.
    *
-   * @param deadline for task
-   * @throws IllegalArgumentException if deadline is null or in the past
+   * @param deadline the new deadline for the task, represented as a LocalDate object
+   * @throws IllegalArgumentException if the deadline is null or a past date
    */
   public void setDeadline(LocalDate deadline) {
     if (deadline == null) {
       throw new IllegalArgumentException("Deadline cannot be null");
-    }
-    if (deadline.isBefore(LocalDate.now())) {
-      throw new IllegalArgumentException("Deadline cannot be in the past");
     }
     this.deadline = deadline;
   }

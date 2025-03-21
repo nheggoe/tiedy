@@ -19,7 +19,7 @@ public class ProfileController {
   @FXML private Label tasksLabel;
 
   /**
-   * The initalize method is called when the PROFILE scene is loaded. It initializes the display
+   * The initialize method is called when the PROFILE scene is loaded. It initializes the display
    * labels in the scene with information.
    */
   @FXML
@@ -62,7 +62,7 @@ public class ProfileController {
 
   /**
    * The onLogoutButtonPress method is called when the Logout button is pressed in the PROFILE
-   * scene. It ends the current session of the user, and then switches the scene to the MAIN scene.
+   * scene. It ends the current session of the user and then switches the scene to the MAIN scene.
    */
   @FXML
   public void onLogoutButtonPress() {

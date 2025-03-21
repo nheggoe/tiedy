@@ -72,8 +72,8 @@ public class RegisterController {
    * Navigates the user back to the login scene.
    *
    * <p>This method switches the application's current scene to the login interface, enabling the
-   * user to return to the login page. It utilizes the application's SceneManager to handle the
-   * scene transition and applies the pre-defined FXML configuration for the login scene.
+   * user to return to the login page. It uses the application's SceneManager to handle the scene
+   * transition and applies the pre-defined FXML configuration for the login scene.
    */
   @FXML
   public void backToLogin() {

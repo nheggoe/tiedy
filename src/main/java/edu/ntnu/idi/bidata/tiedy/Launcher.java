@@ -27,7 +27,7 @@ public class Launcher {
   /**
    * On start, it will Launch the JavaFX main stage.
    *
-   * works @param args the command-line arguments passed to the application
+   * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
     TiedyApp.main(args);

@@ -29,12 +29,12 @@ import javafx.scene.control.TextField;
  * password fields.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.24
  */
 public class LoginController {
   private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
-  private final JsonService userService = new JsonService(User.class);
+  private final JsonService<User> userService = new JsonService<>(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;

@@ -18,11 +18,11 @@ import javafx.scene.control.TextField;
  * This class manages the user input fields and performs validation during the registration process.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.24
  */
 public class RegisterController {
   private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
-  private final JsonService userService = new JsonService(User.class);
+  private final JsonService<User> userService = new JsonService<>(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -52,7 +52,7 @@ public class RegisterController {
       alert.setContentText("Registration successful");
       alert.showAndWait();
       Stream<User> updatedStream = Stream.concat(userService.loadJsonAsStream(), Stream.of(user));
-      new JsonService(User.class).writeCollection(updatedStream);
+      new JsonService<>(User.class).writeCollection(updatedStream);
       backToLogin();
     } catch (IllegalArgumentException e) {
       Alert alert = new Alert(Alert.AlertType.WARNING);

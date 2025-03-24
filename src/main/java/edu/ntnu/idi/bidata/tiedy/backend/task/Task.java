@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -15,7 +14,7 @@ import java.util.UUID;
  * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
- * @version 2025.03.13
+ * @version 2025.03.24
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
@@ -213,33 +212,6 @@ public class Task {
     return priority;
   }
 
-  @Override
-  public final boolean equals(Object o) {
-    if (!(o instanceof Task task)) return false;
-
-    return Objects.equals(assignedUsers, task.assignedUsers)
-        && Objects.equals(id, task.id)
-        && Objects.equals(createdAt, task.createdAt)
-        && status == task.status
-        && priority == task.priority
-        && Objects.equals(title, task.title)
-        && Objects.equals(description, task.description)
-        && Objects.equals(deadline, task.deadline);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = Objects.hashCode(assignedUsers);
-    result = 31 * result + Objects.hashCode(id);
-    result = 31 * result + Objects.hashCode(createdAt);
-    result = 31 * result + Objects.hashCode(status);
-    result = 31 * result + Objects.hashCode(priority);
-    result = 31 * result + Objects.hashCode(title);
-    result = 31 * result + Objects.hashCode(description);
-    result = 31 * result + Objects.hashCode(deadline);
-    return result;
-  }
-
   /**
    * Sets the priority for the task.
    *
@@ -251,5 +223,19 @@ public class Task {
       throw new IllegalArgumentException("Priority cannot be null");
     }
     this.priority = priority;
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Task task)) return false;
+
+    return id.equals(task.id) && createdAt.equals(task.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + createdAt.hashCode();
+    return result;
   }
 }

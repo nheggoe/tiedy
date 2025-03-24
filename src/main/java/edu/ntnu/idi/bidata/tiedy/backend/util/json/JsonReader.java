@@ -1,14 +1,12 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.List;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Utility class for reading JSON files and deserializing their content into objects of a specified
@@ -22,12 +20,12 @@ import java.util.stream.StreamSupport;
  * JsonMapper} class for efficient JSON operations.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.24
  */
-public class JsonReader {
+public class JsonReader<T> {
 
   private final ObjectMapper objectMapper = JsonMapper.getInstance();
-  private Class<?> targetClass;
+  private final Class<T> targetClass;
   private final boolean isTest;
 
   /**
@@ -36,14 +34,15 @@ public class JsonReader {
    * determined dynamically based on the provided target class and whether the operation is
    * performed in a test or production environment.
    *
-   * @param <T> the type of the objects that will be deserialized
-   * @param targetClass the class type of the objects to be deserialized; must not be null
    * @param isTest a boolean flag indicating whether the JSON file should be located in the test
    *     environment (true) or the production environment (false)
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public <T> JsonReader(Class<T> targetClass, boolean isTest) {
-    setTargetClass(targetClass);
+  public JsonReader(Class<T> targetClass, boolean isTest) {
+    if (targetClass == null) {
+      throw new IllegalArgumentException("Target class must not be null");
+    }
+    this.targetClass = targetClass;
     this.isTest = isTest;
   }
 
@@ -54,26 +53,20 @@ public class JsonReader {
    * file does not exist, it will be created as an empty file and an empty stream is returned.
    * Otherwise, the JSON content will be deserialized into objects of the target class.
    *
-   * @param <T> the type of the objects to be deserialized
    * @return a stream of objects deserialized from the JSON file; an empty stream if the file is
    *     newly created
    * @throws IOException if an I/O error occurs during directory creation, file creation, or reading
    *     from the file
    */
-  public <T> Stream<T> parseJsonStream() throws IOException {
+  public Stream<T> parseJsonStream() throws IOException {
     File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
     FileUtil.ensureFileAndDirectoryExists(file);
 
-    MappingIterator<T> iterator = objectMapper.readerFor(targetClass).readValues(file);
-
-    return StreamSupport.stream(
-        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
-  }
-
-  private void setTargetClass(Class<?> targetClass) {
-    if (targetClass == null) {
-      throw new IllegalArgumentException("Target class must not be null");
+    if (file.length() == 0) {
+      return Stream.empty();
     }
-    this.targetClass = targetClass;
+
+    List<T> listOfObject = objectMapper.readValue(file, new TypeReference<List<T>>() {});
+    return listOfObject.stream();
   }
 }

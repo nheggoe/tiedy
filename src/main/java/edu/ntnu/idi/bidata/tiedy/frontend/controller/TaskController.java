@@ -8,9 +8,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.io.IOException;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -24,17 +22,17 @@ import javafx.scene.control.TextField;
  * on JavaFX components for user interface interactions.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.24
  */
 public class TaskController {
 
-  private final JsonService taskService = new JsonService(Task.class);
+  private final JsonService<Task> taskService = new JsonService<>(Task.class);
 
   @FXML private TextField taskName;
   @FXML private TextField taskDescription;
   @FXML private DatePicker dueDate;
 
-  private final TaskBuilder builder = new TaskBuilder();
+  private final TaskBuilder taskBuilder = new TaskBuilder();
 
   /**
    * Handles submission of a new task by the user.
@@ -52,27 +50,22 @@ public class TaskController {
   @FXML
   public void submitTask() {
     try {
-      builder.setTitle(taskName.getText());
-      builder.setDescription(taskDescription.getText());
-      builder.setDeadline(dueDate.getValue());
-
-      // FIXME need to update JSON file with the newly added task
-      // FIXME Currently there is no data persistence.
-      User user = UserSession.getInstance().getCurrentUser().get();
-      boolean success = user.addTask(builder.getTask());
+      taskBuilder.title(taskName.getText());
+      taskBuilder.description(taskDescription.getText());
+      taskBuilder.deadline(dueDate.getValue());
+      Task task = taskBuilder.build();
+      boolean success = (task != null);
       if (success) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Task added");
-        alert.setContentText("Task added successfully");
-        alert.showAndWait();
+        User user = UserSession.getInstance().getCurrentUser().get();
+        // taskService.();
+
+        JavaFxFactory.generateInfoAlert("Task added successfully").showAndWait();
         TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
       } else {
         throw new IllegalArgumentException("Task could not be added");
       }
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
-    } catch (IOException e) {
-      JavaFxFactory.generateErrorAlert("Cannot write to JSON, please try again").showAndWait();
     }
   }
 

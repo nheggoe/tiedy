@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  * specified file and its parent directories exist, creating them if necessary.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.24
  */
 public class FileUtil {
 
@@ -39,14 +39,14 @@ public class FileUtil {
 
   private static void createDirectory(File file) {
     File parentDir = file.getParentFile();
-    if (parentDir.mkdirs()) {
-      LOGGER.info("Created directory: " + parentDir.getAbsolutePath());
+    if (parentDir != null && parentDir.mkdirs()) {
+      LOGGER.info(() -> "Created directory: " + parentDir.getAbsolutePath());
     }
   }
 
   private static void createFile(File file) throws IOException {
     if (file.createNewFile()) {
-      LOGGER.info("Created file: " + file.getAbsolutePath());
+      LOGGER.info(() -> "Created file: " + file.getAbsolutePath());
     }
   }
 }

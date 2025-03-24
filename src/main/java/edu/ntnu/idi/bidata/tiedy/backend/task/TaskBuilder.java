@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * before it can be retrieved.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.24
  */
 public class TaskBuilder {
 
@@ -46,7 +46,7 @@ public class TaskBuilder {
    * @param title the new title to assign to the task
    * @throws IllegalArgumentException if the title is null or blank
    */
-  public void setTitle(String title) {
+  public void title(String title) {
     task.setTitle(title);
   }
 
@@ -58,7 +58,7 @@ public class TaskBuilder {
    * @param description the new description to assign to the task
    * @throws IllegalArgumentException if the description is null or blank
    */
-  public void setDescription(String description) {
+  public void description(String description) {
     task.setDescription(description);
   }
 
@@ -92,7 +92,7 @@ public class TaskBuilder {
    * @param deadline the new deadline to assign to the task, represented as a LocalDate object
    * @throws IllegalArgumentException if the deadline is null or a past date
    */
-  public void setDeadline(LocalDate deadline) {
+  public void deadline(LocalDate deadline) {
     task.setDeadline(deadline);
   }
 
@@ -106,7 +106,7 @@ public class TaskBuilder {
    * @throws IllegalStateException if required fields of the task (title, priority, or status) are
    *     missing or invalid
    */
-  public Task getTask() {
+  public Task build() {
     assertTaskInfo();
     Task taskToReturn = task;
     reset();

@@ -46,13 +46,12 @@ public class RegisterController {
       if (isUserNameTaken) {
         throw new IllegalArgumentException("Username already taken");
       }
-      User user = getUser(username);
+      User user = validateAndCreateUser(username);
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("Registration successful");
       alert.setContentText("Registration successful");
       alert.showAndWait();
-      Stream<User> updatedStream = Stream.concat(userService.loadJsonAsStream(), Stream.of(user));
-      new JsonService<>(User.class).writeCollection(updatedStream);
+      new JsonService<>(User.class).addItem(user);
       backToLogin();
     } catch (IllegalArgumentException e) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -80,7 +79,7 @@ public class RegisterController {
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
   }
 
-  private User getUser(String username) {
+  private User validateAndCreateUser(String username) {
     String password = passwordField.getText();
     String passwordRepeat = passwordRepeatField.getText();
 

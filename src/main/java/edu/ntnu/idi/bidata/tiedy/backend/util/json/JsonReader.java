@@ -1,12 +1,14 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.MappingIterator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Spliterator;
+import java.util.Spliterators;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Utility class for reading JSON files and deserializing their content into objects of a specified
@@ -66,7 +68,10 @@ public class JsonReader<T> {
       return Stream.empty();
     }
 
-    List<T> listOfObject = objectMapper.readValue(file, new TypeReference<List<T>>() {});
-    return listOfObject.stream();
+    // List<T> listOfObject = objectMapper.readValue(file, new TypeReference<List<T>>() {});
+    // return listOfObject.stream();
+    MappingIterator<T> iterator = objectMapper.readerFor(targetClass).readValues(file);
+    return StreamSupport.stream(
+        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
   }
 }

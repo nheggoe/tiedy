@@ -55,8 +55,12 @@ public class JsonService<T> {
    *     newly created
    * @throws IOException if an error occurs during the file creation or reading process
    */
-  public Stream<T> loadJsonAsStream() throws IOException {
-    return jsonReader.parseJsonStream();
+  public Stream<T> loadJsonAsStream() {
+    try {
+      return jsonReader.parseJsonStream();
+    } catch (IOException ignored) {
+      return Stream.empty();
+    }
   }
 
   /**

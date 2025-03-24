@@ -8,11 +8,8 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.StringChecker;
-import java.io.IOException;
 import java.util.Optional;
-import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -49,27 +46,12 @@ public class LoginController {
     try {
       String username = usernameField.getText();
       StringChecker.assertValidString(username, "username");
-      assertValidUserName(username);
       String password = passwordField.getText();
-      if (password == null || password.isBlank()) {
-        throw new IllegalArgumentException("Password cannot be empty");
-      }
-      Stream<User> users = userService.loadJsonAsStream();
-      validateCredential(users, username, password);
+      StringChecker.assertValidString(password, "password");
+
+      validateCredential(username, password);
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, "Cannot load users", e);
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setContentText("Error while loading users");
-      alert.show();
-    }
-  }
-
-  private static void assertValidUserName(String username) {
-    if (username == null || username.isBlank()) {
-      throw new IllegalArgumentException("Username cannot be empty");
     }
   }
 
@@ -88,9 +70,12 @@ public class LoginController {
     TiedyApp.getSceneManager().switchScene(SceneName.REGISTER);
   }
 
-  private void validateCredential(Stream<User> users, String username, String password) {
+  private void validateCredential(String username, String password) {
     Optional<User> foundUser =
-        users.filter(user -> user.getUsername().equals(username)).findFirst();
+        userService
+            .loadJsonAsStream()
+            .filter(user -> user.getUsername().equals(username))
+            .findFirst();
     if (foundUser.isEmpty()) {
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("User not found");

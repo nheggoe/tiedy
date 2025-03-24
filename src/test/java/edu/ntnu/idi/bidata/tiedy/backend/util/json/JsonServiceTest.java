@@ -29,12 +29,8 @@ class JsonServiceTest {
   @Test
   @Disabled("Currently Under development") // FIXME
   void testReadPlayers() {
-    try {
-      assertTrue(testPlayerJsonService.loadJsonAsStream().findAny().isPresent());
-      assertEquals(3, testPlayerJsonService.loadJsonAsStream().count());
-    } catch (IOException e) {
-      fail(e);
-    }
+    assertTrue(testPlayerJsonService.loadJsonAsStream().findAny().isPresent());
+    assertEquals(3, testPlayerJsonService.loadJsonAsStream().count());
   }
 
   @Test

@@ -19,7 +19,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Task {
 
-  private List<User> assignedUsers;
+  private List<String> assignedUsers;
   private String id;
   private LocalDateTime createdAt;
 
@@ -50,7 +50,7 @@ public class Task {
     id = UUID.randomUUID().toString();
     createdAt = LocalDateTime.now();
     assignedUsers = new ArrayList<>();
-    assignedUsers.add(user);
+    addAssignedUser(user);
     setTitle(title);
     setDescription(description);
   }
@@ -160,7 +160,7 @@ public class Task {
    *
    * @return a List of User objects currently assigned to the task.
    */
-  public List<User> getAssignedUsers() {
+  public List<String> getAssignedUsers() {
     return List.copyOf(assignedUsers);
   }
 
@@ -170,7 +170,7 @@ public class Task {
    * @param assignedTo the user to be added to the assigned users of this task
    */
   public void addAssignedUser(User assignedTo) {
-    assignedUsers.add(assignedTo);
+    assignedUsers.add(assignedTo.getId());
   }
 
   /**

@@ -7,7 +7,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -42,9 +41,7 @@ public class LoginController {
   public void loginUser() {
     try {
       String username = usernameField.getText();
-      StringChecker.assertValidString(username, "username");
       String password = passwordField.getText();
-      StringChecker.assertValidString(password, "password");
 
       validateCredential(username, password);
     } catch (IllegalArgumentException e) {
@@ -68,39 +65,35 @@ public class LoginController {
   }
 
   private void validateCredential(String username, String password) {
-    Optional<User> foundUser =
+    StringChecker.assertValidString(username, "username");
+    StringChecker.assertValidString(password, "password");
+    User foundUser =
         TiedyApp.getUserJsonService()
             .loadJsonAsStream()
             .filter(user -> user.getUsername().equals(username))
-            .findFirst();
-    if (foundUser.isEmpty()) {
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("User not found: " + username));
+
+    boolean isCorrectPassword =
+        PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
+
+    LOGGER.info(() -> "Checking password for user " + foundUser.getUsername());
+    LOGGER.info(() -> "Provided password: " + password);
+    LOGGER.info(() -> "Stored password: " + foundUser.getPassword());
+    LOGGER.info(() -> "Password check result: " + isCorrectPassword);
+
+    if (isCorrectPassword) {
+      UserSession.createSession(foundUser);
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("User not found");
-      alert.setContentText("User not found, please try again");
+      alert.setTitle("Login successful");
+      alert.setContentText("Login successful");
       alert.showAndWait();
+      TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
     } else {
-      foundUser.ifPresent(
-          user -> {
-            boolean isCorrectPassword =
-                PasswordUtil.checkPassword(passwordField.getText(), user.getPassword());
-            LOGGER.info("Checking password for user " + user.getUsername());
-            LOGGER.info("Provided password: " + password);
-            LOGGER.info("Stored password: " + user.getPassword());
-            LOGGER.info("Password check result: " + isCorrectPassword);
-            if (isCorrectPassword) {
-              UserSession.createSession(user);
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
-              alert.setTitle("Login successful");
-              alert.setContentText("Login successful");
-              alert.showAndWait();
-              TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
-            } else {
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
-              alert.setTitle("Incorrect password");
-              alert.setContentText("Incorrect password, please try again");
-              alert.showAndWait();
-            }
-          });
+      Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      alert.setTitle("Incorrect password");
+      alert.setContentText("Incorrect password, please try again");
+      alert.showAndWait();
     }
   }
 }

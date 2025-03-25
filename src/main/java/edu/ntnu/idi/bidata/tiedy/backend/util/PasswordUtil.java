@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * methods to hash plain-text passwords and verify their validity against hashed passwords securely.
  *
  * @author Nick Heggø
- * @version 2025.02.28
+ * @version 2025.03.25
  */
 public class PasswordUtil {
 
@@ -44,6 +44,47 @@ public class PasswordUtil {
       return BCrypt.checkpw(plainTextPassword, hashedPassword);
     } catch (IllegalArgumentException e) {
       return false;
+    }
+  }
+
+  /**
+   * Validates the format of a provided plain-text password to ensure it does not contain any
+   * special characters and is not blank or null.
+   *
+   * @param plainTextPassword the plain-text password to be validated
+   * @throws IllegalArgumentException if the password is null, blank or contains invalid special
+   *     characters
+   */
+  private void validatePasswordFormat(String plainTextPassword) {
+    String invalidChars = "(){}[]|`¬¦!'£%^&*\"<>:;#~\\_-+=,@ \t";
+    if (plainTextPassword == null || plainTextPassword.isBlank()) {
+      throw new IllegalArgumentException("Password cannot be blank!");
+    }
+    for (char c : plainTextPassword.toCharArray()) {
+      if (invalidChars.contains(String.valueOf(c))) {
+        throw new IllegalArgumentException("Password cannot contain special characters!");
+      }
+    }
+  }
+
+  /**
+   * Validates the strength of a given plain-text password. Ensures the password meets certain
+   * criteria, including being non-null, not blank, at least 8 characters long and containing at
+   * least one lowercase letter.
+   *
+   * @param plainTextPassword the plain-text password to be validated
+   * @throws IllegalArgumentException if the password is null, blank, shorter than 8 characters or
+   *     does not contain at least one lowercase letter
+   */
+  private void validatePasswordStrength(String plainTextPassword) {
+    if (plainTextPassword == null || plainTextPassword.isBlank()) {
+      throw new IllegalArgumentException("Password cannot be blank!");
+    }
+    if (plainTextPassword.length() < 8) {
+      throw new IllegalArgumentException("Password must be at least 8 characters long!");
+    }
+    if (!plainTextPassword.matches(".*[a-z].*")) {
+      throw new IllegalArgumentException("Password must contain at least one lowercase letter!");
     }
   }
 }

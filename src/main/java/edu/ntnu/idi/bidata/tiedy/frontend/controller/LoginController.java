@@ -2,12 +2,11 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
-import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.StringChecker;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -26,12 +25,10 @@ import javafx.scene.control.TextField;
  * password fields.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class LoginController {
   private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
-
-  private final JsonService<User> userService = new JsonService<>(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -72,7 +69,7 @@ public class LoginController {
 
   private void validateCredential(String username, String password) {
     Optional<User> foundUser =
-        userService
+        TiedyApp.getUserJsonService()
             .loadJsonAsStream()
             .filter(user -> user.getUsername().equals(username))
             .findFirst();

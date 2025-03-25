@@ -7,7 +7,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -18,11 +17,11 @@ import javafx.scene.control.TextField;
  * This class manages the user input fields and performs validation during the registration process.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class RegisterController {
+
   private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
-  private final JsonService<User> userService = new JsonService<>(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -41,8 +40,10 @@ public class RegisterController {
       if (username == null || username.isBlank()) {
         throw new IllegalArgumentException("Username cannot be empty");
       }
-      Stream<User> userStream = userService.loadJsonAsStream();
-      boolean isUserNameTaken = userStream.anyMatch(user -> user.getUsername().equals(username));
+      boolean isUserNameTaken =
+          TiedyApp.getUserJsonService()
+              .loadJsonAsStream()
+              .anyMatch(user -> user.getUsername().equals(username));
       if (isUserNameTaken) {
         throw new IllegalArgumentException("Username already taken");
       }

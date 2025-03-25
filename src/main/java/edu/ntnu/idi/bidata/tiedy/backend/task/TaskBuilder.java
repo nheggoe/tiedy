@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * before it can be retrieved.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class TaskBuilder {
 
@@ -25,29 +25,15 @@ public class TaskBuilder {
   }
 
   /**
-   * Constructs a new TaskBuilder instance for the specified Task object. This constructor
-   * initializes the TaskBuilder with an existing Task to allow for modification or further
-   * configuration. The provided Task must not be null.
-   *
-   * @param task the Task object to be associated with this TaskBuilder
-   * @throws IllegalArgumentException if the provided Task is null
-   */
-  public TaskBuilder(Task task) {
-    if (task == null) {
-      throw new IllegalArgumentException("Task cannot be null");
-    }
-    this.task = task;
-  }
-
-  /**
    * Sets the title of the task being built. The title must not be null or blank. If a null or blank
    * value is provided, an IllegalArgumentException will be thrown by the underlying Task class.
    *
    * @param title the new title to assign to the task
    * @throws IllegalArgumentException if the title is null or blank
    */
-  public void title(String title) {
+  public TaskBuilder title(String title) {
     task.setTitle(title);
+    return this;
   }
 
   /**
@@ -58,8 +44,9 @@ public class TaskBuilder {
    * @param description the new description to assign to the task
    * @throws IllegalArgumentException if the description is null or blank
    */
-  public void description(String description) {
+  public TaskBuilder description(String description) {
     task.setDescription(description);
+    return this;
   }
 
   /**
@@ -70,8 +57,9 @@ public class TaskBuilder {
    *     value
    * @throws IllegalArgumentException if the priority is null
    */
-  public void setPriority(Priority priority) {
+  public TaskBuilder priority(Priority priority) {
     task.setPriority(priority);
+    return this;
   }
 
   /**
@@ -80,8 +68,9 @@ public class TaskBuilder {
    * @param status the status to assign to the task, represented as a {@link Status} enum value
    * @throws IllegalArgumentException if the status is null
    */
-  public void setStatus(Status status) {
+  public TaskBuilder status(Status status) {
     task.setStatus(status);
+    return this;
   }
 
   /**
@@ -92,8 +81,9 @@ public class TaskBuilder {
    * @param deadline the new deadline to assign to the task, represented as a LocalDate object
    * @throws IllegalArgumentException if the deadline is null or a past date
    */
-  public void deadline(LocalDate deadline) {
+  public TaskBuilder deadline(LocalDate deadline) {
     task.setDeadline(deadline);
+    return this;
   }
 
   /**
@@ -114,7 +104,7 @@ public class TaskBuilder {
   }
 
   private void reset() {
-    task = new Task();
+    this.task = new Task();
   }
 
   private void assertTaskInfo() {

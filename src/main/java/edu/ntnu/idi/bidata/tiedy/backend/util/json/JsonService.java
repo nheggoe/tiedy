@@ -12,7 +12,7 @@ import java.util.stream.Stream;
  * flag for distinguishing between test and production environments.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class JsonService<T> {
 
@@ -53,14 +53,9 @@ public class JsonService<T> {
    *
    * @return a list of objects deserialized from the JSON file, or an empty list if the file is
    *     newly created
-   * @throws IOException if an error occurs during the file creation or reading process
    */
   public Stream<T> loadJsonAsStream() {
-    try {
-      return jsonReader.parseJsonStream();
-    } catch (IOException ignored) {
-      return Stream.empty();
-    }
+    return jsonReader.parseJsonStream();
   }
 
   /**
@@ -69,9 +64,8 @@ public class JsonService<T> {
    * production environment. The method ensures that the directory structure exists before writing.
    *
    * @param stream the list of objects to be written into the JSON file; must not be null
-   * @throws IOException if an I/O error occurs during file creation or writing
    */
-  public void writeCollection(Stream<T> stream) throws IOException {
+  public void writeCollection(Stream<T> stream) {
     try (Stream<T> existingData = loadJsonAsStream();
         Stream<T> combinedStream = Stream.concat(existingData, stream)) {
       jsonWriter.writeJsonFile(combinedStream);

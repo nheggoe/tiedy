@@ -50,10 +50,12 @@ public class TaskController {
   @FXML
   public void submitTask() {
     try {
-      taskBuilder.title(taskName.getText());
-      taskBuilder.description(taskDescription.getText());
-      taskBuilder.deadline(dueDate.getValue());
-      Task task = taskBuilder.build();
+      Task task =
+          taskBuilder
+              .title(taskName.getText())
+              .description(taskDescription.getText())
+              .deadline(dueDate.getValue())
+              .build();
       boolean success = (task != null);
       if (success) {
         User user = UserSession.getInstance().getCurrentUser().get();

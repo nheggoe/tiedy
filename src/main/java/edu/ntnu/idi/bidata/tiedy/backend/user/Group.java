@@ -1,79 +1,118 @@
 package edu.ntnu.idi.bidata.tiedy.backend.user;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Represents a group of users, specifically family members. Provides functionality to manage the
  * family members within the group.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.25
  */
 public class Group {
 
-  private final Set<User> members;
+  private final UUID id; // groupID
+  private final LocalDateTime createdAt;
+  private final Map<UUID, Boolean> members; // K: userID, V: flag for permission
 
-  /**
-   * Constructs a new Group instance with the specified collection of users. This collection
-   * represents the initial set of family members.
-   *
-   * @param users the collection of User objects to initialize the family members set (must not be
-   *     empty)
-   * @throws IllegalStateException if the provided collection is empty
-   * @throws NullPointerException if the provided collection is null
-   */
-  public Group(Collection<User> users) {
-    members = new HashSet<>(users);
-    assertNoneEmptyFamily();
+  private String name;
+  private String description;
+
+  private Group() {
+    this.id = UUID.randomUUID();
+    this.createdAt = LocalDateTime.now();
+    this.members = new HashMap<>();
   }
 
-  /**
-   * Constructs a new Group instance with a single User as the initial member. The provided user
-   * will be added to the group as the only initial family member.
-   *
-   * @param user the User object to be added as the sole member of the group
-   * @throws NullPointerException if the provided user is null
-   */
-  public Group(User user) {
-    this(Collections.singleton(user));
-  }
-
-  /**
-   * Adds a new User to the set of family members.
-   *
-   * @param user the User object to be added to the family members set
-   */
-  public void addFamilyMember(User user) {
-    members.add(user);
-  }
-
-  /**
-   * Removes a specified user from the family members set.
-   *
-   * @param user the User object to be removed from the family members set
-   */
-  public void removeFamilyMember(User user) {
-    if (user == null) {
-      throw new NullPointerException("User cannot be null!");
+  private Group(UUID id, LocalDateTime createdAt, Map<UUID, Boolean> members) {
+    if (id == null || createdAt == null || members == null) {
+      throw new NullPointerException("Group ID, creation time, and members map cannot be null");
     }
-    members.remove(user);
+    this.id = id;
+    this.createdAt = createdAt;
+    this.members = members;
   }
 
   /**
-   * Retrieves the set of family members associated with the current Family instance.
+   * Creates an empty instance of a group
    *
-   * @return a set of User objects representing the family members
+   * @param name
+   * @param description
    */
-  public Set<User> getMembers() {
-    return members;
+  public Group(String name, String description, User user) {
+    this();
+    setName(name);
+    setDescription(description);
+    addMember(user, true);
   }
 
-  private void assertNoneEmptyFamily() {
-    if (members.isEmpty()) {
-      throw new IllegalStateException("Creating a empty family is prohibited!");
+  // ------------------------   Public Interface  ------------------------
+
+  public void addMember(User user, boolean isAdmin) {
+    members.put(user.getId(), isAdmin);
+  }
+
+  public void removeMember(User user) {}
+
+  // ------------------------   Getters and Setters ------------------------
+
+  public UUID getId() {
+    return id;
+  }
+
+  public LocalDateTime getCreatedAt() {
+    return createdAt;
+  }
+
+  public Map<UUID, Boolean> getMembers() {
+    return Map.copyOf(members);
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    if (name == null || name.isBlank()) {
+      throw new IllegalArgumentException("Group name cannot be blank!");
     }
+    this.name = name;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  /**
+   * Sets the optional description of a group, if passed null will be replaced with empty string
+   *
+   * @param description the text description of the group
+   */
+  public void setDescription(String description) {
+    this.description = (description == null) ? "" : description;
+  }
+
+  @Override
+  public String toString() {
+    return "Group{id=%s, createdAt=%s, members=%s, name='%s', description='%s'}"
+        .formatted(id, createdAt, members, name, description);
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Group group)) {
+      return false;
+    }
+    return id.equals(group.id) && createdAt.equals(group.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + createdAt.hashCode();
+    return result;
   }
 }

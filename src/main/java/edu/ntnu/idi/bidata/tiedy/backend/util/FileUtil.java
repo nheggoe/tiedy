@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.backend.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -10,7 +9,7 @@ import java.util.logging.Logger;
  * specified file and its parent directories exist, creating them if necessary.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class FileUtil {
 
@@ -26,15 +25,11 @@ public class FileUtil {
    *     be null
    */
   public static void ensureFileAndDirectoryExists(File file) {
-    try {
-      if (file == null) {
-        throw new IllegalStateException("The file cannot be null");
-      }
-      createDirectory(file);
-      createFile(file);
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, () -> "Cannot create file: " + file);
+    if (file == null) {
+      throw new IllegalStateException("The file cannot be null");
     }
+    createDirectory(file);
+    createFile(file);
   }
 
   private static void createDirectory(File file) {
@@ -44,9 +39,13 @@ public class FileUtil {
     }
   }
 
-  private static void createFile(File file) throws IOException {
-    if (file.createNewFile()) {
-      LOGGER.info(() -> "Created file: " + file.getAbsolutePath());
+  private static void createFile(File file) {
+    try {
+      if (file.createNewFile()) {
+        LOGGER.info(() -> "Created file: " + file.getAbsolutePath());
+      }
+    } catch (IOException e) {
+      LOGGER.severe(() -> "Cannot create file: " + file);
     }
   }
 }

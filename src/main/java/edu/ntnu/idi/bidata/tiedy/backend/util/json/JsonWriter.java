@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -19,7 +20,7 @@ import java.util.stream.Stream;
  * individual objects directly.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class JsonWriter<T> {
 
@@ -52,11 +53,14 @@ public class JsonWriter<T> {
    * exists before writing the file.
    *
    * @param stream the list of objects to serialize and write into the JSON file; must not be null
-   * @throws IOException if an I/O error occurs during file creation or writing
    */
-  public void writeJsonFile(Stream<T> stream) throws IOException {
+  public void writeJsonFile(Stream<T> stream) {
     File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
     FileUtil.ensureFileAndDirectoryExists(file);
-    objectMapper.writeValue(file, stream.toList());
+    try {
+      objectMapper.writeValue(file, stream.collect(Collectors.toSet()));
+    } catch (IOException e) {
+      throw new JsonException("Could not write JSON file: " + file + "\n" + e.getMessage());
+    }
   }
 }

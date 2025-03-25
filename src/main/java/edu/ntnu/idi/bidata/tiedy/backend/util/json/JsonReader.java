@@ -1,14 +1,12 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import com.fasterxml.jackson.databind.MappingIterator;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
 import java.io.IOException;
-import java.util.Spliterator;
-import java.util.Spliterators;
+import java.util.Set;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Utility class for reading JSON files and deserializing their content into objects of a specified
@@ -22,7 +20,7 @@ import java.util.stream.StreamSupport;
  * JsonMapper} class for efficient JSON operations.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.25
  */
 public class JsonReader<T> {
 
@@ -57,10 +55,8 @@ public class JsonReader<T> {
    *
    * @return a stream of objects deserialized from the JSON file; an empty stream if the file is
    *     newly created
-   * @throws IOException if an I/O error occurs during directory creation, file creation, or reading
-   *     from the file
    */
-  public Stream<T> parseJsonStream() throws IOException {
+  public Stream<T> parseJsonStream() {
     File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
     FileUtil.ensureFileAndDirectoryExists(file);
 
@@ -68,10 +64,10 @@ public class JsonReader<T> {
       return Stream.empty();
     }
 
-    // List<T> listOfObject = objectMapper.readValue(file, new TypeReference<List<T>>() {});
-    // return listOfObject.stream();
-    MappingIterator<T> iterator = objectMapper.readerFor(targetClass).readValues(file);
-    return StreamSupport.stream(
-        Spliterators.spliteratorUnknownSize(iterator, Spliterator.ORDERED), false);
+    try {
+      return objectMapper.readValue(file, new TypeReference<Set<T>>() {}).stream();
+    } catch (IOException e) {
+      throw new JsonException("Could not parse JSON file: " + file + "\n" + e.getMessage());
+    }
   }
 }

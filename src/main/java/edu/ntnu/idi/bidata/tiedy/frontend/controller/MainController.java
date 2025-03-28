@@ -7,10 +7,11 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.List;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -59,6 +60,8 @@ public class MainController {
    */
   @FXML
   public void initialize() {
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
     var optionalUser = UserSession.getInstance().getCurrentUser();
     if (optionalUser.isEmpty()) {
       newTaskButton.setDisable(true);
@@ -84,7 +87,11 @@ public class MainController {
 
     allTasks.setOnAction(
         e -> {
-          var tasks = TiedyApp.getTaskJsonService().loadJsonAsStream().toList();
+          var tasks =
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(task -> task.getAssignedUsers().contains(user.getId()))
+                  .toList();
           updateFlowPane(tasks);
         });
     openTasks.setOnAction(
@@ -129,7 +136,7 @@ public class MainController {
         });
   }
 
-  private void updateFlowPane(List<Task> tasks) {
+  private void updateFlowPane(Collection<Task> tasks) {
     flowPane.getChildren().clear();
     tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
@@ -177,6 +184,7 @@ public class MainController {
 
     cardPane.getChildren().addAll(taskBg, rankText);
     cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
+    cardPane.setPadding(new Insets(5));
     return cardPane;
   }
 }

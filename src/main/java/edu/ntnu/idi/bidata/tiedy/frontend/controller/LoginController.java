@@ -10,7 +10,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -69,13 +68,14 @@ public class LoginController {
     try {
       StringChecker.assertValidString(username, "username");
       StringChecker.assertValidString(password, "password");
+
       User foundUser =
           TiedyApp.getUserJsonService()
               .loadJsonAsStream()
               .filter(user -> Objects.equals(user.getUsername(), username))
               .findFirst()
               .orElseThrow(
-                  () -> new IllegalStateException("User \"%s\" not found!".formatted(username)));
+                  () -> new IllegalArgumentException("User \"%s\" not found!".formatted(username)));
 
       boolean isCorrectPassword =
           PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
@@ -87,19 +87,21 @@ public class LoginController {
 
       if (isCorrectPassword) {
         UserSession.createSession(foundUser);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Login successful");
-        alert.setContentText("Login successful");
-        alert.showAndWait();
+
+        JavaFxFactory.generateInfoAlert(
+                "Login successful", "You are now logged in as %s".formatted(username))
+            .showAndWait();
+
         TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
       } else {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Incorrect password");
-        alert.setContentText("Incorrect password, please try again");
-        alert.showAndWait();
+        JavaFxFactory.generateInfoAlert(
+                "Incorrect password", "Incorrect password, please try again")
+            .showAndWait();
       }
-    } catch (IllegalArgumentException | IllegalStateException e) {
+    } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+    } catch (IllegalStateException e) {
+      JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
 }

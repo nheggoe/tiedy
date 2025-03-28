@@ -69,7 +69,7 @@ public class TaskController {
         userService.addItem(user);
         taskService.addItem(task);
 
-        JavaFxFactory.generateInfoAlert("Task added successfully").showAndWait();
+        JavaFxFactory.generateInfoAlert("Successs", "Task added successfully").showAndWait();
         TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
       } else {
         throw new IllegalArgumentException("Task could not be added");

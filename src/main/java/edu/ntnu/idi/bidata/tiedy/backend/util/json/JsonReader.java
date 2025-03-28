@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -16,15 +16,15 @@ import java.util.stream.Stream;
  * <p>The class ensures that the directory structure for the JSON file is created if it does not
  * already exist. If the specified JSON file does not exist, an empty list is returned.
  *
- * <p>This class leverages a shared instance of {@link ObjectMapper} provided by the {@link
- * JsonMapper} class for efficient JSON operations.
+ * <p>This class leverages a shared instance of {@link Gson} provided by the {@link CustomGson}
+ * class for efficient JSON operations.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class JsonReader<T> {
 
-  private final ObjectMapper objectMapper = JsonMapper.getInstance();
+  private final Gson gson = CustomGson.getInstance();
   private final Class<T> targetClass;
   private final boolean isTest;
 
@@ -34,6 +34,7 @@ public class JsonReader<T> {
    * determined dynamically based on the provided target class and whether the operation is
    * performed in a test or production environment.
    *
+   * @param targetClass the class of object that will be used to serialize
    * @param isTest a boolean flag indicating whether the JSON file should be located in the test
    *     environment (true) or the production environment (false)
    * @throws IllegalArgumentException if the targetClass parameter is null
@@ -64,8 +65,9 @@ public class JsonReader<T> {
       return Stream.empty();
     }
 
-    try {
-      return objectMapper.readValue(file, new TypeReference<Set<T>>() {}).stream();
+    try (FileReader reader = new FileReader(file)) {
+      Set<T> set = gson.fromJson(reader, JsonType.getType(targetClass));
+      return set.stream();
     } catch (IOException e) {
       throw new JsonException("Could not parse JSON file: " + file + "\n" + e.getMessage());
     }

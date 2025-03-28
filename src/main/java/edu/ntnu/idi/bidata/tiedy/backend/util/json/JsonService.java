@@ -1,6 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -12,7 +13,7 @@ import java.util.stream.Stream;
  * flag for distinguishing between test and production environments.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class JsonService<T> {
 
@@ -24,6 +25,8 @@ public class JsonService<T> {
    * This lightweight constructor only requires the target class type and defaults the environment
    * to production.
    *
+   * @throws UnsupportedOperationException if the {@link JsonType} does not contain the necessary
+   *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
   public JsonService(Class<T> targetClass) {
@@ -38,9 +41,14 @@ public class JsonService<T> {
    *
    * @param isTest a boolean flag indicating whether the operations should be performed in the test
    *     environment (true) or the production environment (false)
+   * @throws UnsupportedOperationException if the {@link JsonType} does not contain the necessary
+   *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
   public JsonService(Class<T> targetClas, boolean isTest) {
+    if (JsonType.getType(targetClas) == null) {
+      throw new UnsupportedOperationException("Unsupported target class type: " + targetClas);
+    }
     jsonReader = new JsonReader<>(targetClas, isTest);
     jsonWriter = new JsonWriter<>(targetClas, isTest);
   }
@@ -51,7 +59,7 @@ public class JsonService<T> {
    * environment. If the file does not exist, it is created and an empty list is returned. If the
    * file exists, the data in the file is deserialized into a list.
    *
-   * @return a list of objects deserialized from the JSON file, or an empty list if the file is
+   * @return a stream of objects deserialized from the JSON file, or an empty stream if the file is
    *     newly created
    */
   public Stream<T> loadJsonAsStream() {
@@ -59,17 +67,18 @@ public class JsonService<T> {
   }
 
   /**
-   * Writes a stream of objects to a JSON file. The file is created at a location dynamically
+   * Writes a set of objects to a JSON file. The file is created at a location dynamically
    * determined based on the target class type and whether the operation is performed in a test or
    * production environment. The method ensures that the directory structure exists before writing.
+   * It will update existing data if present
    *
-   * @param stream the list of objects to be written into the JSON file; must not be null
+   * @param set the set of objects to be written into the JSON file
    */
-  public void writeCollection(Stream<T> stream) {
-    try (Stream<T> existingData = loadJsonAsStream();
-        Stream<T> combinedStream = Stream.concat(existingData, stream)) {
-      jsonWriter.writeJsonFile(combinedStream);
-    }
+  public void writeCollection(Set<T> set) {
+    Set<T> existingData = loadJsonAsStream().collect(Collectors.toSet());
+    existingData.removeAll(set);
+    existingData.addAll(set);
+    jsonWriter.writeJsonFile(existingData);
   }
 
   /**
@@ -79,9 +88,8 @@ public class JsonService<T> {
    * production).
    *
    * @param item the object of the target type to be added to the JSON collection; must not be null
-   * @throws IOException if an I/O error occurs during the writing process
    */
-  public void addItem(T item) throws IOException {
-    writeCollection(Stream.of(item));
+  public void addItem(T item) {
+    writeCollection(Set.of(item));
   }
 }

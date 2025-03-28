@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.user;
 
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
+import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -9,7 +10,7 @@ import java.util.*;
  * The object that represents the customers of the application.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class User {
 
@@ -67,6 +68,8 @@ public class User {
 
   public User(String username, String password) {
     this();
+    setUsername(username);
+    setPassword(password);
   }
 
   public UUID getId() {
@@ -94,6 +97,8 @@ public class User {
   }
 
   public void setPassword(String password) {
+    PasswordUtil.validatePasswordStrength(password);
+    PasswordUtil.validatePasswordFormat(password);
     this.password = password;
   }
 

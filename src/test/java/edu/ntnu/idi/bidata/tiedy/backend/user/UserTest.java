@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 class UserTest {
 
   @Test
-
   void testUserWeakPassword() {
 
     assertThrows(IllegalArgumentException.class, () -> new User("user123", "weak"));

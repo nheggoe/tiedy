@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
@@ -17,7 +18,7 @@ class JsonServiceTest {
     User user1 = new User("User1", "strongPassword");
     var users =
         Stream.of(user1, new User("User2", "strongPassword"), new User("User3", "strongPassword"));
-    new JsonWriter<>(User.class, true).writeJsonFile(users);
+    new JsonWriter<>(User.class, true).writeJsonFile(users.collect(Collectors.toSet()));
   }
 
   @Test
@@ -42,7 +43,7 @@ class JsonServiceTest {
     task2.addAssignedUser(user);
 
     var tasks = Stream.of(task1, task2);
-    taskService.writeCollection(tasks);
+    taskService.writeCollection(tasks.collect(Collectors.toSet()));
     System.out.println(taskService.loadJsonAsStream().toList());
     assertFalse(
         taskService

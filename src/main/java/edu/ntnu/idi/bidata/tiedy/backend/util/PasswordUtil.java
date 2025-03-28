@@ -55,7 +55,7 @@ public class PasswordUtil {
    * @throws IllegalArgumentException if the password is null, blank or contains invalid special
    *     characters
    */
-  private void validatePasswordFormat(String plainTextPassword) {
+  public static void validatePasswordFormat(String plainTextPassword) {
     String invalidChars = "(){}[]|`¬¦!'£%^&*\"<>:;#~\\_-+=,@ \t";
     if (plainTextPassword == null || plainTextPassword.isBlank()) {
       throw new IllegalArgumentException("Password cannot be blank!");
@@ -76,7 +76,7 @@ public class PasswordUtil {
    * @throws IllegalArgumentException if the password is null, blank, shorter than 8 characters or
    *     does not contain at least one lowercase letter
    */
-  private void validatePasswordStrength(String plainTextPassword) {
+  public static void validatePasswordStrength(String plainTextPassword) {
     if (plainTextPassword == null || plainTextPassword.isBlank()) {
       throw new IllegalArgumentException("Password cannot be blank!");
     }

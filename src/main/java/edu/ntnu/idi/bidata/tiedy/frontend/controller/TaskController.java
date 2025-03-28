@@ -22,7 +22,7 @@ import javafx.scene.control.TextField;
  * on JavaFX components for user interface interactions.
  *
  * @author Nick Heggø
- * @version 2025.03.24
+ * @version 2025.03.28
  */
 public class TaskController {
 
@@ -59,7 +59,8 @@ public class TaskController {
       boolean success = (task != null);
       if (success) {
         User user = UserSession.getInstance().getCurrentUser().get();
-        // taskService.();
+        user.addTaskDefaultSet(task);
+        taskService.addItem(task);
 
         JavaFxFactory.generateInfoAlert("Task added successfully").showAndWait();
         TiedyApp.getSceneManager().switchScene(SceneName.MAIN);

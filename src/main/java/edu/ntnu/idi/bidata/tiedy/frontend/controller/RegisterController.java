@@ -1,11 +1,11 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
-import java.io.IOException;
-import java.util.logging.Level;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -17,7 +17,7 @@ import javafx.scene.control.TextField;
  * This class manages the user input fields and performs validation during the registration process.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class RegisterController {
 
@@ -43,7 +43,7 @@ public class RegisterController {
       boolean isUserNameTaken =
           TiedyApp.getUserJsonService()
               .loadJsonAsStream()
-              .anyMatch(user -> user.getUsername().equals(username));
+              .anyMatch(user -> Objects.equals(user.getUsername(), username));
       if (isUserNameTaken) {
         throw new IllegalArgumentException("Username already taken");
       }
@@ -53,17 +53,13 @@ public class RegisterController {
       alert.setContentText("Registration successful");
       alert.showAndWait();
       new JsonService<>(User.class).addItem(user);
+      System.out.println("Added user: " + user.getUsername());
+      System.out.println("Added user: " + user.getPassword());
       backToLogin();
     } catch (IllegalArgumentException e) {
       Alert alert = new Alert(Alert.AlertType.WARNING);
       alert.setTitle("Warning");
       alert.setContentText(e.getMessage());
-      alert.show();
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, "Cannot save user", e);
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setContentText("Error while saving user");
       alert.show();
     }
   }
@@ -93,6 +89,8 @@ public class RegisterController {
     if (!password.equals(passwordRepeat)) {
       throw new IllegalArgumentException("Passwords do not match");
     }
-    return new User(username, password);
+    System.out.println("username at validateAndCreateUser: " + username);
+    System.out.println("password at validateAndCreateUser: " + password);
+    return new User(username, PasswordUtil.hashPassword(password));
   }
 }

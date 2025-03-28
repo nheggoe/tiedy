@@ -32,7 +32,7 @@ public class TaskBuilder {
    * @throws IllegalArgumentException if the title is null or blank
    */
   public TaskBuilder title(String title) {
-    task.setTitle(title.strip());
+    task.setTitle(title);
     return this;
   }
 

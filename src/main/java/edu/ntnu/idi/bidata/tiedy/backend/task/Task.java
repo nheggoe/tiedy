@@ -74,7 +74,7 @@ public class Task {
     if (title == null || title.isBlank()) {
       throw new IllegalArgumentException("Task title cannot be blank!");
     }
-    this.title = title;
+    this.title = title.strip();
   }
 
   public String getDescription() {
@@ -82,7 +82,7 @@ public class Task {
   }
 
   public void setDescription(String description) {
-    this.description = (description == null) ? "" : description;
+    this.description = (description == null) ? "" : description.strip();
   }
 
   public LocalDate getDeadline() {

@@ -46,6 +46,9 @@ public class Task {
   // ------------------------   Public Interface  ------------------------
 
   public void addAssignedUser(User user) {
+    if (user == null) {
+      throw new IllegalArgumentException("User cannot be null!");
+    }
     assignedUsers.add(user.getId());
   }
 
@@ -88,7 +91,7 @@ public class Task {
 
   public void setDeadline(LocalDate deadline) {
     if (deadline == null) {
-      throw new NullPointerException("Deadline cannot be null!");
+      throw new IllegalArgumentException("Deadline cannot be null!");
     }
     this.deadline = deadline;
   }
@@ -99,7 +102,7 @@ public class Task {
 
   public void setStatus(Status status) {
     if (status == null) {
-      throw new NullPointerException("Status cannot be null!");
+      throw new IllegalArgumentException("Status cannot be null!");
     }
     this.status = status;
   }
@@ -110,7 +113,7 @@ public class Task {
 
   public void setPriority(Priority priority) {
     if (priority == null) {
-      throw new NullPointerException("Priority cannot be null!");
+      throw new IllegalArgumentException("Priority cannot be null!");
     }
     this.priority = priority;
   }

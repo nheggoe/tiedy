@@ -29,7 +29,7 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class MainController {
 
@@ -70,13 +70,18 @@ public class MainController {
       var tasks = TiedyApp.getTaskJsonService().loadJsonAsStream().toList();
       LOGGER.log(
           Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
-      tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
+
+      tasks.stream()
+          .filter(task -> task.getAssignedUsers().contains(user.getId()))
+          .map(this::createTaskPane)
+          .forEach(flowPane.getChildren()::add);
     }
 
     User user =
         UserSession.getInstance()
             .getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
+
     allTasks.setOnAction(
         e -> {
           var tasks = TiedyApp.getTaskJsonService().loadJsonAsStream().toList();

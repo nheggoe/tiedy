@@ -31,7 +31,8 @@ public class User {
 
   private User(UUID id, LocalDateTime createdAt, Map<String, Set<UUID>> taskMap) {
     if (id == null || createdAt == null || taskMap == null) {
-      throw new NullPointerException("User ID, creation time, and task lists map cannot be null");
+      throw new IllegalArgumentException(
+          "User ID, creation time, and task lists map cannot be null");
     }
     this.id = id;
     this.createdAt = createdAt;

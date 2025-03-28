@@ -26,6 +26,7 @@ import javafx.scene.control.TextField;
  */
 public class TaskController {
 
+  private final JsonService<User> userService = new JsonService<>(User.class);
   private final JsonService<Task> taskService = new JsonService<>(Task.class);
 
   @FXML private TextField taskName;
@@ -58,8 +59,14 @@ public class TaskController {
               .build();
       boolean success = (task != null);
       if (success) {
-        User user = UserSession.getInstance().getCurrentUser().get();
+        User user =
+            UserSession.getInstance()
+                .getCurrentUser()
+                .orElseThrow(() -> new IllegalStateException("No user is logged in"));
+        task.addAssignedUser(user);
         user.addTaskDefaultSet(task);
+
+        userService.addItem(user);
         taskService.addItem(task);
 
         JavaFxFactory.generateInfoAlert("Task added successfully").showAndWait();

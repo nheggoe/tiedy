@@ -10,7 +10,7 @@ import java.util.UUID;
  * family members within the group.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class Group {
 
@@ -29,7 +29,7 @@ public class Group {
 
   private Group(UUID id, LocalDateTime createdAt, Map<UUID, Boolean> members) {
     if (id == null || createdAt == null || members == null) {
-      throw new NullPointerException("Group ID, creation time, and members map cannot be null");
+      throw new IllegalArgumentException("Group ID, creation time, and members map cannot be null");
     }
     this.id = id;
     this.createdAt = createdAt;

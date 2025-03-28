@@ -5,6 +5,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -53,14 +54,9 @@ public class RegisterController {
       alert.setContentText("Registration successful");
       alert.showAndWait();
       new JsonService<>(User.class).addItem(user);
-      System.out.println("Added user: " + user.getUsername());
-      System.out.println("Added user: " + user.getPassword());
       backToLogin();
     } catch (IllegalArgumentException e) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setContentText(e.getMessage());
-      alert.show();
+      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 
@@ -77,20 +73,22 @@ public class RegisterController {
   }
 
   private User validateAndCreateUser(String username) {
-    String password = passwordField.getText();
-    String passwordRepeat = passwordRepeatField.getText();
+    String password = passwordField.getText().strip();
+    String passwordRepeat = passwordRepeatField.getText().strip();
 
-    if (password == null || password.isBlank()) {
+    if (password.isBlank()) {
       throw new IllegalArgumentException("Password cannot be empty");
     }
-    if (passwordRepeat == null || passwordRepeat.isBlank()) {
+    if (passwordRepeat.isBlank()) {
       throw new IllegalArgumentException("Password repeat cannot be empty");
     }
+
+    PasswordUtil.validatePasswordStrength(password);
+    PasswordUtil.validatePasswordFormat(password);
+
     if (!password.equals(passwordRepeat)) {
       throw new IllegalArgumentException("Passwords do not match");
     }
-    System.out.println("username at validateAndCreateUser: " + username);
-    System.out.println("password at validateAndCreateUser: " + password);
     return new User(username, PasswordUtil.hashPassword(password));
   }
 }

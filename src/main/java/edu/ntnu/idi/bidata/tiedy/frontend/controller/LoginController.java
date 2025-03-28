@@ -7,6 +7,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -24,7 +25,7 @@ import javafx.scene.control.TextField;
  * password fields.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class LoginController {
   private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
@@ -40,8 +41,8 @@ public class LoginController {
   @FXML
   public void loginUser() {
     try {
-      String username = usernameField.getText();
-      String password = passwordField.getText();
+      String username = usernameField.getText().strip();
+      String password = passwordField.getText().strip();
 
       validateCredential(username, password);
     } catch (IllegalArgumentException e) {
@@ -65,35 +66,40 @@ public class LoginController {
   }
 
   private void validateCredential(String username, String password) {
-    StringChecker.assertValidString(username, "username");
-    StringChecker.assertValidString(password, "password");
-    User foundUser =
-        TiedyApp.getUserJsonService()
-            .loadJsonAsStream()
-            .filter(user -> user.getUsername().equals(username))
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("User not found: " + username));
+    try {
+      StringChecker.assertValidString(username, "username");
+      StringChecker.assertValidString(password, "password");
+      User foundUser =
+          TiedyApp.getUserJsonService()
+              .loadJsonAsStream()
+              .filter(user -> Objects.equals(user.getUsername(), username))
+              .findFirst()
+              .orElseThrow(
+                  () -> new IllegalStateException("User \"%s\" not found!".formatted(username)));
 
-    boolean isCorrectPassword =
-        PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
+      boolean isCorrectPassword =
+          PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
 
-    LOGGER.info(() -> "Checking password for user " + foundUser.getUsername());
-    LOGGER.info(() -> "Provided password: " + password);
-    LOGGER.info(() -> "Stored password: " + foundUser.getPassword());
-    LOGGER.info(() -> "Password check result: " + isCorrectPassword);
+      LOGGER.info(() -> "Checking password for user " + foundUser.getUsername());
+      LOGGER.info(() -> "Provided password: " + password);
+      LOGGER.info(() -> "Stored password: " + foundUser.getPassword());
+      LOGGER.info(() -> "Password check result: " + isCorrectPassword);
 
-    if (isCorrectPassword) {
-      UserSession.createSession(foundUser);
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Login successful");
-      alert.setContentText("Login successful");
-      alert.showAndWait();
-      TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
-    } else {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Incorrect password");
-      alert.setContentText("Incorrect password, please try again");
-      alert.showAndWait();
+      if (isCorrectPassword) {
+        UserSession.createSession(foundUser);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Login successful");
+        alert.setContentText("Login successful");
+        alert.showAndWait();
+        TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
+      } else {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Incorrect password");
+        alert.setContentText("Incorrect password, please try again");
+        alert.showAndWait();
+      }
+    } catch (IllegalArgumentException | IllegalStateException e) {
+      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 }

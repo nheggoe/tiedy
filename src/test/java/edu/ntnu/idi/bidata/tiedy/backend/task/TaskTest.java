@@ -37,7 +37,7 @@ class TaskTest {
   void testAddNullUser() {
     Task task = new Task();
 
-    assertThrows(NullPointerException.class, () -> task.addAssignedUser(null));
+    assertThrows(IllegalArgumentException.class, () -> task.addAssignedUser(null));
     assertEquals(0, task.getAssignedUsers().size());
   }
 

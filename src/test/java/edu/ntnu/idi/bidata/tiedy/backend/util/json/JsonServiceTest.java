@@ -3,57 +3,45 @@ package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 import static org.junit.jupiter.api.Assertions.*;
 
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
+import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
+import java.util.HashSet;
+import java.util.Set;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class JsonServiceTest {
 
-  @BeforeAll
-  static void setUp() {
-    User user1 = new User("User1", "strongPassword");
-    var users =
-        Stream.of(user1, new User("User2", "strongPassword"), new User("User3", "strongPassword"));
-    new JsonWriter<>(User.class, true).writeJsonFile(users.collect(Collectors.toSet()));
+  @BeforeEach
+  void cleanUpTestFiles() {
+    var userJsonFile = JsonPathUtil.generateJsonPath(User.class, true).toFile();
+    var taskJsonFile = JsonPathUtil.generateJsonPath(Task.class, true).toFile();
+    FileUtil.ensureFileAndDirectoryExists(userJsonFile);
+    FileUtil.ensureFileAndDirectoryExists(taskJsonFile);
+    new JsonWriter<>(User.class, true).writeJsonFile(new HashSet<>()); // Clear user data.
+    new JsonWriter<>(Task.class, true).writeJsonFile(new HashSet<>()); // Clear task data.
   }
 
   @Test
-  void testReadPlayers() {
+  void testLoadJsonFromEmptySource() {
+    var testUserService = new JsonService<>(User.class, true);
+    assertTrue(
+        testUserService.loadJsonAsStream().toList().isEmpty(),
+        "Stream should be empty for no JSON data");
+  }
+
+  @Test
+  void testLoadJsonWithSpecificData() {
     var testUserService = new JsonService<>(User.class, true);
 
-    assertTrue(testUserService.loadJsonAsStream().findAny().isPresent());
-    assertEquals(3, testUserService.loadJsonAsStream().count());
-  }
+    var user1 = new User("JohnDoe", "securePassword123");
+    var user2 = new User("JaneDoe", "securePassword456");
+    Set<User> users = Set.of(user1, user2);
+    new JsonWriter<>(User.class, true).writeJsonFile(users);
 
-  @Test
-  @Disabled("Work in progress") // TODO
-  void testWriteTaskToJson() {
-    var taskService = new JsonService<>(Task.class, true);
-    var taskBuilder = new TaskBuilder();
+    var loadedUsers = testUserService.loadJsonAsStream().toList();
 
-    var task1 = taskBuilder.title("test task 1").description("task1 description").build();
-    var task2 = taskBuilder.title("test task 2").description("task2 description").build();
-
-    User user = new User("Test", "123123123u23");
-    task1.addAssignedUser(user);
-    task2.addAssignedUser(user);
-
-    var tasks = Stream.of(task1, task2);
-    taskService.writeCollection(tasks.collect(Collectors.toSet()));
-    System.out.println(taskService.loadJsonAsStream().toList());
-    assertFalse(
-        taskService
-            .loadJsonAsStream()
-            .filter(task -> task.getId().equals(task1.getId()))
-            .findFirst()
-            .isEmpty());
-    assertTrue(
-        taskService
-            .loadJsonAsStream()
-            .anyMatch(task -> task.getAssignedUsers().contains(user.getId())));
+    assertTrue(loadedUsers.contains(user1), "Loaded data should contain JohnDoe");
+    assertTrue(loadedUsers.contains(user2), "Loaded data should contain JaneDoe");
   }
 }

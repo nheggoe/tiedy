@@ -9,7 +9,7 @@ import java.time.LocalDate;
  * before it can be retrieved.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class TaskBuilder {
 
@@ -32,7 +32,7 @@ public class TaskBuilder {
    * @throws IllegalArgumentException if the title is null or blank
    */
   public TaskBuilder title(String title) {
-    task.setTitle(title);
+    task.setTitle(title.strip());
     return this;
   }
 

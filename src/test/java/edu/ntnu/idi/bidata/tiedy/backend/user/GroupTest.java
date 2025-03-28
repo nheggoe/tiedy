@@ -2,13 +2,15 @@ package edu.ntnu.idi.bidata.tiedy.backend.user;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import org.junit.jupiter.api.Test;
+
 class GroupTest {
 
-  // private final User user1 = new User("John Doe", PasswordUtil.hashPassword("safe"));
-  // private final User user2 = new User("Jane Smith", PasswordUtil.hashPassword("safe"));
-  // private final User user3 = new User("Alex Johnson", PasswordUtil.hashPassword("safe"));
-  // private final User user4 = new User("Emily Davis", PasswordUtil.hashPassword("safe"));
-  // private final User user5 = new User("Michael Brown", PasswordUtil.hashPassword("safe"));
+  @Test
+  void testGetName() {
+    User user = new User("John Doe", "safePassword");
+    Group group = new Group("Test Group", "This is a test group", user);
 
-  // TODO implement tests for Group
+    assertEquals("Test Group", group.getName());
+  }
 }

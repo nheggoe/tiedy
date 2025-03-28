@@ -12,7 +12,7 @@ import java.util.UUID;
  * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
- * @version 2025.03.25
+ * @version 2025.03.28
  */
 public class Task {
 
@@ -43,16 +43,6 @@ public class Task {
     this.priority = Priority.NONE;
   }
 
-  private Task(UUID id, LocalDateTime createdAt, Set<UUID> assignedUsers) {
-    if (id == null || createdAt == null || assignedUsers == null) {
-      throw new NullPointerException(
-          "Task ID, creation time, and assigned users set cannot be null");
-    }
-    this.id = id;
-    this.createdAt = createdAt;
-    this.assignedUsers = assignedUsers;
-  }
-
   // ------------------------   Public Interface  ------------------------
 
   public void addAssignedUser(User user) {
@@ -78,6 +68,9 @@ public class Task {
   }
 
   public void setTitle(String title) {
+    if (title == null || title.isBlank()) {
+      throw new IllegalArgumentException("Task title cannot be blank!");
+    }
     this.title = title;
   }
 
@@ -86,7 +79,7 @@ public class Task {
   }
 
   public void setDescription(String description) {
-    this.description = description;
+    this.description = (description == null) ? "" : description;
   }
 
   public LocalDate getDeadline() {
@@ -94,6 +87,9 @@ public class Task {
   }
 
   public void setDeadline(LocalDate deadline) {
+    if (deadline == null) {
+      throw new NullPointerException("Deadline cannot be null!");
+    }
     this.deadline = deadline;
   }
 
@@ -102,6 +98,9 @@ public class Task {
   }
 
   public void setStatus(Status status) {
+    if (status == null) {
+      throw new NullPointerException("Status cannot be null!");
+    }
     this.status = status;
   }
 
@@ -110,6 +109,9 @@ public class Task {
   }
 
   public void setPriority(Priority priority) {
+    if (priority == null) {
+      throw new NullPointerException("Priority cannot be null!");
+    }
     this.priority = priority;
   }
 

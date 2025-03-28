@@ -7,7 +7,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.util;
  * <p>This class is not intended to be instantiated.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.28
  */
 public class MapUtil {
 
@@ -25,6 +25,6 @@ public class MapUtil {
     if (mapName == null || mapName.isEmpty()) {
       throw new IllegalArgumentException("Key cannot be null or empty");
     }
-    return mapName.toLowerCase().replaceAll("\\s+", "_");
+    return mapName.strip().toLowerCase().replaceAll("\\s+", "_");
   }
 }

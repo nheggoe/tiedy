@@ -1,30 +1,31 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.util.stream.Stream;
+import java.util.Set;
 
 /**
  * Utility class for writing collections of objects to JSON files. The JSON files are created
  * dynamically based on the provided target class type, and their location is determined by whether
  * the class is in a test or production environment.
  *
- * <p>The class relies on a shared instance of {@link ObjectMapper} from the {@link JsonMapper}
- * class for efficient serialization operations. It creates the necessary directory structure before
- * writing the data if it does not already exist.
+ * <p>The class relies on a shared instance of {@link Gson} from the {@link CustomGson} class for
+ * efficient serialization operations. It creates the necessary directory structure before writing
+ * the data if it does not already exist.
  *
  * <p>This class is designed for use with collections of objects and does not support writing
  * individual objects directly.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.28
  */
-public class JsonWriter {
+public class JsonWriter<T> {
 
-  private final ObjectMapper objectMapper = JsonMapper.getInstance();
-  private Class<?> targetClass;
+  private final Gson gson = CustomGson.getInstance();
+  private final Class<T> targetClass;
   private final boolean isTest;
 
   /**
@@ -32,37 +33,37 @@ public class JsonWriter {
    * JSON file. The file location is determined dynamically based on the provided target class type
    * and whether the operation is in a test or production environment.
    *
-   * @param <T> the type of the objects that will be serialized
    * @param targetClass the class type of the objects to be serialized; must not be null
    * @param isTest a boolean flag indicating whether the JSON file should be created in the test
    *     environment (true) or the production environment (false)
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public <T> JsonWriter(Class<T> targetClass, boolean isTest) {
-    setTargetClass(targetClass);
-    this.isTest = isTest;
-  }
-
-  /**
-   * Serializes the provided stream of objects into a JSON file. The JSON file is created at a
-   * location determined based on the target class type and whether the operation is performed in a
-   * test or production environment. The method ensures that the necessary directory structure
-   * exists before writing the file.
-   *
-   * @param <T> the type of elements in the stream to be serialized
-   * @param stream the list of objects to serialize and write into the JSON file; must not be null
-   * @throws IOException if an I/O error occurs during file creation or writing
-   */
-  public <T> void writeJsonFile(Stream<T> stream) throws IOException {
-    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
-    FileUtil.ensureFileAndDirectoryExists(file);
-    objectMapper.writeValue(file, stream.toList());
-  }
-
-  private void setTargetClass(Class<?> targetClass) {
+  public JsonWriter(Class<T> targetClass, boolean isTest) {
     if (targetClass == null) {
       throw new IllegalArgumentException("Target class must not be null");
     }
     this.targetClass = targetClass;
+    this.isTest = isTest;
+  }
+
+  /**
+   * Serializes the provided set of objects into a JSON file. The JSON file is created at a location
+   * determined based on the target class type and whether the operation is performed in a test or
+   * production environment. The method ensures that the necessary directory structure exists before
+   * writing the file.
+   *
+   * @param set the set of objects to serialize and write into the JSON file
+   */
+  public void writeJsonFile(Set<T> set) {
+    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
+    FileUtil.ensureFileAndDirectoryExists(file);
+
+    String json = gson.toJson(set, JsonType.getType(targetClass));
+
+    try (FileWriter writer = new FileWriter(file)) {
+      writer.write(json);
+    } catch (IOException e) {
+      throw new JsonException("Could not write JSON file: " + file + "\n" + e.getMessage());
+    }
   }
 }

@@ -18,6 +18,13 @@ cache:
 before_script:
   - mkdir -p .m2/repository  # Ensure the directory exists
 
+# Global rules to apply to all jobs
+workflow:
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")
+      when: always
+    - when: never  # Skip all other cases
+
 compile-job:
   stage: compile
   script:

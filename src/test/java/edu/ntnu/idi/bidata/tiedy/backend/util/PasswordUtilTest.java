@@ -74,7 +74,7 @@ class PasswordUtilTest {
   @Test
   void testUserRegisterProcess() {
     String plainTextPassword = "strongPassword";
-    User testUser = new User("testUser123", plainTextPassword);
+    User testUser = new User("testUser123", PasswordUtil.hashPassword(plainTextPassword));
     assertTrue(PasswordUtil.checkPassword(plainTextPassword, testUser.getPassword()));
   }
 }

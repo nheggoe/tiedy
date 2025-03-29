@@ -7,10 +7,11 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.List;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
@@ -29,7 +30,7 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.28
  */
 public class MainController {
 
@@ -59,6 +60,8 @@ public class MainController {
    */
   @FXML
   public void initialize() {
+    flowPane.setHgap(10);
+    flowPane.setVgap(10);
     var optionalUser = UserSession.getInstance().getCurrentUser();
     if (optionalUser.isEmpty()) {
       newTaskButton.setDisable(true);
@@ -67,22 +70,36 @@ public class MainController {
     } else {
       User user = optionalUser.get();
       flowPane.getChildren().clear();
-      List<Task> tasks = user.getTaskLists("reminders");
+      var tasks = TiedyApp.getTaskJsonService().loadJsonAsStream().toList();
       LOGGER.log(
           Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
-      tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
+
+      tasks.stream()
+          .filter(task -> task.getAssignedUsers().contains(user.getId()))
+          .map(this::createTaskPane)
+          .forEach(flowPane.getChildren()::add);
     }
 
-    User user = UserSession.getInstance().getCurrentUser().get();
+    User user =
+        UserSession.getInstance()
+            .getCurrentUser()
+            .orElseThrow(() -> new IllegalStateException("No user logged in"));
+
     allTasks.setOnAction(
         e -> {
-          var tasks = user.getTaskLists("reminders");
+          var tasks =
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(task -> task.getAssignedUsers().contains(user.getId()))
+                  .toList();
           updateFlowPane(tasks);
         });
     openTasks.setOnAction(
         e -> {
           var tasks =
-              user.getTaskLists("reminders").stream()
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
                   .filter(t -> t.getStatus() == Status.OPEN)
                   .toList();
           updateFlowPane(tasks);
@@ -90,7 +107,9 @@ public class MainController {
     inProgressTasks.setOnAction(
         e -> {
           var tasks =
-              user.getTaskLists("reminders").stream()
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
                   .filter(t -> t.getStatus() == Status.IN_PROGRESS)
                   .toList();
           updateFlowPane(tasks);
@@ -98,7 +117,9 @@ public class MainController {
     closedTasks.setOnAction(
         e -> {
           var tasks =
-              user.getTaskLists("reminders").stream()
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
                   .filter(t -> t.getStatus() == Status.CLOSED)
                   .toList();
           updateFlowPane(tasks);
@@ -106,14 +127,16 @@ public class MainController {
     postponedTasks.setOnAction(
         e -> {
           var tasks =
-              user.getTaskLists("reminders").stream()
+              TiedyApp.getTaskJsonService()
+                  .loadJsonAsStream()
+                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
                   .filter(t -> t.getStatus() == Status.POSTPONED)
                   .toList();
           updateFlowPane(tasks);
         });
   }
 
-  private void updateFlowPane(List<Task> tasks) {
+  private void updateFlowPane(Collection<Task> tasks) {
     flowPane.getChildren().clear();
     tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
@@ -161,6 +184,7 @@ public class MainController {
 
     cardPane.getChildren().addAll(taskBg, rankText);
     cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
+    cardPane.setPadding(new Insets(5));
     return cardPane;
   }
 }

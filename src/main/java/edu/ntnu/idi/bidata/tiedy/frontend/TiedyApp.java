@@ -1,5 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.frontend;
 
+import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import javafx.application.Application;
@@ -12,11 +15,13 @@ import javafx.stage.Stage;
  * class from the JavaFX framework, providing the necessary lifecycle methods such as start.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.25
  */
 public class TiedyApp extends Application {
 
   private static SceneManager sceneManager;
+  private static final JsonService<User> USER_JSON_SERVICE = new JsonService<>(User.class);
+  private static final JsonService<Task> TASK_JSON_SERVICE = new JsonService<>(Task.class);
 
   /**
    * The main entry point for the JavaFX application. This method launches the JavaFX runtime and
@@ -36,6 +41,14 @@ public class TiedyApp extends Application {
    */
   public static SceneManager getSceneManager() {
     return sceneManager;
+  }
+
+  public static JsonService<User> getUserJsonService() {
+    return USER_JSON_SERVICE;
+  }
+
+  public static JsonService<Task> getTaskJsonService() {
+    return TASK_JSON_SERVICE;
   }
 
   @Override

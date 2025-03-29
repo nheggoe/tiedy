@@ -9,7 +9,7 @@ import java.util.logging.Logger;
  * specified file and its parent directories exist, creating them if necessary.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.03.25
  */
 public class FileUtil {
 
@@ -23,23 +23,29 @@ public class FileUtil {
    *
    * @param file the file whose existence (and its parent directories) should be ensured; must not
    *     be null
-   * @throws IOException if an error occurs during the creation of the file or directories
    */
-  public static void ensureFileAndDirectoryExists(File file) throws IOException {
+  public static void ensureFileAndDirectoryExists(File file) {
+    if (file == null) {
+      throw new IllegalStateException("The file cannot be null");
+    }
     createDirectory(file);
     createFile(file);
   }
 
   private static void createDirectory(File file) {
     File parentDir = file.getParentFile();
-    if (parentDir.mkdirs()) {
-      LOGGER.info("Created directory: " + parentDir.getAbsolutePath());
+    if (parentDir != null && parentDir.mkdirs()) {
+      LOGGER.info(() -> "Created directory: " + parentDir.getAbsolutePath());
     }
   }
 
-  private static void createFile(File file) throws IOException {
-    if (file.createNewFile()) {
-      LOGGER.info("Created file: " + file.getAbsolutePath());
+  private static void createFile(File file) {
+    try {
+      if (file.createNewFile()) {
+        LOGGER.info(() -> "Created file: " + file.getAbsolutePath());
+      }
+    } catch (IOException e) {
+      LOGGER.severe(() -> "Cannot create file: " + file);
     }
   }
 }

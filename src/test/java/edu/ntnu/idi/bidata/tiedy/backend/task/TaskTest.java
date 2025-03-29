@@ -2,23 +2,68 @@ package edu.ntnu.idi.bidata.tiedy.backend.task;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.time.LocalDateTime;
-import org.junit.jupiter.api.BeforeEach;
+import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import java.util.Set;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 
 class TaskTest {
 
-  private Task task;
+  @Test
+  void testAddAssignedUser() {
+    Task task = new Task();
+    User user = new User("testUser", "StrongPass123");
 
-  @BeforeEach
-  void setUp() {
-    task = new Task("test task", "This is a test task");
+    task.addAssignedUser(user);
+
+    assertTrue(task.getAssignedUsers().contains(user.getId()));
+    assertEquals(1, task.getAssignedUsers().size());
   }
 
   @Test
-  void testDefaultTaskValue() {
-    assertEquals(Priority.NONE, task.getPriority());
-    assertEquals(Status.OPEN, task.getStatus());
-    assertTrue(task.getCreatedAt().isBefore(LocalDateTime.now()));
+  void testAddDuplicateUser() {
+    Task task = new Task();
+    User user = new User("testUser", "StrongPass123");
+
+    task.addAssignedUser(user);
+    task.addAssignedUser(user);
+
+    assertEquals(1, task.getAssignedUsers().size());
+    Set<UUID> assignedUserIds = task.getAssignedUsers();
+    assertTrue(assignedUserIds.contains(user.getId()));
+  }
+
+  @Test
+  void testAddNullUser() {
+    Task task = new Task();
+
+    assertThrows(IllegalArgumentException.class, () -> task.addAssignedUser(null));
+    assertEquals(0, task.getAssignedUsers().size());
+  }
+
+  @Test
+  void testAddUserWithSameUUID() {
+    Task task = new Task();
+    UUID sharedId = UUID.randomUUID();
+    User user1 =
+        new User("testUser1", "StrongPass123") {
+          @Override
+          public UUID getId() {
+            return sharedId;
+          }
+        };
+    User user2 =
+        new User("testUser2", "StrongPass123") {
+          @Override
+          public UUID getId() {
+            return sharedId;
+          }
+        };
+
+    task.addAssignedUser(user1);
+    task.addAssignedUser(user2);
+
+    assertEquals(1, task.getAssignedUsers().size());
+    assertTrue(task.getAssignedUsers().contains(sharedId));
   }
 }

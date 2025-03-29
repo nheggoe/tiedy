@@ -1,13 +1,13 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
-import java.io.IOException;
-import java.util.logging.Level;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import java.util.Objects;
 import java.util.logging.Logger;
-import java.util.stream.Stream;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
@@ -18,11 +18,11 @@ import javafx.scene.control.TextField;
  * This class manages the user input fields and performs validation during the registration process.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.28
  */
 public class RegisterController {
+
   private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
-  private final JsonService userService = new JsonService(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -41,30 +41,22 @@ public class RegisterController {
       if (username == null || username.isBlank()) {
         throw new IllegalArgumentException("Username cannot be empty");
       }
-      Stream<User> userStream = userService.loadJsonAsStream();
-      boolean isUserNameTaken = userStream.anyMatch(user -> user.getUsername().equals(username));
+      boolean isUserNameTaken =
+          TiedyApp.getUserJsonService()
+              .loadJsonAsStream()
+              .anyMatch(user -> Objects.equals(user.getUsername(), username));
       if (isUserNameTaken) {
         throw new IllegalArgumentException("Username already taken");
       }
-      User user = getUser(username);
+      User user = validateAndCreateUser(username);
       Alert alert = new Alert(Alert.AlertType.INFORMATION);
       alert.setTitle("Registration successful");
       alert.setContentText("Registration successful");
       alert.showAndWait();
-      Stream<User> updatedStream = Stream.concat(userService.loadJsonAsStream(), Stream.of(user));
-      new JsonService(User.class).writeCollection(updatedStream);
+      new JsonService<>(User.class).addItem(user);
       backToLogin();
     } catch (IllegalArgumentException e) {
-      Alert alert = new Alert(Alert.AlertType.WARNING);
-      alert.setTitle("Warning");
-      alert.setContentText(e.getMessage());
-      alert.show();
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, "Cannot save user", e);
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setContentText("Error while saving user");
-      alert.show();
+      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 
@@ -80,19 +72,23 @@ public class RegisterController {
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
   }
 
-  private User getUser(String username) {
-    String password = passwordField.getText();
-    String passwordRepeat = passwordRepeatField.getText();
+  private User validateAndCreateUser(String username) {
+    String password = passwordField.getText().strip();
+    String passwordRepeat = passwordRepeatField.getText().strip();
 
-    if (password == null || password.isBlank()) {
+    if (password.isBlank()) {
       throw new IllegalArgumentException("Password cannot be empty");
     }
-    if (passwordRepeat == null || passwordRepeat.isBlank()) {
+    if (passwordRepeat.isBlank()) {
       throw new IllegalArgumentException("Password repeat cannot be empty");
     }
+
+    PasswordUtil.validatePasswordStrength(password);
+    PasswordUtil.validatePasswordFormat(password);
+
     if (!password.equals(passwordRepeat)) {
       throw new IllegalArgumentException("Passwords do not match");
     }
-    return new User(username, password);
+    return new User(username, PasswordUtil.hashPassword(password));
   }
 }

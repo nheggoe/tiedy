@@ -11,10 +11,11 @@ import javafx.scene.control.Label;
  * The ProfileController class controls the PROFILE scene. This scene is used to view information
  * about the current profile.
  *
- * @author Odin Arvhage
- * @version 20.03.2025
+ * @author Odin Arvhage and Nick Heggø
+ * @version 2025.03.25
  */
 public class ProfileController {
+
   @FXML private Label nameLabel;
   @FXML private Label tasksLabel;
 
@@ -53,7 +54,9 @@ public class ProfileController {
         .ifPresent(
             user -> {
               long taskCount =
-                  user.getTaskLists("reminder").stream()
+                  TiedyApp.getTaskJsonService()
+                      .loadJsonAsStream()
+                      .filter(t -> t.getAssignedUsers().contains(user.getId()))
                       .filter(t -> t.getStatus() == Status.CLOSED)
                       .count();
               tasksLabel.setText("" + taskCount);

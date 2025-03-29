@@ -1,6 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util.json;
 
-import java.io.IOException;
+import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -12,24 +13,23 @@ import java.util.stream.Stream;
  * flag for distinguishing between test and production environments.
  *
  * @author Nick Heggø
- * @version 2025.03.14
+ * @version 2025.03.28
  */
-public class JsonService {
+public class JsonService<T> {
 
-  private final JsonReader jsonReader;
-  private final JsonWriter jsonWriter;
+  private final JsonReader<T> jsonReader;
+  private final JsonWriter<T> jsonWriter;
 
   /**
    * Constructs a new instance of the JsonService class for reading from and writing to JSON files.
    * This lightweight constructor only requires the target class type and defaults the environment
    * to production.
    *
-   * @param <T> the type of the objects that will be read from or written to JSON files
-   * @param targetClass the class type of the objects to be handled by this service; must not be
-   *     null
+   * @throws UnsupportedOperationException if the {@link JsonType} does not contain the necessary
+   *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public <T> JsonService(Class<T> targetClass) {
+  public JsonService(Class<T> targetClass) {
     this(targetClass, false);
   }
 
@@ -39,16 +39,18 @@ public class JsonService {
    * JsonReader} to deserialize JSON content into objects and {@link JsonWriter} to serialize
    * objects into JSON files.
    *
-   * @param <T> the type of the objects that will be read from or written to JSON files
-   * @param targetClass the class type of the objects to be handled by this service; must not be
-   *     null
    * @param isTest a boolean flag indicating whether the operations should be performed in the test
    *     environment (true) or the production environment (false)
+   * @throws UnsupportedOperationException if the {@link JsonType} does not contain the necessary
+   *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public <T> JsonService(Class<T> targetClass, boolean isTest) {
-    jsonReader = new JsonReader(targetClass, isTest);
-    jsonWriter = new JsonWriter(targetClass, isTest);
+  public JsonService(Class<T> targetClas, boolean isTest) {
+    if (JsonType.getType(targetClas) == null) {
+      throw new UnsupportedOperationException("Unsupported target class type: " + targetClas);
+    }
+    jsonReader = new JsonReader<>(targetClas, isTest);
+    jsonWriter = new JsonWriter<>(targetClas, isTest);
   }
 
   /**
@@ -57,25 +59,37 @@ public class JsonService {
    * environment. If the file does not exist, it is created and an empty list is returned. If the
    * file exists, the data in the file is deserialized into a list.
    *
-   * @param <T> the type of objects to be loaded from the JSON file
-   * @return a list of objects deserialized from the JSON file, or an empty list if the file is
+   * @return a stream of objects deserialized from the JSON file, or an empty stream if the file is
    *     newly created
-   * @throws IOException if an error occurs during the file creation or reading process
    */
-  public <T> Stream<T> loadJsonAsStream() throws IOException {
+  public Stream<T> loadJsonAsStream() {
     return jsonReader.parseJsonStream();
   }
 
   /**
-   * Writes a stream of objects to a JSON file. The file is created at a location dynamically
+   * Writes a set of objects to a JSON file. The file is created at a location dynamically
    * determined based on the target class type and whether the operation is performed in a test or
    * production environment. The method ensures that the directory structure exists before writing.
+   * It will update existing data if present
    *
-   * @param <T> the type of the elements in the stream to be serialized
-   * @param stream the list of objects to be written into the JSON file; must not be null
-   * @throws IOException if an I/O error occurs during file creation or writing
+   * @param set the set of objects to be written into the JSON file
    */
-  public <T> void writeCollection(Stream<T> stream) throws IOException {
-    jsonWriter.writeJsonFile(stream);
+  public void writeCollection(Set<T> set) {
+    Set<T> existingData = loadJsonAsStream().collect(Collectors.toSet());
+    existingData.removeAll(set);
+    existingData.addAll(set);
+    jsonWriter.writeJsonFile(existingData);
+  }
+
+  /**
+   * Adds an item to the JSON collection by writing it to the JSON file. The provided item is
+   * wrapped in a stream and passed to the {@code writeCollection} method for writing. The location
+   * of the JSON file is determined dynamically based on the class type and the environment (test or
+   * production).
+   *
+   * @param item the object of the target type to be added to the JSON collection; must not be null
+   */
+  public void addItem(T item) {
+    writeCollection(Set.of(item));
   }
 }

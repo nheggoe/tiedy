@@ -13,10 +13,25 @@ import javafx.scene.control.Alert;
  * <p>This class is not meant to be instantiated, as it contains only static methods.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.28
  */
 public class JavaFxFactory {
   private JavaFxFactory() {}
+
+  /**
+   * Generates a JavaFX information alert with a predefined title ("Info") and the provided content
+   * message. This method is intended to streamline the creation of information alert dialogs in
+   * JavaFX applications.
+   *
+   * @param message the content message to be displayed in the alert dialog
+   * @return an Alert object of type INFORMATION with the specified content message
+   */
+  public static Alert generateInfoAlert(String title, String message) {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    return alert;
+  }
 
   /**
    * Creates and returns a JavaFX warning alert with a predefined title ("Warning") and the provided

@@ -37,3 +37,4 @@ build/
 ### Local JSON ###
 /data/
 /src/test/resources/json/
+/dependency-reduced-pom.xml

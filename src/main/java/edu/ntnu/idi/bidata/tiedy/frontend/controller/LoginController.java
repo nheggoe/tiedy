@@ -104,4 +104,5 @@ public class LoginController {
       JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
+
 }

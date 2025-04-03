@@ -80,6 +80,9 @@ public class User {
   }
 
   public void setUsername(String username) {
+    if (username == null || username.isBlank()) {
+      throw new IllegalArgumentException("Username cannot be blank!");
+    }
     this.username = username;
   }
 

@@ -71,7 +71,7 @@ public class LoginController {
               .authenticate(username, password)
               .orElseThrow(() -> new IllegalStateException("Invalid username or password"));
 
-      UserSession.getInstance().setCurrentUser(foundUser);
+      UserSession.createSession(foundUser);
 
       JavaFxFactory.generateInfoAlert(
               "Login successful", "You are now logged in as %s".formatted(username))

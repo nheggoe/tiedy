@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.state.JsonService;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;

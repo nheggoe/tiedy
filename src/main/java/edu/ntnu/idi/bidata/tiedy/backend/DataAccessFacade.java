@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
@@ -9,6 +10,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 /**
@@ -39,6 +41,10 @@ public class DataAccessFacade implements Runnable {
       instance = new DataAccessFacade();
     }
     return instance;
+  }
+
+  public Optional<User> authenticate(String username, String password) {
+    return userRepository.authenticate(username, password);
   }
 
   @Override

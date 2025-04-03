@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
@@ -67,27 +66,19 @@ public class LoginController {
       StringChecker.assertValidString(username, "username");
       StringChecker.assertValidString(password, "password");
 
-      User foundUser = DataAccessFacade.getInstance().getUserByUsername(username);
-      if (foundUser == null) {
-        throw new IllegalArgumentException("User \"%s\" not found!".formatted(username));
-      }
+      User foundUser =
+          DataAccessFacade.getInstance()
+              .authenticate(username, password)
+              .orElseThrow(() -> new IllegalStateException("Invalid username or password"));
 
-      boolean isCorrectPassword =
-          PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
+      UserSession.getInstance().setCurrentUser(foundUser);
 
-      if (isCorrectPassword) {
-        UserSession.createSession(foundUser);
+      JavaFxFactory.generateInfoAlert(
+              "Login successful", "You are now logged in as %s".formatted(username))
+          .showAndWait();
 
-        JavaFxFactory.generateInfoAlert(
-                "Login successful", "You are now logged in as %s".formatted(username))
-            .showAndWait();
+      TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
 
-        TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
-      } else {
-        JavaFxFactory.generateInfoAlert(
-                "Incorrect password", "Incorrect password, please try again")
-            .showAndWait();
-      }
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     } catch (IllegalStateException e) {

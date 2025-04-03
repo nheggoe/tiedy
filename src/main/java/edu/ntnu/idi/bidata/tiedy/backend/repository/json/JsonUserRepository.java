@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
+import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.util.Optional;
 
 public class JsonUserRepository extends JsonRepository<User> implements UserRepository {
@@ -21,11 +22,12 @@ public class JsonUserRepository extends JsonRepository<User> implements UserRepo
 
   @Override
   public Optional<User> findByUsername(String username) {
-    return Optional.empty();
+    return getAll().stream().filter(user -> user.getUsername().equals(username)).findFirst();
   }
 
   @Override
   public Optional<User> authenticate(String username, String password) {
-    return Optional.empty();
+    return findByUsername(username)
+        .filter(user -> PasswordUtil.checkPassword(password, user.getPassword()));
   }
 }

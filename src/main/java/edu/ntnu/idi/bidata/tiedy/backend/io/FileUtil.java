@@ -24,19 +24,18 @@ public class FileUtil {
   private FileUtil() {}
 
   /**
-   * Generates a file path for a JSON resource based on the simple name of the specified class. The
-   * file path is determined by whether the operation targets test resources or production
-   * resources.
+   * Generates a file path for a specified class and file extension, with the option to specify a
+   * test or production environment.
    *
-   * @param <T> the type of the class used for generating the file path
-   * @param targetClass the class whose simple name is used to generate the file path; must not be
-   *     null
-   * @param isTest a boolean indicating whether the file path should target test resources (true) or
-   *     production resources (false)
-   * @return the file path to the JSON resource associated with the specified class name
+   * @param targetClass the class for which the file path is being generated; must not be null
+   * @param fileExtension the file extension to use (e.g., "json", "csv"); must be a supported
+   *     extension
+   * @param isTest a boolean flag indicating whether the file path should correspond to a test
+   *     environment (true) or a production environment (false)
+   * @return the generated file path as a {@code Path} instance
+   * @throws UnsupportedOperationException if the provided {@code fileExtension} is not supported
    */
-  public static <T> Path generateFilePath(
-      Class<T> targetClass, String fileExtension, boolean isTest) {
+  public static Path generateFilePath(Class<?> targetClass, String fileExtension, boolean isTest) {
 
     if (!FILE_EXTENSIONS.contains(fileExtension)) {
       throw new UnsupportedOperationException(

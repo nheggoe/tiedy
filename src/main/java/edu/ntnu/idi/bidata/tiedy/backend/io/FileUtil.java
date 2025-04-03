@@ -43,13 +43,9 @@ public class FileUtil {
           ">" + fileExtension + "< is not a supported file extension");
     }
 
-    return isTest
-        ? Path.of(
-            TEST_FILE_PATH_TEMPLATE.formatted(
-                fileExtension, targetClass.getSimpleName(), fileExtension))
-        : Path.of(
-            FILE_PATH_TEMPLATE.formatted(
-                fileExtension, targetClass.getSimpleName(), fileExtension));
+    return Path.of(
+        (isTest ? TEST_FILE_PATH_TEMPLATE : FILE_PATH_TEMPLATE)
+            .formatted(fileExtension, targetClass.getSimpleName(), fileExtension));
   }
 
   /**

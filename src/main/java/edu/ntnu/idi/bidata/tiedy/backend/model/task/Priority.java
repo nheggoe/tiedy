@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.model.task;
 
 /**
  * Represents the priority level of a task. The priority can be set to one of the predefined levels:

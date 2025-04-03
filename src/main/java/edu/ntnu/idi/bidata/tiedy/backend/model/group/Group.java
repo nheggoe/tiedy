@@ -1,5 +1,6 @@
-package edu.ntnu.idi.bidata.tiedy.backend.user;
+package edu.ntnu.idi.bidata.tiedy.backend.model.group;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;

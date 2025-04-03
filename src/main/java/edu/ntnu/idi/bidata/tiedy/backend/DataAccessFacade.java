@@ -1,8 +1,9 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state;
+package edu.ntnu.idi.bidata.tiedy.backend;
 
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.user.Group;
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.state.JsonService;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.HashSet;

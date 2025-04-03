@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskController">
@@ -17,7 +21,7 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/NameLabel.png" />
+                         <Image url="@../images/NameLabel.png"/>
                      </image>
                   </ImageView>
                </graphic>
@@ -32,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/CreateTaskButton_px.png" />
+                         <Image url="@../images/buttons/CreateTaskButton_px.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -44,14 +48,14 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/DateLabel.png" />
+                         <Image url="@../images/DateLabel.png"/>
                      </image>
                   </ImageView>
                </graphic>
             </Label>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="29.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/buttons/DescriptionLabel.png" />
+                   <Image url="@../images/buttons/DescriptionLabel.png"/>
                </image>
             </ImageView>
          </children>
@@ -63,7 +67,7 @@
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/buttons/BackButton_32px.png" />
+                   <Image url="@../images/buttons/BackButton_32px.png"/>
                </image>
             </ImageView>
          </graphic></Button>

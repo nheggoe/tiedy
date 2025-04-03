@@ -12,6 +12,7 @@ import com.google.gson.JsonSerializer;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDate;
@@ -81,8 +82,7 @@ public class CustomGson {
   }
 
   /**
-   * Adapter for {@link LocalDate} type used as the {@code deadLine} in the {@link
-   * edu.ntnu.idi.bidata.tiedy.backend.task.Task} class
+   * Adapter for {@link LocalDate} type used as the {@code deadLine} in the {@link Task} class
    *
    * <p>It must be registered with the GSON instance, or else the serialization of objects
    * containing {@link LocalDate} will fail

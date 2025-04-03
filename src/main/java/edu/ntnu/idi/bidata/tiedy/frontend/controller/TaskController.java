@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.TaskBuilder;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.state.JsonService;
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;

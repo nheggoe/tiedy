@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.level;
+package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
 
 /**
  * The LevelSystem class represent a user's level and experience. It contains methods to get and set

@@ -1,6 +1,6 @@
-package edu.ntnu.idi.bidata.tiedy.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.model.task;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;

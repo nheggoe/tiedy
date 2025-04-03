@@ -1,6 +1,6 @@
-package edu.ntnu.idi.bidata.tiedy.backend.user;
+package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;

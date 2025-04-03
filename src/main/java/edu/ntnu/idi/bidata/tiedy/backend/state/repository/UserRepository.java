@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.util.Optional;
 
 public interface UserRepository extends DataRepository<User> {

@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.user;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import org.junit.jupiter.api.Test;
 
 class UserTest {

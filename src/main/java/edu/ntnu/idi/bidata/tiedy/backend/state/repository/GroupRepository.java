@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.Group;
+import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import java.util.List;
 import java.util.UUID;
 

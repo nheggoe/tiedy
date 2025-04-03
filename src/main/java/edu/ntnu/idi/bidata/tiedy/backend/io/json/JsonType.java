@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
 import com.google.gson.reflect.TypeToken;
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.user.Group;
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.lang.reflect.Type;
 import java.util.Map;
 import java.util.Set;

@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.backend.state.DataAccessFacade;
+import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.model.task;
 
 import java.time.LocalDate;
 

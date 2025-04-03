@@ -2,7 +2,8 @@ package edu.ntnu.idi.bidata.tiedy.backend.task;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.Test;

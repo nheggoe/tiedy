@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.util.json;
+package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
 import java.util.Set;
 import java.util.stream.Collectors;

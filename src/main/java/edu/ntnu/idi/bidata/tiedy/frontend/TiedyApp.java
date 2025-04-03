@@ -1,8 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.frontend;
 
+import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import javafx.application.Application;

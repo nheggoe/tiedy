@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.session;
 
-import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
+import edu.ntnu.idi.bidata.tiedy.backend.io.FileUtil;
 import java.io.File;
 
 public class AuthenticationManager {

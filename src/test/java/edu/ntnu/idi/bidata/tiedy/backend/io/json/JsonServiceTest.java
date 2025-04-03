@@ -1,10 +1,10 @@
-package edu.ntnu.idi.bidata.tiedy.backend.util.json;
+package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import edu.ntnu.idi.bidata.tiedy.backend.io.FileUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.util.json;
+package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

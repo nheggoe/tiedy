@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.state.ApplicationState;
+import edu.ntnu.idi.bidata.tiedy.backend.state.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
@@ -67,7 +67,7 @@ public class LoginController {
       StringChecker.assertValidString(username, "username");
       StringChecker.assertValidString(password, "password");
 
-      User foundUser = ApplicationState.getInstance().getUserByUsername(username);
+      User foundUser = DataAccessFacade.getInstance().getUserByUsername(username);
       if (foundUser == null) {
         throw new IllegalArgumentException("User \"%s\" not found!".formatted(username));
       }

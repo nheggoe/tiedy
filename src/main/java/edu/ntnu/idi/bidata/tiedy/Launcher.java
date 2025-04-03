@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.backend.state.ApplicationState;
+import edu.ntnu.idi.bidata.tiedy.backend.state.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -37,7 +37,7 @@ public class Launcher {
   public static void main(String[] args) {
     try (ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor()) {
       scheduledService.scheduleWithFixedDelay(
-          ApplicationState.getInstance(), 10, 10, TimeUnit.SECONDS);
+          DataAccessFacade.getInstance(), 10, 10, TimeUnit.SECONDS);
       TiedyApp.main(args);
     }
   }

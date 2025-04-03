@@ -1,10 +1,20 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state;
+package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
 
 import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
+/**
+ * Defines the interface of a generic repository, includes all the necessary operations for Data
+ * Access Objects (DAOs).
+ *
+ * <p>This interface follows the "Repository" design pattern
+ *
+ * @param <T> the type of entity that the repository will manage
+ * @author Nick Heggø
+ * @version 2025.04.03
+ */
 public interface DataRepository<T> {
 
   /**

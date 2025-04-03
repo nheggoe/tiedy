@@ -10,19 +10,20 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class ApplicationState implements Runnable {
-  private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
+public class DataAccessFacade implements Runnable {
+  private static final Logger LOGGER = Logger.getLogger(DataAccessFacade.class.getName());
 
-  private static ApplicationState instance;
+  private static DataAccessFacade instance;
 
   private final JsonService<User> userService;
   private final JsonService<Task> taskService;
   private final JsonService<Group> groupService;
+  // TODO change to Repository design pattern
   private final Map<UUID, User> users;
   private final Map<UUID, Task> tasks;
   private final Map<UUID, Group> groups;
 
-  private ApplicationState() {
+  private DataAccessFacade() {
     userService = new JsonService<>(User.class);
     taskService = new JsonService<>(Task.class);
     groupService = new JsonService<>(Group.class);
@@ -40,9 +41,9 @@ public class ApplicationState implements Runnable {
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
-  public static ApplicationState getInstance() {
+  public static DataAccessFacade getInstance() {
     if (instance == null) {
-      instance = new ApplicationState();
+      instance = new DataAccessFacade();
     }
     return instance;
   }

@@ -48,6 +48,25 @@ public class ApplicationState implements Runnable {
     return instance;
   }
 
+  public User getUserByUsername(String username) {
+    return users.values().stream()
+        .filter(user -> user.getUsername().equals(username))
+        .findFirst()
+        .orElse(null);
+  }
+
+  public User getUser(UUID id) {
+    return users.get(id);
+  }
+
+  public Task getTask(UUID id) {
+    return tasks.get(id);
+  }
+
+  public Group getGroup(UUID id) {
+    return groups.get(id);
+  }
+
   private void loadData() {
     userService.loadJsonAsStream().forEach(user -> users.put(user.getId(), user));
     taskService.loadJsonAsStream().forEach(task -> tasks.put(task.getId(), task));

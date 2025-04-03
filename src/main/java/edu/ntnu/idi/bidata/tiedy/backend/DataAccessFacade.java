@@ -11,6 +11,13 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
+/**
+ * Intended to be the only class that the frontend package interacts with, it would provide all the
+ * necessary public interface.
+ *
+ * @author Nick Heggø
+ * @version 2025.04.03
+ */
 public class DataAccessFacade implements Runnable {
   private static final Logger LOGGER = Logger.getLogger(DataAccessFacade.class.getName());
 

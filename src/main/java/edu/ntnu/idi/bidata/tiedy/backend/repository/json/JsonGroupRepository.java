@@ -1,13 +1,23 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
+package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import java.util.List;
 import java.util.UUID;
 
 public class JsonGroupRepository extends JsonRepository<Group> implements GroupRepository {
 
-  public JsonGroupRepository() {
+  private static JsonGroupRepository instance;
+
+  private JsonGroupRepository() {
     super(Group.class, Group::getId);
+  }
+
+  public static synchronized JsonGroupRepository getInstance() {
+    if (instance == null) {
+      instance = new JsonGroupRepository();
+    }
+    return instance;
   }
 
   @Override

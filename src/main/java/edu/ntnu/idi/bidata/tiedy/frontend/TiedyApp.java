@@ -2,7 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.state.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import javafx.application.Application;

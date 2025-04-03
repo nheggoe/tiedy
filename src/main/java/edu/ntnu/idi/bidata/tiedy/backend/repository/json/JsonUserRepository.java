@@ -1,12 +1,22 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
+package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
 import java.util.Optional;
 
 public class JsonUserRepository extends JsonRepository<User> implements UserRepository {
 
-  public JsonUserRepository() {
+  private static JsonUserRepository instance;
+
+  private JsonUserRepository() {
     super(User.class, User::getId);
+  }
+
+  public static synchronized JsonUserRepository getInstance() {
+    if (instance == null) {
+      instance = new JsonUserRepository();
+    }
+    return instance;
   }
 
   @Override

@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
+package edu.ntnu.idi.bidata.tiedy.backend.repository;
 
 import java.util.Collection;
 import java.util.Optional;

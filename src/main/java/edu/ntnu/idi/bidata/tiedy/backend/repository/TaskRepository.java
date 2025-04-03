@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state.repository;
+package edu.ntnu.idi.bidata.tiedy.backend.repository;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;

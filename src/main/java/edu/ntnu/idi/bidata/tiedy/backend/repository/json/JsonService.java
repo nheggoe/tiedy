@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.state;
+package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonReader;
 import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonType;

@@ -1,26 +1,56 @@
 package edu.ntnu.idi.bidata.tiedy.backend.state;
 
+import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.user.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
 
-public class ApplicationState {
+public class ApplicationState implements Runnable {
   private static final Logger LOGGER = Logger.getLogger(ApplicationState.class.getName());
 
   private static ApplicationState instance;
 
-  private final Map<UUID, User> users = new HashMap<>();
-  private final Map<UUID, Task> tasks = new HashMap<>();
-  private final Map<UUID, Group> groups = new HashMap<>();
+  private final JsonService<User> userService;
+  private final JsonService<Task> taskService;
+  private final JsonService<Group> groupService;
+  private final Map<UUID, User> users;
+  private final Map<UUID, Task> tasks;
+  private final Map<UUID, Group> groups;
+
+  private ApplicationState() {
+    userService = new JsonService<>(User.class);
+    taskService = new JsonService<>(Task.class);
+    groupService = new JsonService<>(Group.class);
+    users = new HashMap<>();
+    tasks = new HashMap<>();
+    groups = new HashMap<>();
+    loadData();
+  }
+
+  @Override
+  public void run() {
+    userService.writeCollection(new HashSet<>(users.values()));
+    taskService.writeCollection(new HashSet<>(tasks.values()));
+    groupService.writeCollection(new HashSet<>(groups.values()));
+    LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
+  }
 
   public static ApplicationState getInstance() {
     if (instance == null) {
       instance = new ApplicationState();
     }
     return instance;
+  }
+
+  private void loadData() {
+    userService.loadJsonAsStream().forEach(user -> users.put(user.getId(), user));
+    taskService.loadJsonAsStream().forEach(task -> tasks.put(task.getId(), task));
+    groupService.loadJsonAsStream().forEach(group -> groups.put(group.getId(), group));
   }
 }

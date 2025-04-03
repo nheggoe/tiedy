@@ -96,6 +96,8 @@ public class Group {
     this.description = (description == null) ? "" : description;
   }
 
+  // ------------------------   Overrides ------------------------
+
   @Override
   public String toString() {
     return "Group{id=%s, createdAt=%s, members=%s, name='%s', description='%s'}"

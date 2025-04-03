@@ -118,6 +118,8 @@ public class Task {
     this.priority = priority;
   }
 
+  // ------------------------   Overrides ------------------------
+
   @Override
   public String toString() {
     return "Task{id=%s, createdAt=%s, assignedUsers=%s, title='%s', description='%s', deadline=%s, status=%s, priority=%s}"

@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 public abstract class JsonRepository<T> implements DataRepository<T> {
 
   protected final JsonService<T> jsonService;
-  protected final Map<UUID, T> entities;
+  private final Map<UUID, T> entities;
   protected final Function<T, UUID> idExtractor;
 
   /**
@@ -54,11 +54,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
   @Override
   public T update(T entity) {
     UUID id = idExtractor.apply(entity);
-    if (entities.containsKey(id)) {
-      entities.put(id, entity);
-      return entity;
-    }
-    return null;
+    return entities.computeIfPresent(id, (k, v) -> entity);
   }
 
   @Override

@@ -29,14 +29,10 @@ public class User {
     this.taskMap = new HashMap<>();
   }
 
-  private User(UUID id, LocalDateTime createdAt, Map<String, Set<UUID>> taskMap) {
-    if (id == null || createdAt == null || taskMap == null) {
-      throw new IllegalArgumentException(
-          "User ID, creation time, and task lists map cannot be null");
-    }
-    this.id = id;
-    this.createdAt = createdAt;
-    this.taskMap = taskMap;
+  public User(String username, String password) {
+    this();
+    setUsername(username);
+    setPassword(password);
   }
 
   // ------------------------   Public Interface  ------------------------
@@ -67,12 +63,6 @@ public class User {
 
   // ------------------------   Getters and Setters ------------------------
 
-  public User(String username, String password) {
-    this();
-    setUsername(username);
-    setPassword(password);
-  }
-
   public UUID getId() {
     return id;
   }
@@ -102,6 +92,8 @@ public class User {
     PasswordUtil.validatePasswordFormat(password);
     this.password = password;
   }
+
+  // ------------------------   Overrides ------------------------
 
   @Override
   public String toString() {

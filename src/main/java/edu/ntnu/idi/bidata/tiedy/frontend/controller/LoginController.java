@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
+import edu.ntnu.idi.bidata.tiedy.backend.state.ApplicationState;
 import edu.ntnu.idi.bidata.tiedy.backend.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
@@ -7,8 +8,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.Objects;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -27,7 +26,6 @@ import javafx.scene.control.TextField;
  * @version 2025.03.28
  */
 public class LoginController {
-  private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -69,21 +67,13 @@ public class LoginController {
       StringChecker.assertValidString(username, "username");
       StringChecker.assertValidString(password, "password");
 
-      User foundUser =
-          TiedyApp.getUserJsonService()
-              .loadJsonAsStream()
-              .filter(user -> Objects.equals(user.getUsername(), username))
-              .findFirst()
-              .orElseThrow(
-                  () -> new IllegalArgumentException("User \"%s\" not found!".formatted(username)));
+      User foundUser = ApplicationState.getInstance().getUserByUsername(username);
+      if (foundUser == null) {
+        throw new IllegalArgumentException("User \"%s\" not found!".formatted(username));
+      }
 
       boolean isCorrectPassword =
           PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
-
-      LOGGER.info(() -> "Checking password for user " + foundUser.getUsername());
-      LOGGER.info(() -> "Provided password: " + password);
-      LOGGER.info(() -> "Stored password: " + foundUser.getPassword());
-      LOGGER.info(() -> "Password check result: " + isCorrectPassword);
 
       if (isCorrectPassword) {
         UserSession.createSession(foundUser);
@@ -104,5 +94,4 @@ public class LoginController {
       JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
-
 }

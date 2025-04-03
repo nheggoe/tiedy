@@ -50,7 +50,7 @@ public class ApplicationState implements Runnable {
 
   public User getUserByUsername(String username) {
     return users.values().stream()
-        .filter(user -> user.getUsername().equals(username))
+        .filter(user -> user.getUsername().equals(username.strip()))
         .findFirst()
         .orElse(null);
   }

@@ -14,8 +14,8 @@ class JsonServiceTest {
 
   @BeforeEach
   void cleanUpTestFiles() {
-    var userJsonFile = JsonPathUtil.generateJsonPath(User.class, true).toFile();
-    var taskJsonFile = JsonPathUtil.generateJsonPath(Task.class, true).toFile();
+    var userJsonFile = FileUtil.generateFilePath(User.class, "json", true).toFile();
+    var taskJsonFile = FileUtil.generateFilePath(Task.class, "json", true).toFile();
     FileUtil.ensureFileAndDirectoryExists(userJsonFile);
     FileUtil.ensureFileAndDirectoryExists(taskJsonFile);
     new JsonWriter<>(User.class, true).writeJsonFile(new HashSet<>()); // Clear user data.

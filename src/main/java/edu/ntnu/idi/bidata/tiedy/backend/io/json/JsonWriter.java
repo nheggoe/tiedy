@@ -55,7 +55,7 @@ public class JsonWriter<T> {
    * @param set the set of objects to serialize and write into the JSON file
    */
   public void writeJsonFile(Set<T> set) {
-    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
+    File file = FileUtil.generateFilePath(targetClass, "json", isTest).toFile();
     FileUtil.ensureFileAndDirectoryExists(file);
 
     String json = gson.toJson(set, JsonType.getType(targetClass));

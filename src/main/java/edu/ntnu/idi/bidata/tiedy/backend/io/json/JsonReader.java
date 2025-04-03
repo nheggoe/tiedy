@@ -58,7 +58,7 @@ public class JsonReader<T> {
    *     newly created
    */
   public Stream<T> parseJsonStream() {
-    File file = JsonPathUtil.generateJsonPath(targetClass, isTest).toFile();
+    File file = FileUtil.generateFilePath(targetClass, "json", isTest).toFile();
     FileUtil.ensureFileAndDirectoryExists(file);
 
     if (file.length() == 0) {

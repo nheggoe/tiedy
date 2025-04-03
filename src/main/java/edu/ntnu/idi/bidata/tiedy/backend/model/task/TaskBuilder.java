@@ -109,13 +109,13 @@ public class TaskBuilder {
 
   private void assertTaskInfo() {
     if (task.getTitle() == null || task.getTitle().isBlank()) {
-      throw new IllegalStateException("Task title cannot be null or blank");
+      throw new IllegalArgumentException("Task title cannot be null or blank");
     }
     if (task.getPriority() == null) {
-      throw new IllegalStateException("Task priority cannot be null");
+      throw new IllegalArgumentException("Task priority cannot be null");
     }
     if (task.getStatus() == null) {
-      throw new IllegalStateException("Task status cannot be null");
+      throw new IllegalArgumentException("Task status cannot be null");
     }
   }
 }

@@ -17,11 +17,21 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
 
   @Override
   public List<Group> findByAdmin(UUID userId) {
-    return List.of();
+    return findAllByUserId(userId).stream()
+        .dropWhile(group -> !group.getMembers().get(userId)) //  returns true if isAdmin
+        .toList();
   }
 
   @Override
   public boolean addMember(UUID groupId, UUID userId, boolean isAdmin) {
+    Group foundGroup =
+        getAll().stream()
+            .filter(group -> group.getId().equals(groupId))
+            .findFirst()
+            .orElseThrow(() -> new IllegalStateException("Goup not found!"));
+
+    // FIXME require UserObject, get user repository?
+    // group.addMember();
     return false;
   }
 

@@ -41,7 +41,8 @@ class TaskBuilderTest {
   void buildShouldThrowExceptionWhenTitleIsNull() {
     TaskBuilder taskBuilder = new TaskBuilder().priority(Priority.HIGH).status(Status.IN_PROGRESS);
 
-    IllegalStateException exception = assertThrows(IllegalStateException.class, taskBuilder::build);
+    IllegalArgumentException exception =
+        assertThrows(IllegalArgumentException.class, taskBuilder::build);
 
     assertEquals("Task title cannot be null or blank", exception.getMessage());
   }
@@ -52,9 +53,9 @@ class TaskBuilderTest {
    */
   @Test
   void buildShouldThrowExceptionWhenTitleIsBlank() {
-    TaskBuilder taskBuilder =
-        new TaskBuilder().title(" ").priority(Priority.HIGH).status(Status.OPEN);
+    TaskBuilder taskBuilder = new TaskBuilder();
 
+    assertThrows(IllegalArgumentException.class, () -> taskBuilder.title(" "));
     assertThrows(IllegalArgumentException.class, taskBuilder::build);
   }
 

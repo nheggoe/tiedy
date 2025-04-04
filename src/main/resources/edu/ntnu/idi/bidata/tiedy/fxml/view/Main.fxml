@@ -19,7 +19,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/HomeButton.png"/>
+                         <Image url="@../../images/buttons/HomeButton.png"/>
                      </image>
                   </ImageView>
                </graphic>
@@ -28,7 +28,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/StatsButton.png"/>
+                         <Image url="@../../images/buttons/StatsButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -36,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/CreateTaskButton.png"/>
+                         <Image url="@../../images/buttons/CreateTaskButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -44,7 +44,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/ProfileButton.png"/>
+                         <Image url="@../../images/buttons/ProfileButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -59,7 +59,7 @@
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/FilterButton.png"/>
+                         <Image url="@../../images/buttons/FilterButton.png"/>
                      </image>
                   </ImageView>
                </graphic>

@@ -1,0 +1,20 @@
+.body {
+    -fx-background-color: #fff8dc;
+    -fx-pref-width: 1133px;
+    -fx-pref-height: 744px;
+    -wigth: 1133px;
+    -height: 744px;
+}
+
+.menu-bar {
+    -fx-background-color: #6495ED;
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+.menu-bar-item {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-width: 100%;
+    -fx-height: 100%;
+}

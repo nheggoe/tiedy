@@ -21,7 +21,7 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/NameLabel.png"/>
+                        <Image url="@../../images/lables/NameLabel.png"/>
                      </image>
                   </ImageView>
                </graphic>
@@ -36,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/buttons/CreateTaskButton_px.png"/>
+                        <Image url="@../../images/buttons/CreateTaskButton_px.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -48,14 +48,14 @@
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                         <Image url="@../images/DateLabel.png"/>
+                        <Image url="@../../images/lables/DateLabel.png"/>
                      </image>
                   </ImageView>
                </graphic>
             </Label>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="29.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                   <Image url="@../images/buttons/DescriptionLabel.png"/>
+                  <Image url="@../../images/buttons/DescriptionLabel.png"/>
                </image>
             </ImageView>
          </children>
@@ -67,7 +67,7 @@
          <graphic>
             <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                   <Image url="@../images/buttons/BackButton_32px.png"/>
+                  <Image url="@../../images/buttons/BackButton_32px.png"/>
                </image>
             </ImageView>
          </graphic></Button>

@@ -22,7 +22,7 @@
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/buttons/LoginButton_32px.png"/>
+                                <Image url="@../../images/buttons/LoginButton_32px.png"/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -32,7 +32,7 @@
                     <graphic>
                         <ImageView fitHeight="64.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/buttons/NoAccountSignUpHereButton.png"/>
+                                <Image url="@../../images/buttons/NoAccountSignUpHereButton.png"/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -40,13 +40,13 @@
                 <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="34.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
-                        <Image url="@../images/UsernameLabel.png"/>
+                        <Image url="@../../images/lables/UsernameLabel.png"/>
                     </image>
                 </ImageView>
                 <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
-                        <Image url="@../images/PasswordLabel.png"/>
+                        <Image url="@../../images/lables/PasswordLabel.png"/>
                     </image>
                 </ImageView>
                 <Button layoutX="478.0" layoutY="153.0" mnemonicParsing="false" onAction="#exit"
@@ -54,7 +54,7 @@
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../images/buttons/ExitButton.png"/>
+                                <Image url="@../../images/buttons/ExitButton.png"/>
                             </image>
                         </ImageView>
                     </graphic>
@@ -63,7 +63,7 @@
         </AnchorPane>
         <ImageView fitHeight="156.0" fitWidth="674.0" layoutX="-19.0" pickOnBounds="true" preserveRatio="true">
             <image>
-                <Image url="@../images/TiedyLogoLarge.png"/>
+                <Image url="@../../images/TiedyLogoLarge.png"/>
             </image>
         </ImageView>
     </children>

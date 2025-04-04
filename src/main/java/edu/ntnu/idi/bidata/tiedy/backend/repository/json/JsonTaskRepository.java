@@ -24,8 +24,8 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
-  public List<Task> findByAssignedUser(String userID) {
-    return List.of();
+  public List<Task> findByAssignedUser(UUID userID) {
+    return getAll().stream().filter(task -> task.getAssignedUsers().contains(userID)).toList();
   }
 
   @Override

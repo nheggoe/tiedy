@@ -1,15 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
+import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
+import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -37,25 +37,35 @@ public class RegisterController {
   @FXML
   public void registerUser() {
     try {
-      String username = usernameField.getText();
-      if (username == null || username.isBlank()) {
-        throw new IllegalArgumentException("Username cannot be empty");
+      StringChecker.assertStringNotNullOrEmpty(usernameField.getText(), "username");
+      StringChecker.assertStringNotNullOrEmpty(passwordField.getText(), "password");
+      StringChecker.assertStringNotNullOrEmpty(passwordRepeatField.getText(), "password repeat");
+
+      String username = usernameField.getText().strip();
+      String password = passwordField.getText().strip();
+      String passwordRepeat = passwordRepeatField.getText().strip();
+
+      if (!password.equals(passwordRepeat)) {
+        throw new IllegalArgumentException("Passwords do not match");
       }
-      boolean isUserNameTaken =
+
+      PasswordUtil.validatePasswordStrength(password);
+      PasswordUtil.validatePasswordFormat(password);
+
+      User registeredUser =
           TiedyApp.getDataAccessFacade()
-              .fi
-              .loadJsonAsStream()
-              .anyMatch(user -> Objects.equals(user.getUsername(), username));
-      if (isUserNameTaken) {
+              .registerUser(new User(username, PasswordUtil.hashPassword(password)));
+
+      if (!Objects.nonNull(registeredUser)) {
         throw new IllegalArgumentException("Username already taken");
       }
-      User user = validateAndCreateUser(username);
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("Registration successful");
-      alert.setContentText("Registration successful");
-      alert.showAndWait();
-      new JsonService<>(User.class).addItem(user);
+
+      JavaFxFactory.generateInfoAlert("Registration successful", "Registration successful")
+          .showAndWait();
+
+      UserSession.createSession(registeredUser);
       backToLogin();
+
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
@@ -71,25 +81,5 @@ public class RegisterController {
   @FXML
   public void backToLogin() {
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
-  }
-
-  private User validateAndCreateUser(String username) {
-    String password = passwordField.getText().strip();
-    String passwordRepeat = passwordRepeatField.getText().strip();
-
-    if (password.isBlank()) {
-      throw new IllegalArgumentException("Password cannot be empty");
-    }
-    if (passwordRepeat.isBlank()) {
-      throw new IllegalArgumentException("Password repeat cannot be empty");
-    }
-
-    PasswordUtil.validatePasswordStrength(password);
-    PasswordUtil.validatePasswordFormat(password);
-
-    if (!password.equals(passwordRepeat)) {
-      throw new IllegalArgumentException("Passwords do not match");
-    }
-    return new User(username, PasswordUtil.hashPassword(password));
   }
 }

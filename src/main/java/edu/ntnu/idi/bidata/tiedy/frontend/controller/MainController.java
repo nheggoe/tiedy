@@ -8,7 +8,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Collection;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
@@ -62,78 +61,37 @@ public class MainController {
   public void initialize() {
     flowPane.setHgap(10);
     flowPane.setVgap(10);
-    var optionalUser = UserSession.getInstance().getCurrentUser();
-    if (optionalUser.isEmpty()) {
-      newTaskButton.setDisable(true);
-      taskFilter.setDisable(true);
-      info.setText("No user logged in");
-    } else {
-      User user = optionalUser.get();
-      flowPane.getChildren().clear();
-      var tasks = TiedyApp.getTaskJsonService().loadJsonAsStream().toList();
-      LOGGER.log(
-          Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
-
-      tasks.stream()
-          .filter(task -> task.getAssignedUsers().contains(user.getId()))
-          .map(this::createTaskPane)
-          .forEach(flowPane.getChildren()::add);
-    }
 
     User user =
         UserSession.getInstance()
             .getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
+    updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+
     allTasks.setOnAction(
-        e -> {
-          var tasks =
-              TiedyApp.getTaskJsonService()
-                  .loadJsonAsStream()
-                  .filter(task -> task.getAssignedUsers().contains(user.getId()))
-                  .toList();
-          updateFlowPane(tasks);
-        });
+        e -> updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId())));
+
     openTasks.setOnAction(
-        e -> {
-          var tasks =
-              TiedyApp.getTaskJsonService()
-                  .loadJsonAsStream()
-                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
-                  .filter(t -> t.getStatus() == Status.OPEN)
-                  .toList();
-          updateFlowPane(tasks);
-        });
+        e ->
+            updateFlowPane(
+                TiedyApp.getDataAccessFacade().getTasksByUserAndStatus(user.getId(), Status.OPEN)));
+
     inProgressTasks.setOnAction(
-        e -> {
-          var tasks =
-              TiedyApp.getTaskJsonService()
-                  .loadJsonAsStream()
-                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
-                  .filter(t -> t.getStatus() == Status.IN_PROGRESS)
-                  .toList();
-          updateFlowPane(tasks);
-        });
+        e ->
+            updateFlowPane(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(user.getId(), Status.IN_PROGRESS)));
     closedTasks.setOnAction(
-        e -> {
-          var tasks =
-              TiedyApp.getTaskJsonService()
-                  .loadJsonAsStream()
-                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
-                  .filter(t -> t.getStatus() == Status.CLOSED)
-                  .toList();
-          updateFlowPane(tasks);
-        });
+        e ->
+            updateFlowPane(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(user.getId(), Status.CLOSED)));
     postponedTasks.setOnAction(
-        e -> {
-          var tasks =
-              TiedyApp.getTaskJsonService()
-                  .loadJsonAsStream()
-                  .filter(t -> t.getAssignedUsers().contains(user.getId()))
-                  .filter(t -> t.getStatus() == Status.POSTPONED)
-                  .toList();
-          updateFlowPane(tasks);
-        });
+        e ->
+            updateFlowPane(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(user.getId(), Status.POSTPONED)));
   }
 
   private void updateFlowPane(Collection<Task> tasks) {

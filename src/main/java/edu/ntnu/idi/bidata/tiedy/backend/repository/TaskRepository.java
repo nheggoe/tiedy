@@ -22,7 +22,7 @@ public interface TaskRepository extends DataRepository<Task> {
    * @param userID the ID of the user
    * @return a list of tasks assigned to the user
    */
-  List<Task> findByAssignedUser(String userID);
+  List<Task> findByAssignedUser(UUID userID);
 
   /**
    * Finds all tasks with a specific status

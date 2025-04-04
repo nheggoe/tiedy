@@ -57,9 +57,9 @@ public class DataAccessFacade implements Runnable {
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
-  // ------------------------   Group Repository Methods ------------------------
+  // ------------------------  Group Repository Methods  ------------------------
 
-  public List<Group> findAllByUserId(UUID userId) {
+  public List<Group> findGroupsByUserId(UUID userId) {
     return groupRepository.findAllByUserId(userId);
   }
 
@@ -81,6 +81,14 @@ public class DataAccessFacade implements Runnable {
 
   // ------------------------  User Repository Methods  ------------------------
 
+  public User registerUser(User user) {
+    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+      return null;
+    }
+
+    return userRepository.add(user);
+  }
+
   public Optional<User> findByUsername(String username) {
     return userRepository.findByUsername(username);
   }
@@ -91,7 +99,11 @@ public class DataAccessFacade implements Runnable {
 
   // ------------------------  Task Repository Methods  ------------------------
 
-  public List<Task> findByAssignedUser(String userID) {
+  public Task addTask(Task task) {
+    return taskRepository.add(task);
+  }
+
+  public List<Task> findByAssignedUser(UUID userID) {
     return taskRepository.findByAssignedUser(userID);
   }
 
@@ -113,5 +125,10 @@ public class DataAccessFacade implements Runnable {
 
   public boolean unassignFromUser(UUID taskId, UUID userId) {
     return taskRepository.unassignFromUser(taskId, userId);
+  }
+
+  public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
+    List<Task> tasksByUser = findByAssignedUser(userId);
+    return tasksByUser.stream().filter(task -> task.getStatus() == status).toList();
   }
 }

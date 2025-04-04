@@ -63,8 +63,8 @@ public class LoginController {
 
   private void validateCredential(String username, String password) {
     try {
-      StringChecker.assertValidString(username, "username");
-      StringChecker.assertValidString(password, "password");
+      StringChecker.assertStringNotNullOrEmpty(username, "username");
+      StringChecker.assertStringNotNullOrEmpty(password, "password");
 
       User foundUser =
           DataAccessFacade.getInstance()

@@ -1,6 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
@@ -26,7 +27,7 @@ public class ProfileController {
   @FXML
   public void initialize() {
     displayName();
-    displayTasks();
+    displayCompletedTasks();
   }
 
   /**
@@ -48,19 +49,15 @@ public class ProfileController {
 
   /** The displayTasks method gets and displays the number of tasks this user has completed. */
   @FXML
-  public void displayTasks() {
-    UserSession.getInstance()
-        .getCurrentUser()
-        .ifPresent(
-            user -> {
-              long taskCount =
-                  TiedyApp.getTaskJsonService()
-                      .loadJsonAsStream()
-                      .filter(t -> t.getAssignedUsers().contains(user.getId()))
-                      .filter(t -> t.getStatus() == Status.CLOSED)
-                      .count();
-              tasksLabel.setText("" + taskCount);
-            });
+  public void displayCompletedTasks() {
+    User user =
+        UserSession.getInstance()
+            .getCurrentUser()
+            .orElseThrow(() -> new IllegalStateException("No user is logged in"));
+
+    TiedyApp.getDataAccessFacade().findByStatus(Status.CLOSED).stream()
+        .filter(task -> task.getAssignedUsers().contains(user.getId()))
+        .count();
   }
 
   /**

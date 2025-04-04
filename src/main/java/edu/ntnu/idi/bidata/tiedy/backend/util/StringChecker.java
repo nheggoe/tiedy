@@ -23,7 +23,7 @@ public class StringChecker {
    * @param fieldName the name of the string being validated, used in the error message
    * @throws IllegalArgumentException if the string is null or empty
    */
-  public static void assertValidString(String input, String fieldName) {
+  public static void assertStringNotNullOrEmpty(String input, String fieldName) {
     if (input == null) {
       throw new IllegalArgumentException(fieldName + " cannot be null!");
     }

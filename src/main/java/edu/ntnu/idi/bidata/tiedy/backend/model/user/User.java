@@ -83,7 +83,7 @@ public class User {
     if (username == null || username.isBlank()) {
       throw new IllegalArgumentException("Username cannot be blank!");
     }
-    this.username = username;
+    this.username = username.strip();
   }
 
   public String getPassword() {
@@ -96,7 +96,7 @@ public class User {
     this.password = password;
   }
 
-  // ------------------------   Overrides ------------------------
+  // ------------------------  Overrides  ------------------------
 
   @Override
   public String toString() {

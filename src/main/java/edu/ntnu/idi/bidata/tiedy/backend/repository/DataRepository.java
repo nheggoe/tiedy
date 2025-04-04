@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public interface DataRepository<T> {
 
   /**
-   * Loads all entities from the data source (JSON)
+   * Loads all entities from the data source
    *
    * @return a stream of all entities
    */
@@ -33,7 +33,7 @@ public interface DataRepository<T> {
   Optional<T> getById(UUID id);
 
   /**
-   * Gets all entities managed by this repository. (Not from source)
+   * Gets all entities managed by this repository.
    *
    * @return a collection of all entities
    */
@@ -42,8 +42,8 @@ public interface DataRepository<T> {
   /**
    * Adds a new entity in the repository.
    *
-   * @param entity the entity to update
-   * @return the updated entity, or null if the entity doesn't exist
+   * @param entity the entity to add
+   * @return the added entity
    */
   T add(T entity);
 

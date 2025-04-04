@@ -10,6 +10,8 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.logging.Logger;
+
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -116,7 +118,7 @@ public class LoginController {
       if(result.isPresent() && result.get() == ButtonType.OK) {
         LOGGER.info("Thank you for using Tiedy!");
         LOGGER.info("Exiting program...");
-        System.exit(0);
+        Platform.exit();
       }
       else {
         exitConfirmation.close();

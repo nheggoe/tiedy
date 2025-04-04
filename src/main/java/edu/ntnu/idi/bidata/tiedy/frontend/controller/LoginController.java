@@ -112,22 +112,6 @@ public class LoginController {
 
   @FXML
   public void exit() {
-    try {
-      Alert exitConfirmation = JavaFxFactory.generateConfirmationAlert("Exit","Are you sure you want to exit the application?");
-      Optional<ButtonType> result = exitConfirmation.showAndWait();
-      if(result.isPresent() && result.get() == ButtonType.OK) {
-        LOGGER.info("Thank you for using Tiedy!");
-        LOGGER.info("Exiting program...");
-        Platform.exit();
-      }
-      else {
-        exitConfirmation.close();
-      }
-
+    TiedyApp.onClose();
     }
-   catch (IllegalStateException e) {
-    JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
-  }
-  }
-
 }

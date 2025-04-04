@@ -89,5 +89,5 @@ public class LoginController {
   @FXML
   public void exit() {
     TiedyApp.onClose();
-    }
+  }
 }

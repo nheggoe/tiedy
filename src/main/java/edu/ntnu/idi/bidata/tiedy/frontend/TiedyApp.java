@@ -4,16 +4,14 @@ import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import java.util.Optional;
+import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-
-import java.util.Optional;
-import java.util.logging.Logger;
-
 
 /**
  * MainApplication serves as the entry point for a JavaFX application. It initializes the JavaFX
@@ -66,23 +64,23 @@ public class TiedyApp extends Application {
   }
 
   public static void onClose() {
-    JavaFxFactory.generateConfirmationAlert("Exit","Are you sure you want to exit the application?");
-      try {
-        Alert exitConfirmation = JavaFxFactory.generateConfirmationAlert("Exit","Are you sure you want to exit the application?");
-        Optional<ButtonType> result = exitConfirmation.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
-          LOGGER.info("Thank you for using Tiedy!");
-          LOGGER.info("Exiting program...");
-          Platform.exit();
-        }
-        else {
-          exitConfirmation.close();
-        }
+    JavaFxFactory.generateConfirmationAlert(
+        "Exit", "Are you sure you want to exit the application?");
+    try {
+      Alert exitConfirmation =
+          JavaFxFactory.generateConfirmationAlert(
+              "Exit", "Are you sure you want to exit the application?");
+      Optional<ButtonType> result = exitConfirmation.showAndWait();
+      if (result.isPresent() && result.get() == ButtonType.OK) {
+        LOGGER.info("Thank you for using Tiedy!");
+        LOGGER.info("Exiting program...");
+        Platform.exit();
+      } else {
+        exitConfirmation.close();
+      }
 
-      }
-      catch (IllegalStateException e) {
-        JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
-      }
+    } catch (IllegalStateException e) {
+      JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
-
+  }
 }

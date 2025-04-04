@@ -19,13 +19,13 @@ public interface TaskRepository extends DataRepository<Task> {
   /**
    * Finds all tasks assigned to a specific user.
    *
-   * @param userID the ID of the user
+   * @param userId the ID of the user
    * @return a list of tasks assigned to the user
    */
-  List<Task> findByAssignedUser(UUID userID);
+  List<Task> findByAssignedUser(UUID userId);
 
   /**
-   * Finds all tasks with a specific status
+   * Finds all tasks with a specific status.
    *
    * @param status the status to filter by
    * @return a list of tasks with the specified status
@@ -33,7 +33,7 @@ public interface TaskRepository extends DataRepository<Task> {
   List<Task> findByStatus(Status status);
 
   /**
-   * Finds all tasks with a deadline before the specified data
+   * Finds all tasks with a deadline before the specified data.
    *
    * @param priority the priority to filter by
    * @return a list of tasks with the specified priority

@@ -43,8 +43,39 @@ public class Task {
     this.priority = Priority.NONE;
   }
 
-  // ------------------------   Public Interface  ------------------------
+  // ------------------------  Overrides  ------------------------
 
+  @Override
+  public String toString() {
+    return "Task{id=%s, createdAt=%s, title='%s', description='%s'}"
+        .formatted(id, createdAt, title, description);
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Task task)) {
+      return false;
+    }
+    return id.equals(task.id) && createdAt.equals(task.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + createdAt.hashCode();
+    return result;
+  }
+
+  // ------------------------  Public Interface  ------------------------
+
+  /**
+   * Adds the specified user to the set of assigned users for the task. The user's unique identifier
+   * is added to the {@code assignedUsers} set. If the provided user is {@code null}, an {@code
+   * IllegalArgumentException} is thrown.
+   *
+   * @param user the user to assign to the task; must not be {@code null}
+   * @throws IllegalArgumentException if the specified user is {@code null}
+   */
   public void addAssignedUser(User user) {
     if (user == null) {
       throw new IllegalArgumentException("User cannot be null!");
@@ -52,7 +83,7 @@ public class Task {
     assignedUsers.add(user.getId());
   }
 
-  // ------------------------   Getters and Setters ------------------------
+  // ------------------------  Getters and Setters  ------------------------
 
   public UUID getId() {
     return id;
@@ -70,6 +101,14 @@ public class Task {
     return title;
   }
 
+  /**
+   * Sets the title for this task. The title must not be null or blank. If the provided title is
+   * null or blank, an IllegalArgumentException will be thrown. Leading and trailing whitespace will
+   * be removed from the title before it is assigned.
+   *
+   * @param title the new title to assign to the task; must not be null or blank
+   * @throws IllegalArgumentException if the title is null or blank
+   */
   public void setTitle(String title) {
     if (title == null || title.isBlank()) {
       throw new IllegalArgumentException("Task title cannot be blank!");
@@ -89,6 +128,12 @@ public class Task {
     return deadline;
   }
 
+  /**
+   * Sets the deadline for this task. The specified deadline must not be null.
+   *
+   * @param deadline the deadline to assign to this task; must not be null
+   * @throws IllegalArgumentException if the provided deadline is null
+   */
   public void setDeadline(LocalDate deadline) {
     if (deadline == null) {
       throw new IllegalArgumentException("Deadline cannot be null!");
@@ -100,6 +145,12 @@ public class Task {
     return status;
   }
 
+  /**
+   * Updates the status of this task. The status must be a valid, non-null {@link Status} value.
+   *
+   * @param status the new status to assign to the task; must not be null
+   * @throws IllegalArgumentException if the specified status is null
+   */
   public void setStatus(Status status) {
     if (status == null) {
       throw new IllegalArgumentException("Status cannot be null!");
@@ -111,33 +162,17 @@ public class Task {
     return priority;
   }
 
+  /**
+   * Sets the priority of this task. The priority determines the importance or urgency level of the
+   * task and must be a non-null {@link Priority} value.
+   *
+   * @param priority the priority to assign to the task; must not be null
+   * @throws IllegalArgumentException if the provided priority is null
+   */
   public void setPriority(Priority priority) {
     if (priority == null) {
       throw new IllegalArgumentException("Priority cannot be null!");
     }
     this.priority = priority;
-  }
-
-  // ------------------------   Overrides ------------------------
-
-  @Override
-  public String toString() {
-    return "Task{id=%s, createdAt=%s, assignedUsers=%s, title='%s', description='%s', deadline=%s, status=%s, priority=%s}"
-        .formatted(id, createdAt, assignedUsers, title, description, deadline, status, priority);
-  }
-
-  @Override
-  public final boolean equals(Object o) {
-    if (!(o instanceof Task task)) {
-      return false;
-    }
-    return id.equals(task.id) && createdAt.equals(task.createdAt);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + createdAt.hashCode();
-    return result;
   }
 }

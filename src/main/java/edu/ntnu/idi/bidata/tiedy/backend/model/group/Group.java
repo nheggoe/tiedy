@@ -42,6 +42,29 @@ public class Group {
     addMember(userId, true);
   }
 
+  // ------------------------   Overrides ------------------------
+
+  @Override
+  public String toString() {
+    return "Group{id=%s, createdAt=%s, members=%s, name='%s', description='%s'}"
+        .formatted(id, createdAt, members, name, description);
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof Group group)) {
+      return false;
+    }
+    return id.equals(group.id) && createdAt.equals(group.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + createdAt.hashCode();
+    return result;
+  }
+
   // ------------------------   Public Interface  ------------------------
 
   /**
@@ -60,10 +83,27 @@ public class Group {
     return members.put(userId, isAdmin) == null;
   }
 
+  /**
+   * Removes a member from the group identified by their unique UUID. If the specified member does
+   * not exist within the group, the method performs no action.
+   *
+   * @param userId the UUID of the member to be removed from the group; must not be null
+   */
   public void removeMember(UUID userId) {
     members.remove(userId);
   }
 
+  /**
+   * Updates the administrative permission of an existing group member.
+   *
+   * <p>This method modifies the role of a specified member in the group (admin or non-admin). If
+   * the member does not exist in the group, no changes are made, and the method returns false.
+   *
+   * @param userId the unique identifier of the member whose role is to be updated; must not be null
+   * @param isAdmin a boolean indicating whether the member should be given admin privileges (true)
+   *     or non-admin privileges (false)
+   * @return true if the role was successfully updated, false if the member does not exist
+   */
   public boolean updateMemberPermission(UUID userId, boolean isAdmin) {
     if (!members.containsKey(userId)) {
       return false;
@@ -90,6 +130,12 @@ public class Group {
     return name;
   }
 
+  /**
+   * Sets the name of the group. The name must not be null or blank.
+   *
+   * @param name the name of the group; must be a non-null and non-blank string
+   * @throws IllegalArgumentException if the provided name is null or blank
+   */
   public void setName(String name) {
     if (name == null || name.isBlank()) {
       throw new IllegalArgumentException("Group name cannot be blank!");
@@ -102,34 +148,11 @@ public class Group {
   }
 
   /**
-   * Sets the optional description of a group, if passed null will be replaced with empty string
+   * Sets the optional description of a group, if passed null will be replaced with empty string.
    *
    * @param description the text description of the group
    */
   public void setDescription(String description) {
     this.description = (description == null) ? "" : description;
-  }
-
-  // ------------------------   Overrides ------------------------
-
-  @Override
-  public String toString() {
-    return "Group{id=%s, createdAt=%s, members=%s, name='%s', description='%s'}"
-        .formatted(id, createdAt, members, name, description);
-  }
-
-  @Override
-  public final boolean equals(Object o) {
-    if (!(o instanceof Group group)) {
-      return false;
-    }
-    return id.equals(group.id) && createdAt.equals(group.createdAt);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + createdAt.hashCode();
-    return result;
   }
 }

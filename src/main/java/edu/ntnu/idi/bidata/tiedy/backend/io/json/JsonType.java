@@ -26,6 +26,13 @@ public class JsonType {
 
   private JsonType() {}
 
+  /**
+   * Retrieves the {@link Type} associated with the specified class from the predefined type map.
+   *
+   * @param targetClass the class for which the associated {@link Type} is to be retrieved
+   * @return the {@link Type} mapped to the specified class, or null if the class is not found in
+   *     the map
+   */
   public static Type getType(Class<?> targetClass) {
     return TYPE_MAP.get(targetClass);
   }

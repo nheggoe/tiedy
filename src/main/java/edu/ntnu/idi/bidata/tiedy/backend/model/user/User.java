@@ -4,7 +4,11 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 
 /**
  * The object that represents the customers of the application.
@@ -44,6 +48,29 @@ public class User {
     setHashedPassword(plainTextPassword);
   }
 
+  // ------------------------  Overrides  ------------------------
+
+  @Override
+  public String toString() {
+    return "User{id=%s, createdAt=%s, taskLists=%s, username='%s', password='%s'}"
+        .formatted(id, createdAt, taskMap, username, hashedPassword);
+  }
+
+  @Override
+  public final boolean equals(Object o) {
+    if (!(o instanceof User user)) {
+      return false;
+    }
+    return id.equals(user.id) && createdAt.equals(user.createdAt);
+  }
+
+  @Override
+  public int hashCode() {
+    int result = id.hashCode();
+    result = 31 * result + createdAt.hashCode();
+    return result;
+  }
+
   // ------------------------   Public Interface  ------------------------
 
   /**
@@ -70,7 +97,7 @@ public class User {
         .add(task.getId());
   }
 
-  // ------------------------   Getters and Setters ------------------------
+  // ------------------------  Getters and Setters  ------------------------
 
   public UUID getId() {
     return id;
@@ -88,6 +115,13 @@ public class User {
     return username;
   }
 
+  /**
+   * Sets the user's username after validating it. The username must not be null or blank. Leading
+   * and trailing whitespace, if any, is stripped before assigning it.
+   *
+   * @param username the username to be set for the user; must not be null or blank
+   * @throws IllegalArgumentException if the provided username is null or blank
+   */
   public void setUsername(String username) {
     if (username == null || username.isBlank()) {
       throw new IllegalArgumentException("Username cannot be blank!");
@@ -110,28 +144,5 @@ public class User {
    */
   public void setHashedPassword(String plainTextPassword) {
     this.hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
-  }
-
-  // ------------------------  Overrides  ------------------------
-
-  @Override
-  public String toString() {
-    return "User{id=%s, createdAt=%s, taskLists=%s, username='%s', password='%s'}"
-        .formatted(id, createdAt, taskMap, username, hashedPassword);
-  }
-
-  @Override
-  public final boolean equals(Object o) {
-    if (!(o instanceof User user)) {
-      return false;
-    }
-    return id.equals(user.id) && createdAt.equals(user.createdAt);
-  }
-
-  @Override
-  public int hashCode() {
-    int result = id.hashCode();
-    result = 31 * result + createdAt.hashCode();
-    return result;
   }
 }

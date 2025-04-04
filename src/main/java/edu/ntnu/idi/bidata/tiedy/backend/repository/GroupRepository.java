@@ -22,27 +22,29 @@ public interface GroupRepository extends DataRepository<Group> {
   List<Group> findAllByUserId(UUID userId);
 
   /**
-   * @param userId the ID of the user
-   * @return a list of groups where the user is an admin
+   * Retrieves a list of groups where the specified user is an admin.
+   *
+   * @param userId the UUID of the user whose admin groups are to be found
+   * @return a list of Group objects where the user is an admin
    */
   List<Group> findByAdmin(UUID userId);
 
   /**
-   * Adds a user to a group.
+   * Adds a user to a group with the specified membership and admin status.
    *
-   * @param groupId the ID of the group
-   * @param userId the ID of the user to add
-   * @param isAdmin whether the user should be an admin in the group
-   * @return true if the user was added to the group, false otherwise
+   * @param groupId the unique identifier of the group
+   * @param userId the unique identifier of the user to be added
+   * @param isAdmin a boolean indicating whether the user should be granted admin privileges
+   * @return true if the user was successfully added to the group, false otherwise
    */
   boolean addMember(UUID groupId, UUID userId, boolean isAdmin);
 
   /**
-   * Removes a user from a group
+   * Removes a user from a specified group.
    *
-   * @param groupId the ID of the group
-   * @param userId the ID of the user to remove
-   * @return true if the user was removed from the group, false otherwise
+   * @param groupId the unique identifier of the group from which the user will be removed
+   * @param userId the unique identifier of the user to be removed
+   * @return true if the user was successfully removed from the group, false otherwise
    */
   boolean removeMember(UUID groupId, UUID userId);
 

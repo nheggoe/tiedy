@@ -25,6 +25,12 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
     super(Task.class, Task::getId);
   }
 
+  /**
+   * Returns the singleton instance of the JsonTaskRepository. This implementation ensures that only
+   * one instance of JsonTaskRepository exists throughout the application lifecycle.
+   *
+   * @return the singleton instance of JsonTaskRepository
+   */
   public static synchronized JsonTaskRepository getInstance() {
     if (instance == null) {
       instance = new JsonTaskRepository();
@@ -33,8 +39,8 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
-  public List<Task> findByAssignedUser(UUID userID) {
-    return getAll().stream().filter(task -> task.getAssignedUsers().contains(userID)).toList();
+  public List<Task> findByAssignedUser(UUID userId) {
+    return getAll().stream().filter(task -> task.getAssignedUsers().contains(userId)).toList();
   }
 
   @Override

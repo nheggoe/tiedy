@@ -28,7 +28,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
   protected final Function<T, UUID> idExtractor;
 
   /**
-   * Constructs a new JsonRepository with the specified entity class and ID extractor function
+   * Constructs a new JsonRepository with the specified entity class and ID extractor function.
    *
    * @param entityClass the class of the entity type
    * @param idExtractor a function that extracts the UUID from an entity

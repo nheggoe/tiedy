@@ -9,6 +9,11 @@ package edu.ntnu.idi.bidata.tiedy.backend.io.json;
  * @version 2025.03.25
  */
 public class JsonException extends RuntimeException {
+  /**
+   * Constructs a new JsonException instance with the specified detail message.
+   *
+   * @param message the detail message providing further information about the exception
+   */
   public JsonException(String message) {
     super(message);
   }

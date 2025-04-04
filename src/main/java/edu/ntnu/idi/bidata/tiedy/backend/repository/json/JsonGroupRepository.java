@@ -6,6 +6,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * A repository for managing {@link Group} entities stored in a JSON-based persistence layer. This
+ * class extends the base functionality provided by {@link JsonRepository} and implements the
+ * domain-specific operations defined in the {@link GroupRepository} interface. It uses singleton
+ * design pattern to ensure only one instance of the repository is created and used.
+ *
+ * @author Nick Heggø
+ * @version 2025.04.04
+ * @see Group
+ * @see JsonRepository
+ * @see GroupRepository
+ */
 public class JsonGroupRepository extends JsonRepository<Group> implements GroupRepository {
 
   private static JsonGroupRepository instance;
@@ -14,6 +26,13 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
     super(Group.class, Group::getId);
   }
 
+  /**
+   * Retrieves the singleton instance of {@link JsonGroupRepository}. This ensures that only one
+   * instance of this repository is created and used throughout the application to manage {@link
+   * Group} entities stored in a JSON-based persistence layer.
+   *
+   * @return the singleton instance of {@link JsonGroupRepository}
+   */
   public static synchronized JsonGroupRepository getInstance() {
     if (instance == null) {
       instance = new JsonGroupRepository();

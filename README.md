@@ -7,30 +7,51 @@ Project Structure
 =================
 
 ```mermaid
-flowchart LR
-    subgraph JavaFX UI
-        FXMLViews[.fxml Files]
-        Controllers[Controllers]
+flowchart TB
+    subgraph Frontend
+        UI[JavaFX UI Components]
+        Controllers[UI Controllers]
+        Session[User Session]
     end
 
-    subgraph Backend Logic
-        Service[Application Logic]
-        JBCrypt[JBcrypt for Password Hashing]
-        Jackson[Jackson JSON APIs]
-        JSONFiles[(JSON File Storage)]
+    subgraph Backend
+        Facade[Data Access Facade]
+
+        subgraph "Repository Layer"
+            UserRepo[User Repository]
+            TaskRepo[Task Repository]
+            GroupRepo[Group Repository]
+        end
+
+        subgraph "Domain Model"
+            User[User & Level System]
+            Task[Task & Task Builder]
+            Group[Group]
+        end
+
+        subgraph "Persistence"
+            JsonService[JSON Service]
+            FileUtil[File Utilities]
+            Storage[(JSON Files)]
+        end
     end
 
-    FXMLViews --> Controllers
-    Controllers --> Service
-    Service --> JBCrypt
-    Service --> Jackson
-    Jackson --> JSONFiles
+    UI <--> Controllers
+    Controllers <--> Session
+    Controllers <--> Facade
+    Facade <--> UserRepo & TaskRepo & GroupRepo
+    UserRepo --> User
+    TaskRepo --> Task
+    GroupRepo --> Group
+    UserRepo & TaskRepo & GroupRepo <--> JsonService
+    JsonService <--> FileUtil
+    FileUtil <--> Storage
 ```
 
 Running the project
 ===================
 Java 21 is required to run this project.
-After ensuring the correct java version has been installed, run the following commands:
+After ensuring the correct java version has been installed, run the following command:
 
 ```bash
 ./mvnw -q

@@ -1,20 +1,13 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
+import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.logging.Logger;
-
-import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -32,7 +25,6 @@ import javafx.scene.control.TextField;
  * @version 2025.03.28
  */
 public class LoginController {
-  private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -46,9 +38,9 @@ public class LoginController {
   public void loginUser() {
     try {
       String username = usernameField.getText().strip();
-      String password = passwordField.getText().strip();
+      String plainTextPassword = passwordField.getText().strip();
 
-      validateCredential(username, password);
+      validateCredential(username, plainTextPassword);
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
@@ -69,40 +61,24 @@ public class LoginController {
     TiedyApp.getSceneManager().switchScene(SceneName.REGISTER);
   }
 
-  private void validateCredential(String username, String password) {
+  private void validateCredential(String username, String plainTextPassword) {
     try {
-      StringChecker.assertValidString(username, "username");
-      StringChecker.assertValidString(password, "password");
+      StringChecker.assertStringNotNullOrEmpty(username, "username");
+      StringChecker.assertStringNotNullOrEmpty(plainTextPassword, "password");
 
       User foundUser =
-          TiedyApp.getUserJsonService()
-              .loadJsonAsStream()
-              .filter(user -> Objects.equals(user.getUsername(), username))
-              .findFirst()
-              .orElseThrow(
-                  () -> new IllegalArgumentException("User \"%s\" not found!".formatted(username)));
+          DataAccessFacade.getInstance()
+              .authenticate(username, plainTextPassword)
+              .orElseThrow(() -> new IllegalStateException("Invalid username or password"));
 
-      boolean isCorrectPassword =
-          PasswordUtil.checkPassword(passwordField.getText(), foundUser.getPassword());
+      UserSession.createSession(foundUser);
 
-      LOGGER.info(() -> "Checking password for user " + foundUser.getUsername());
-      LOGGER.info(() -> "Provided password: " + password);
-      LOGGER.info(() -> "Stored password: " + foundUser.getPassword());
-      LOGGER.info(() -> "Password check result: " + isCorrectPassword);
+      JavaFxFactory.generateInfoAlert(
+              "Login successful", "You are now logged in as %s".formatted(username))
+          .showAndWait();
 
-      if (isCorrectPassword) {
-        UserSession.createSession(foundUser);
+      TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
 
-        JavaFxFactory.generateInfoAlert(
-                "Login successful", "You are now logged in as %s".formatted(username))
-            .showAndWait();
-
-        TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
-      } else {
-        JavaFxFactory.generateInfoAlert(
-                "Incorrect password", "Incorrect password, please try again")
-            .showAndWait();
-      }
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     } catch (IllegalStateException e) {
@@ -113,5 +89,5 @@ public class LoginController {
   @FXML
   public void exit() {
     TiedyApp.onClose();
-    }
+  }
 }

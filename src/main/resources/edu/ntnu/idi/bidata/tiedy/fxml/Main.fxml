@@ -11,7 +11,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
-
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MainController">
     <top>
         <AnchorPane prefHeight="113.0" prefWidth="589.0" style="-fx-background-color: #6495ed;" BorderPane.alignment="CENTER">
@@ -20,7 +19,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/HomeButton.png" />
+                         <Image url="@../images/buttons/HomeButton.png"/>
                      </image>
                   </ImageView>
                </graphic>
@@ -29,7 +28,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/StatsButton.png" />
+                         <Image url="@../images/buttons/StatsButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -37,7 +36,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/CreateTaskButton.png" />
+                         <Image url="@../images/buttons/CreateTaskButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -45,7 +44,7 @@
                <graphic>
                   <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/ProfileButton.png" />
+                         <Image url="@../images/buttons/ProfileButton.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
@@ -60,7 +59,7 @@
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/FilterButton.png" />
+                         <Image url="@../images/buttons/FilterButton.png"/>
                      </image>
                   </ImageView>
                </graphic>

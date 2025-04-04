@@ -1,13 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.task.TaskBuilder;
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.TaskBuilder;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -25,9 +27,6 @@ import javafx.scene.control.TextField;
  * @version 2025.03.28
  */
 public class TaskController {
-
-  private final JsonService<User> userService = new JsonService<>(User.class);
-  private final JsonService<Task> taskService = new JsonService<>(Task.class);
 
   @FXML private TextField taskName;
   @FXML private TextField taskDescription;
@@ -51,30 +50,24 @@ public class TaskController {
   @FXML
   public void submitTask() {
     try {
+      User user =
+          UserSession.getInstance()
+              .getCurrentUser()
+              .orElseThrow(() -> new IllegalStateException("No user is logged in"));
       Task task =
           taskBuilder
               .title(taskName.getText())
               .description(taskDescription.getText())
               .deadline(dueDate.getValue())
               .build();
-      boolean success = (task != null);
-      if (success) {
-        User user =
-            UserSession.getInstance()
-                .getCurrentUser()
-                .orElseThrow(() -> new IllegalStateException("No user is logged in"));
-        task.addAssignedUser(user);
-        user.addTaskDefaultSet(task);
 
-        userService.addItem(user);
-        taskService.addItem(task);
-
-        JavaFxFactory.generateInfoAlert("Successs", "Task added successfully").showAndWait();
-        TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
+      if (Objects.nonNull(TiedyApp.getDataAccessFacade().addTask(task))) {
+        TiedyApp.getDataAccessFacade().assignToUser(task.getId(), user.getId());
       } else {
         throw new IllegalArgumentException("Task could not be added");
       }
-    } catch (IllegalArgumentException e) {
+
+    } catch (IllegalArgumentException | DateTimeParseException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }

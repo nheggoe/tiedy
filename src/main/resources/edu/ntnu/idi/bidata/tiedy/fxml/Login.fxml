@@ -6,54 +6,65 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.LoginController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.LoginController">
     <children>
-        <AnchorPane layoutX="16.0" layoutY="161.0" prefHeight="206.0" prefWidth="566.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
+        <AnchorPane layoutX="16.0" layoutY="161.0" prefHeight="206.0" prefWidth="566.0"
+                    style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
             <children>
-                <TextField id="usernameField" fx:id="usernameField" layoutX="150.0" layoutY="33.0" prefHeight="33.0" prefWidth="160.0" promptText="Username" style="-fx-background-color: f5f5f5;" />
-                <PasswordField id="passwordField" fx:id="passwordField" layoutX="150.0" layoutY="79.0" prefHeight="33.0" prefWidth="160.0" promptText="Password" style="-fx-background-color: f5f5f5;" />
-                <Button id="loginButton" defaultButton="true" layoutX="110.0" layoutY="133.0" mnemonicParsing="false" onAction="#loginUser" style="-fx-background-color: #6495ed;">
-               <graphic>
-                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                         <Image url="@../../../../../../images/buttons/LoginButton_32px.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
-                <Button layoutX="360.0" layoutY="44.0" mnemonicParsing="false" onAction="#goToRegisterPage" prefHeight="23.0" prefWidth="144.0" style="-fx-background-color: #6495ed;">
-               <graphic>
-                   <ImageView fitHeight="64.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                         <Image url="@../../../../../../images/buttons/NoAccountSignUpHereButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic></Button>
-            <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../images/UsernameLabel.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../../images/PasswordLabel.png" />
-               </image>
-            </ImageView>
-            <Button layoutX="478.0" layoutY="153.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #6495ed;">
-               <graphic>
-                  <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../../../../../images/buttons/ExitButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
+                <TextField id="usernameField" fx:id="usernameField" layoutX="150.0" layoutY="33.0" prefHeight="33.0"
+                           prefWidth="160.0" promptText="Username" style="-fx-background-color: f5f5f5;"/>
+                <PasswordField id="passwordField" fx:id="passwordField" layoutX="150.0" layoutY="79.0" prefHeight="33.0"
+                               prefWidth="160.0" promptText="Password" style="-fx-background-color: f5f5f5;"/>
+                <Button id="loginButton" defaultButton="true" layoutX="110.0" layoutY="133.0" mnemonicParsing="false"
+                        onAction="#loginUser" style="-fx-background-color: #6495ed;">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/buttons/LoginButton_32px.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <Button layoutX="360.0" layoutY="44.0" mnemonicParsing="false" onAction="#goToRegisterPage"
+                        prefHeight="23.0" prefWidth="144.0" style="-fx-background-color: #6495ed;">
+                    <graphic>
+                        <ImageView fitHeight="64.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/buttons/NoAccountSignUpHereButton.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
+                <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="34.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../images/UsernameLabel.png"/>
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="64.0" fitWidth="128.0" layoutX="14.0" layoutY="80.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../images/PasswordLabel.png"/>
+                    </image>
+                </ImageView>
+                <Button layoutX="478.0" layoutY="153.0" mnemonicParsing="false" onAction="#exit"
+                        style="-fx-background-color: #6495ed;">
+                    <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../images/buttons/ExitButton.png"/>
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Button>
             </children>
         </AnchorPane>
-      <ImageView fitHeight="156.0" fitWidth="674.0" layoutX="-19.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../../../../images/TiedyLogoLarge.png" />
-         </image>
-      </ImageView>
+        <ImageView fitHeight="156.0" fitWidth="674.0" layoutX="-19.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../images/TiedyLogoLarge.png"/>
+            </image>
+        </ImageView>
     </children>
 </AnchorPane>

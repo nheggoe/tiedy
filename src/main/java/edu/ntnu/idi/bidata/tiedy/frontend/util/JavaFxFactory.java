@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import javafx.scene.control.Alert;
 
 /**

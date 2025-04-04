@@ -7,14 +7,13 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
     <children>
         <AnchorPane layoutX="142.0" layoutY="107.0" prefHeight="206.0" prefWidth="336.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
             <children>
             <ImageView fitHeight="32.0" fitWidth="128.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/UsernameLabel.png" />
+                   <Image url="@../images/UsernameLabel.png"/>
                </image>
             </ImageView>
                 <TextField id="usernameField" fx:id="usernameField" layoutX="154.0" layoutY="15.0" prefHeight="33.0" prefWidth="160.0" promptText="Username" style="-fx-background-color: #f5f5f5;" />
@@ -27,18 +26,18 @@
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../../images/buttons/SignupButton_32px.png" />
+                         <Image url="@../images/buttons/SignupButton_32px.png"/>
                      </image>
                   </ImageView>
                </graphic></Button>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/ConfirmPasswordLabel.png" />
+                   <Image url="@../images/ConfirmPasswordLabel.png"/>
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/PasswordLabel.png" />
+                   <Image url="@../images/PasswordLabel.png"/>
                </image>
             </ImageView>
             </children>
@@ -50,7 +49,7 @@
          <graphic>
             <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../../images/buttons/BackButton_32px.png" />
+                   <Image url="@../images/buttons/BackButton_32px.png"/>
                </image>
             </ImageView>
          </graphic></Button>

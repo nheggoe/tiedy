@@ -1,7 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util;
 
-import java.util.regex.Pattern;
-
 /**
  * Utility class for validating strings. This class is designed to ensure strings are neither null
  * nor empty. It is typically used to validate method parameters or other input values.
@@ -23,26 +21,12 @@ public class StringChecker {
    * @param fieldName the name of the string being validated, used in the error message
    * @throws IllegalArgumentException if the string is null or empty
    */
-  public static void assertValidString(String input, String fieldName) {
+  public static void assertStringNotNullOrEmpty(String input, String fieldName) {
     if (input == null) {
       throw new IllegalArgumentException(fieldName + " cannot be null!");
     }
     if (input.isBlank()) {
       throw new IllegalArgumentException(fieldName + " cannot be empty!");
-    }
-  }
-
-  /**
-   * Validates if the provided email address adheres to a standard email format.
-   *
-   * @param emailAddress the email address to be validated
-   */
-  private void validateEmailFormat(String emailAddress) {
-    String emailRegex =
-        "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
-    Pattern pattern = Pattern.compile(emailRegex);
-    if (emailAddress != null && !pattern.matcher(emailAddress).matches()) {
-      throw new IllegalArgumentException("Invalid email format");
     }
   }
 }

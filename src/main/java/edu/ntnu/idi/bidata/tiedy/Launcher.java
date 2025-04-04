@@ -37,7 +37,7 @@ public class Launcher {
   public static void main(String[] args) {
     try (ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor()) {
       scheduledService.scheduleWithFixedDelay(
-          DataAccessFacade.getInstance(), 10, 10, TimeUnit.SECONDS);
+          DataAccessFacade.getInstance(), 1, 1, TimeUnit.MINUTES);
       TiedyApp.main(args);
       DataAccessFacade.getInstance().run(); // save before shutdown
     }

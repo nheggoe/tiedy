@@ -1,11 +1,7 @@
-package edu.ntnu.idi.bidata.tiedy.backend.task;
+package edu.ntnu.idi.bidata.tiedy.backend.model.task;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.TaskBuilder;
 import java.time.LocalDate;
 import org.junit.jupiter.api.Test;
 

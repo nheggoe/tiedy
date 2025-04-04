@@ -93,8 +93,8 @@ public class DataAccessFacade implements Runnable {
     return userRepository.findByUsername(username);
   }
 
-  public Optional<User> authenticate(String username, String password) {
-    return userRepository.authenticate(username, password);
+  public Optional<User> authenticate(String username, String plainTextPassword) {
+    return userRepository.authenticate(username, plainTextPassword);
   }
 
   // ------------------------  Task Repository Methods  ------------------------

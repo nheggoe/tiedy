@@ -1,7 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
@@ -49,12 +48,8 @@ public class RegisterController {
         throw new IllegalArgumentException("Passwords do not match");
       }
 
-      PasswordUtil.validatePasswordStrength(password);
-      PasswordUtil.validatePasswordFormat(password);
-
       User registeredUser =
-          TiedyApp.getDataAccessFacade()
-              .registerUser(new User(username, PasswordUtil.hashPassword(password)));
+          TiedyApp.getDataAccessFacade().registerUser(new User(username, password));
 
       if (!Objects.nonNull(registeredUser)) {
         throw new IllegalArgumentException("Username already taken");

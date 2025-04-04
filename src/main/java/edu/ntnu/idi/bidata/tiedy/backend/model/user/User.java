@@ -21,7 +21,7 @@ public class User {
   private final Map<String, Set<UUID>> taskMap; // K: listName, V: Set<Task ID>
 
   private String username;
-  private String password;
+  private String hashedPassword;
 
   private User() {
     this.id = UUID.randomUUID();
@@ -29,10 +29,19 @@ public class User {
     this.taskMap = new HashMap<>();
   }
 
-  public User(String username, String password) {
+  /**
+   * Constructs a new User instance with the specified username and plaintext password. The username
+   * is validated and set, and the plaintext password is hashed and stored securely.
+   *
+   * @param username the username to be assigned to the user; must not be null or blank
+   * @param plainTextPassword the user's plaintext password to be hashed; must not be null or weak
+   * @throws IllegalArgumentException if the username is null or blank, or if the password is
+   *     invalid
+   */
+  public User(String username, String plainTextPassword) {
     this();
     setUsername(username);
-    setPassword(password);
+    setHashedPassword(plainTextPassword);
   }
 
   // ------------------------   Public Interface  ------------------------
@@ -86,14 +95,12 @@ public class User {
     this.username = username.strip();
   }
 
-  public String getPassword() {
-    return password;
+  public String getHashedPassword() {
+    return hashedPassword;
   }
 
-  public void setPassword(String password) {
-    PasswordUtil.validatePasswordStrength(password);
-    PasswordUtil.validatePasswordFormat(password);
-    this.password = password;
+  public void setHashedPassword(String plainTextPassword) {
+    this.hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
   }
 
   // ------------------------  Overrides  ------------------------
@@ -101,7 +108,7 @@ public class User {
   @Override
   public String toString() {
     return "User{id=%s, createdAt=%s, taskLists=%s, username='%s', password='%s'}"
-        .formatted(id, createdAt, taskMap, username, password);
+        .formatted(id, createdAt, taskMap, username, hashedPassword);
   }
 
   @Override

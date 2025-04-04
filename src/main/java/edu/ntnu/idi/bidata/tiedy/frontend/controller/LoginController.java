@@ -38,9 +38,9 @@ public class LoginController {
   public void loginUser() {
     try {
       String username = usernameField.getText().strip();
-      String password = passwordField.getText().strip();
+      String plainTextPassword = passwordField.getText().strip();
 
-      validateCredential(username, password);
+      validateCredential(username, plainTextPassword);
     } catch (IllegalArgumentException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
@@ -61,14 +61,14 @@ public class LoginController {
     TiedyApp.getSceneManager().switchScene(SceneName.REGISTER);
   }
 
-  private void validateCredential(String username, String password) {
+  private void validateCredential(String username, String plainTextPassword) {
     try {
       StringChecker.assertStringNotNullOrEmpty(username, "username");
-      StringChecker.assertStringNotNullOrEmpty(password, "password");
+      StringChecker.assertStringNotNullOrEmpty(plainTextPassword, "password");
 
       User foundUser =
           DataAccessFacade.getInstance()
-              .authenticate(username, password)
+              .authenticate(username, plainTextPassword)
               .orElseThrow(() -> new IllegalStateException("Invalid username or password"));
 
       UserSession.createSession(foundUser);

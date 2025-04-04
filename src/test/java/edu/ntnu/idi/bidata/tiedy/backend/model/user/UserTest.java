@@ -9,8 +9,12 @@ class UserTest {
   @Test
   void testUserWeakPassword() {
 
-    assertThrows(IllegalArgumentException.class, () -> new User("user123", "weak"));
-    assertDoesNotThrow(() -> new User("user1233", "StrongPassword"));
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new User("user123", "weak"),
+        "Weak password should throw exception");
+    assertDoesNotThrow(
+        () -> new User("user1233", "StrongPassword"), "Strong password should not throw exception");
   }
 
   @Test

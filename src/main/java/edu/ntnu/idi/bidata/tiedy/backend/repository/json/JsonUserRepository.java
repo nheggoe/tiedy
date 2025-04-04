@@ -29,8 +29,9 @@ public class JsonUserRepository extends JsonRepository<User> implements UserRepo
   }
 
   @Override
-  public Optional<User> authenticate(String username, String password) {
+  public Optional<User> authenticate(String username, String plainTextPassword) {
     return findByUsername(username)
-        .filter(user -> PasswordUtil.checkPassword(password, user.getPassword()));
+        .filter(
+            user -> PasswordUtil.isPasswordCorrect(plainTextPassword, user.getHashedPassword()));
   }
 }

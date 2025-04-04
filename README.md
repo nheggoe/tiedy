@@ -1,7 +1,7 @@
 Project Description
 ===================
-Tiedy is a to-do app aimed to solve the modern problem of time management.
-It is optimized for everyday home chore tasks, with a leveling system to novitiate users to compete on the leader board.
+Tiedy is a to-do app aimed at solving the modern problem of time management.
+It is optimized for everyday home chore tasks, with a leveling system to motivate users to compete on the leaderboard.
 
 Project Structure
 =================
@@ -48,10 +48,10 @@ flowchart TB
     FileUtil <--> Storage
 ```
 
-Running the project
+Running the Project
 ===================
 Java 21 is required to run this project.
-After ensuring the correct java version has been installed, run the following command:
+After ensuring the correct Java version has been installed, run the following command:
 
 ```bash
 ./mvnw -q

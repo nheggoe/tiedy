@@ -1,8 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import javafx.application.Application;
@@ -19,9 +17,8 @@ import javafx.stage.Stage;
  */
 public class TiedyApp extends Application {
 
+  private static final DataAccessFacade dataAccessFacade = DataAccessFacade.getInstance();
   private static SceneManager sceneManager;
-  private static final JsonService<User> USER_JSON_SERVICE = new JsonService<>(User.class);
-  private static final JsonService<Task> TASK_JSON_SERVICE = new JsonService<>(Task.class);
 
   /**
    * The main entry point for the JavaFX application. This method launches the JavaFX runtime and
@@ -43,12 +40,8 @@ public class TiedyApp extends Application {
     return sceneManager;
   }
 
-  public static JsonService<User> getUserJsonService() {
-    return USER_JSON_SERVICE;
-  }
-
-  public static JsonService<Task> getTaskJsonService() {
-    return TASK_JSON_SERVICE;
+  public static DataAccessFacade getDataAccessFacade() {
+    return dataAccessFacade;
   }
 
   @Override

@@ -42,7 +42,8 @@ public class RegisterController {
         throw new IllegalArgumentException("Username cannot be empty");
       }
       boolean isUserNameTaken =
-          TiedyApp.getUserJsonService()
+          TiedyApp.getDataAccessFacade()
+              .fi
               .loadJsonAsStream()
               .anyMatch(user -> Objects.equals(user.getUsername(), username));
       if (isUserNameTaken) {

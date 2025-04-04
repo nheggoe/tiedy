@@ -43,9 +43,15 @@ public class DataAccessFacade implements Runnable {
     return instance;
   }
 
+  // ------------------------   User Repository Methods ------------------------
+
   public Optional<User> authenticate(String username, String password) {
     return userRepository.authenticate(username, password);
   }
+
+  // ------------------------   Task Repository Methods ------------------------
+
+  // ------------------------   Group Repository Methods ------------------------
 
   @Override
   public void run() {

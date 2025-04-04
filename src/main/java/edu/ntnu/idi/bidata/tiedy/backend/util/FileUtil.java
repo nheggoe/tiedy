@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  */
 public class FileUtil {
 
-  private static final Logger LOGGER = Logger.getLogger(FileUtil.class.getName());
+  public static final Logger LOGGER = Logger.getLogger(FileUtil.class.getName());
 
   private FileUtil() {}
 

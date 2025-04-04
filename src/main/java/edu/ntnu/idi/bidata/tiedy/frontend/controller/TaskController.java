@@ -9,6 +9,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.time.format.DateTimeParseException;
+import java.util.Objects;
 import javafx.fxml.FXML;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -60,8 +61,11 @@ public class TaskController {
               .deadline(dueDate.getValue())
               .build();
 
-      TiedyApp.getDataAccessFacade().addTask(task);
-      TiedyApp.getDataAccessFacade().assignToUser(task.getId(), user.getId());
+      if (Objects.nonNull(TiedyApp.getDataAccessFacade().addTask(task))) {
+        TiedyApp.getDataAccessFacade().assignToUser(task.getId(), user.getId());
+      } else {
+        throw new IllegalArgumentException("Task could not be added");
+      }
 
     } catch (IllegalArgumentException | DateTimeParseException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();

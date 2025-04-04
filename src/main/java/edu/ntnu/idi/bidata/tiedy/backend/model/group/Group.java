@@ -52,8 +52,11 @@ public class Group {
 
   // ------------------------   Public Interface  ------------------------
 
-  public void addMember(User user, boolean isAdmin) {
-    members.put(user.getId(), isAdmin);
+  public boolean addMember(User user, boolean isAdmin) {
+    if (members.containsKey(user.getId())) {
+      return false;
+    }
+    return members.put(user.getId(), isAdmin) == null;
   }
 
   public void removeMember(User user) {}

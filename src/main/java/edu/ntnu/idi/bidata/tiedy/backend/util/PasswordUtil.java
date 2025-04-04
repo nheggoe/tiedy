@@ -56,7 +56,7 @@ public class PasswordUtil {
    *     characters
    */
   public static void validatePasswordFormat(String plainTextPassword) {
-    String invalidChars = "(){}[]|`¬¦!'£%^&*\"<>:;#~\\_-+=,@ \t";
+    String invalidChars = "(){}[]|`¬¦'£%^&*\"<>:;#~\\_-+=,@ \t";
     if (plainTextPassword == null || plainTextPassword.isBlank()) {
       throw new IllegalArgumentException("Password cannot be blank!");
     }

@@ -1,6 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import java.util.List;
 import java.util.UUID;
@@ -35,14 +36,14 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   @Override
   public boolean addMember(UUID groupId, UUID userId, boolean isAdmin) {
     Group foundGroup =
-        getAll().stream()
-            .filter(group -> group.getId().equals(groupId))
-            .findFirst()
-            .orElseThrow(() -> new IllegalStateException("Goup not found!"));
+        getAll().stream().filter(group -> group.getId().equals(groupId)).findFirst().orElse(null);
 
-    // FIXME require UserObject, get user repository?
-    // group.addMember();
-    return false;
+    if (foundGroup == null) {
+      return false;
+    }
+
+    User user = JsonUserRepository.getInstance().getById(userId).orElseThrow();
+    return foundGroup.addMember(user, isAdmin);
   }
 
   @Override

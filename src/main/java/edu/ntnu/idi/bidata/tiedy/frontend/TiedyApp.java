@@ -14,8 +14,8 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.util.Optional;
+import java.util.logging.Logger;
 
-import static edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil.LOGGER;
 
 /**
  * MainApplication serves as the entry point for a JavaFX application. It initializes the JavaFX
@@ -26,7 +26,7 @@ import static edu.ntnu.idi.bidata.tiedy.backend.util.FileUtil.LOGGER;
  * @version 2025.03.25
  */
 public class TiedyApp extends Application {
-
+  private static final Logger LOGGER = Logger.getLogger(TiedyApp.class.getName());
   private static SceneManager sceneManager;
   private static final JsonService<User> USER_JSON_SERVICE = new JsonService<>(User.class);
   private static final JsonService<Task> TASK_JSON_SERVICE = new JsonService<>(Task.class);

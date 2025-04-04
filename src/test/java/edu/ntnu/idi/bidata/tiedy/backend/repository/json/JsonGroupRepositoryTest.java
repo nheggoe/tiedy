@@ -40,7 +40,7 @@ class JsonGroupRepositoryTest {
   }
 
   private Group createExampleGroup(String name, String description, UUID userId, boolean isAdmin) {
-    Group group = new Group(name, description, createExampleUser());
+    Group group = new Group(name, description, createExampleUser().getId());
     group.getMembers().put(userId, isAdmin);
     return group;
   }

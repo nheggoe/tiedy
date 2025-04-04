@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class JsonGroupRepository extends JsonRepository<Group> implements GroupRepository {
@@ -42,17 +42,31 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
       return false;
     }
 
-    User user = JsonUserRepository.getInstance().getById(userId).orElseThrow();
-    return foundGroup.addMember(user, isAdmin);
+    return foundGroup.addMember(userId, isAdmin);
   }
 
   @Override
   public boolean removeMember(UUID groupId, UUID userId) {
-    return false;
+    Group group = getById(groupId).orElse(null);
+
+    if (Objects.isNull(group)) {
+      return false;
+    }
+    group.removeMember(userId);
+    return true;
   }
 
   @Override
   public boolean updateMemberAdminStatus(UUID groupId, UUID userId, boolean isAdmin) {
-    return false;
+    if (Objects.isNull(groupId) || Objects.isNull(userId)) {
+      return false;
+    }
+
+    Group group = getById(groupId).orElse(null);
+
+    if (Objects.isNull(group)) {
+      return false;
+    }
+    return group.updateMemberPermission(userId, isAdmin);
   }
 }

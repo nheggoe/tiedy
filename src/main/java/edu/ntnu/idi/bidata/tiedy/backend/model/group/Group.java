@@ -1,9 +1,9 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.group;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -38,28 +38,39 @@ public class Group {
   }
 
   /**
-   * Creates an empty instance of a group
+   * Constructs a new Group instance with the specified name, description, and an initial member.
    *
-   * @param name
-   * @param description
+   * @param name the name of the group, must not be null or blank
+   * @param description the description of the group, if null, it will be set to an empty string
+   * @param userId the UUID of the initial member to be added to the group as an admin
    */
-  public Group(String name, String description, User user) {
+  public Group(String name, String description, UUID userId) {
     this();
     setName(name);
     setDescription(description);
-    addMember(user, true);
+    addMember(userId, true);
   }
 
   // ------------------------   Public Interface  ------------------------
 
-  public boolean addMember(User user, boolean isAdmin) {
-    if (members.containsKey(user.getId())) {
+  public boolean addMember(UUID userId, boolean isAdmin) {
+    if (members.containsKey(userId)) {
       return false;
     }
-    return members.put(user.getId(), isAdmin) == null;
+    return members.put(userId, isAdmin) == null;
   }
 
-  public void removeMember(User user) {}
+  public void removeMember(UUID userId) {
+    members.remove(userId);
+  }
+
+  public boolean updateMemberPermission(UUID userId, boolean isAdmin) {
+    if (!members.containsKey(userId)) {
+      return false;
+    }
+
+    return Objects.nonNull(members.replace(userId, isAdmin));
+  }
 
   // ------------------------   Getters and Setters ------------------------
 

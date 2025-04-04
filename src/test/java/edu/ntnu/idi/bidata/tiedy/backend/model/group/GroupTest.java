@@ -12,7 +12,7 @@ class GroupTest {
   @Test
   void testGetName() {
     User user = new User("John Doe", "safePassword");
-    Group group = new Group("Test Group", "This is a test group", user);
+    Group group = new Group("Test Group", "This is a test group", user.getId());
 
     assertEquals("Test Group", group.getName());
   }
@@ -20,10 +20,10 @@ class GroupTest {
   @Test
   void testAddMember() {
     User user = new User("John Doe", "safePassword");
-    Group group = new Group("Test Group", "This is a test group", user);
+    Group group = new Group("Test Group", "This is a test group", user.getId());
 
     User newUser = new User("Jane Doe", "securePassword");
-    group.addMember(newUser, false);
+    group.addMember(newUser.getId(), false);
 
     assertTrue(group.getMembers().containsKey(newUser.getId()));
     assertFalse(group.getMembers().get(newUser.getId()));
@@ -32,10 +32,10 @@ class GroupTest {
   @Test
   void testAddMemberWithAdminStatus() {
     User user = new User("John Doe", "safePassword");
-    Group group = new Group("Test Group", "This is a test group", user);
+    Group group = new Group("Test Group", "This is a test group", user.getId());
 
     User newAdmin = new User("Admin User", "strongPassword");
-    group.addMember(newAdmin, true);
+    group.addMember(newAdmin.getId(), true);
 
     Map<UUID, Boolean> members = group.getMembers();
     assertTrue(members.containsKey(newAdmin.getId()));

@@ -55,9 +55,11 @@ public class ProfileController {
             .getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user is logged in"));
 
-    TiedyApp.getDataAccessFacade().findByStatus(Status.CLOSED).stream()
-        .filter(task -> task.getAssignedUsers().contains(user.getId()))
-        .count();
+    tasksLabel.setText(
+        String.valueOf(
+            TiedyApp.getDataAccessFacade().findByStatus(Status.CLOSED).stream()
+                .filter(task -> task.getAssignedUsers().contains(user.getId()))
+                .count()));
   }
 
   /**

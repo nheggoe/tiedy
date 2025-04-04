@@ -28,20 +28,11 @@ public class Group {
     this.members = new HashMap<>();
   }
 
-  private Group(UUID id, LocalDateTime createdAt, Map<UUID, Boolean> members) {
-    if (id == null || createdAt == null || members == null) {
-      throw new IllegalArgumentException("Group ID, creation time, and members map cannot be null");
-    }
-    this.id = id;
-    this.createdAt = createdAt;
-    this.members = members;
-  }
-
   /**
    * Constructs a new Group instance with the specified name, description, and an initial member.
    *
-   * @param name the name of the group, must not be null or blank
-   * @param description the description of the group, if null, it will be set to an empty string
+   * @param name the name of the group must not be null or blank
+   * @param description in the description of the group, if null, it will be set to an empty string
    * @param userId the UUID of the initial member to be added to the group as an admin
    */
   public Group(String name, String description, UUID userId) {

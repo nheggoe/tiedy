@@ -10,6 +10,17 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * The base JSON implementation of the Repository design pattern, it includes all the necessary
+ * methods to work with any concrete type. All JSON repositories should extend this class.
+ *
+ * @see JsonGroupRepository
+ * @see JsonUserRepository
+ * @see JsonTaskRepository
+ * @author Nick Heggø
+ * @version 2025.04.04
+ * @param <T> the concrete type the Repository will be working with.
+ */
 public abstract class JsonRepository<T> implements DataRepository<T> {
 
   protected final JsonService<T> jsonService;

@@ -29,7 +29,7 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   @Override
   public List<Group> findByAdmin(UUID userId) {
     return findAllByUserId(userId).stream()
-        .dropWhile(group -> !group.getMembers().get(userId)) //  returns true if isAdmin
+        .dropWhile(group -> !group.getMembers().get(userId)) // returns true if isAdmin
         .toList();
   }
 
@@ -48,7 +48,6 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   @Override
   public boolean removeMember(UUID groupId, UUID userId) {
     Group group = getById(groupId).orElse(null);
-
     if (Objects.isNull(group)) {
       return false;
     }

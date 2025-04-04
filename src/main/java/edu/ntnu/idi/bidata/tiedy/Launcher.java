@@ -1,6 +1,10 @@
 package edu.ntnu.idi.bidata.tiedy;
 
+import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -31,11 +35,11 @@ public class Launcher {
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    // try (ScheduledExecutorService scheduledService =
-    // Executors.newSingleThreadScheduledExecutor()) {
-    //   scheduledService.scheduleWithFixedDelay(
-    //       DataAccessFacade.getInstance(), 10, 10, TimeUnit.SECONDS);
-    TiedyApp.main(args);
-    // }
+    try (ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor()) {
+      scheduledService.scheduleWithFixedDelay(
+          DataAccessFacade.getInstance(), 10, 10, TimeUnit.SECONDS);
+      TiedyApp.main(args);
+      DataAccessFacade.getInstance().run(); // save before shutdown
+    }
   }
 }

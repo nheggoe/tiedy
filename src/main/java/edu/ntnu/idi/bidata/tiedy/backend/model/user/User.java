@@ -99,6 +99,15 @@ public class User {
     return hashedPassword;
   }
 
+  /**
+   * Sets the user's hashed password by securely hashing the provided plain-text password using the
+   * {@code PasswordUtil.hashPassword} method. The hashed password is then stored in the {@code
+   * hashedPassword} field of the user.
+   *
+   * @param plainTextPassword the plain-text password to be hashed and stored; must not be null,
+   *     blank, or fail validation
+   * @throws IllegalArgumentException if the provided password is null, blank, or invalid
+   */
   public void setHashedPassword(String plainTextPassword) {
     this.hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
   }

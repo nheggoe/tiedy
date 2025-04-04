@@ -6,8 +6,17 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
+/**
+ * JSON powered implementation of the TaskRepository, Inherit all basic operations from the {@link
+ * JsonRepository} class.
+ *
+ * @author Nick Heggø
+ * @version 2025.04.04
+ * @see JsonRepository
+ */
 public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepository {
 
   private static JsonTaskRepository instance;
@@ -30,26 +39,34 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
 
   @Override
   public List<Task> findByStatus(Status status) {
-    return List.of();
+    return getAll().stream().filter(task -> task.getStatus() == status).toList();
   }
 
   @Override
   public List<Task> findByPriority(Priority priority) {
-    return List.of();
+    return getAll().stream().filter(task -> task.getPriority() == priority).toList();
   }
 
   @Override
   public List<Task> findByDeadLineBefore(LocalDate date) {
-    return List.of();
+    return getAll().stream().filter(task -> task.getDeadline().isBefore(date)).toList();
   }
 
   @Override
   public boolean assignToUser(UUID taskId, UUID userId) {
-    return false;
+    Task task = getById(taskId).orElse(null);
+    if (Objects.isNull(task)) {
+      return false;
+    }
+    return task.getAssignedUsers().add(userId);
   }
 
   @Override
   public boolean unassignFromUser(UUID taskId, UUID userId) {
-    return false;
+    Task task = getById(taskId).orElse(null);
+    if (Objects.isNull(task)) {
+      return false;
+    }
+    return task.getAssignedUsers().remove(userId);
   }
 }

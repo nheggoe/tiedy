@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 public interface DataRepository<T> {
 
   /**
-   * Loads all entities from the data source
+   * Loads all entities from the data source.
    *
    * @return a stream of all entities
    */
@@ -66,6 +66,6 @@ public interface DataRepository<T> {
   /** Deserializing back to source. */
   void saveChanges();
 
-  /** Serialize from source */
+  /** Serialize from source. */
   void refresh();
 }

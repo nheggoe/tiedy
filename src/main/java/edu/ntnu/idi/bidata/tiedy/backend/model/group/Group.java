@@ -44,6 +44,15 @@ public class Group {
 
   // ------------------------   Public Interface  ------------------------
 
+  /**
+   * Adds a member to the group with the specified UUID and role (admin or non-admin). If the member
+   * already exists in the group, the method does not add them again.
+   *
+   * @param userId the UUID of the user to be added to the group
+   * @param isAdmin a boolean indicating whether the user should have admin privileges
+   * @return true if the member was successfully added to the group, false if the user already
+   *     exists
+   */
   public boolean addMember(UUID userId, boolean isAdmin) {
     if (members.containsKey(userId)) {
       return false;

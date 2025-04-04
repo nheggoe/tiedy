@@ -52,12 +52,12 @@ public class CustomGson {
 
   /**
    * Adapter for {@link LocalDateTime} type, which is used as the time stamp for all instances that
-   * will be stored in the JSON file in this application
+   * will be stored in the JSON file in this application.
    *
    * <p>It must be registered with the GSON instance, or else the serialization of objects
-   * containing {@link LocalDateTime} will fail
+   * containing {@link LocalDateTime} will fail.
    *
-   * <p>Modern Java time package does not allow to be accessed via reflection
+   * <p>Modern Java time package does not allow to be accessed via reflection.
    */
   private static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
     private final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
@@ -82,12 +82,12 @@ public class CustomGson {
   }
 
   /**
-   * Adapter for {@link LocalDate} type used as the {@code deadLine} in the {@link Task} class
+   * Adapter for {@link LocalDate} type used as the {@code deadLine} in the {@link Task} class.
    *
    * <p>It must be registered with the GSON instance, or else the serialization of objects
-   * containing {@link LocalDate} will fail
+   * containing {@link LocalDate} will fail.
    *
-   * <p>Modern Java time package does not allow to be accessed via reflection
+   * <p>Modern Java time package does not allow to be accessed via reflection.
    */
   private static class LocalDateAdapter
       implements JsonSerializer<LocalDate>, JsonDeserializer<LocalDate> {

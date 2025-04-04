@@ -39,7 +39,7 @@
                   <Image url="@../../../../../../images/PasswordLabel.png" />
                </image>
             </ImageView>
-            <Button layoutX="478.0" layoutY="153.0" mnemonicParsing="false" style="-fx-background-color: #6495ed;">
+            <Button layoutX="478.0" layoutY="153.0" mnemonicParsing="false" onAction="#exit" style="-fx-background-color: #6495ed;">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>

@@ -8,8 +8,11 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -103,6 +106,26 @@ public class LoginController {
     } catch (IllegalStateException e) {
       JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
+  }
+
+  @FXML
+  public void exit() {
+    try {
+      Alert exitConfirmation = JavaFxFactory.generateConfirmationAlert("Exit","Are you sure you want to exit the application?");
+      Optional<ButtonType> result = exitConfirmation.showAndWait();
+      if(result.isPresent() && result.get() == ButtonType.OK) {
+        LOGGER.info("Thank you for using Tiedy!");
+        LOGGER.info("Exiting program...");
+        System.exit(0);
+      }
+      else {
+        exitConfirmation.close();
+      }
+
+    }
+   catch (IllegalStateException e) {
+    JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
+  }
   }
 
 }

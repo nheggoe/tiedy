@@ -85,4 +85,9 @@ public class LoginController {
       JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
+
+  @FXML
+  public void exit() {
+    TiedyApp.onClose();
+    }
 }

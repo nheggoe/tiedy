@@ -89,4 +89,11 @@ public class JavaFxFactory {
             task.getDeadline().toString()));
     return dialog;
   }
+
+  public static Alert generateConfirmationAlert(String title, String message) {
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    return alert;
+  }
 }

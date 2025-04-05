@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
@@ -13,8 +12,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -39,12 +36,8 @@ public class MainController {
   @FXML private Label info;
   @FXML private Button newTaskButton;
 
-  @FXML private MenuButton taskFilter;
-  @FXML private MenuItem allTasks;
-  @FXML private MenuItem openTasks;
-  @FXML private MenuItem inProgressTasks;
-  @FXML private MenuItem postponedTasks;
-  @FXML private MenuItem closedTasks;
+  // Reference to the included MenuBar's controller
+  @FXML private MenuBarController menuBarController;
 
   /**
    * Initializes the main scene by checking the current user session and updating the view
@@ -67,31 +60,13 @@ public class MainController {
             .getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
+    // Initialize tasks with all tasks for the current user
     updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
 
-    allTasks.setOnAction(
-        e -> updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId())));
-
-    openTasks.setOnAction(
-        e ->
-            updateFlowPane(
-                TiedyApp.getDataAccessFacade().getTasksByUserAndStatus(user.getId(), Status.OPEN)));
-
-    inProgressTasks.setOnAction(
-        e ->
-            updateFlowPane(
-                TiedyApp.getDataAccessFacade()
-                    .getTasksByUserAndStatus(user.getId(), Status.IN_PROGRESS)));
-    closedTasks.setOnAction(
-        e ->
-            updateFlowPane(
-                TiedyApp.getDataAccessFacade()
-                    .getTasksByUserAndStatus(user.getId(), Status.CLOSED)));
-    postponedTasks.setOnAction(
-        e ->
-            updateFlowPane(
-                TiedyApp.getDataAccessFacade()
-                    .getTasksByUserAndStatus(user.getId(), Status.POSTPONED)));
+    // Set up the menu bar to call updateFlowPane when filters are selected
+    if (menuBarController != null) {
+      menuBarController.setTaskUpdateCallback(this::updateFlowPane);
+    }
   }
 
   private void updateFlowPane(Collection<Task> tasks) {
@@ -99,19 +74,6 @@ public class MainController {
     tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
 
-  /**
-   * Handles the event triggered by pressing the profile button in the main scene.
-   *
-   * <p>This method switches the current scene of the application to the profile scene. It uses the
-   * SceneManager to load the PROFILE scene from its associated FXML file, updating the
-   * application's UI to display the profile interface.
-   *
-   * <p>This method is typically invoked when a user attempts to navigate to the profile view.
-   */
-  @FXML
-  public void onProfileButtonPress() {
-    TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
-  }
 
   /**
    * Navigates the application to the task creation scene.

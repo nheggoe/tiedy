@@ -9,7 +9,8 @@
 <?import javafx.scene.text.Font?>
 <AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
     <children>
-        <AnchorPane layoutX="142.0" layoutY="107.0" prefHeight="206.0" prefWidth="336.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
+        <AnchorPane AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="107.0"
+                    AnchorPane.bottomAnchor="87.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
             <children>
             <ImageView fitHeight="32.0" fitWidth="128.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -42,7 +43,8 @@
             </ImageView>
             </children>
         </AnchorPane>
-        <Button layoutX="502.0" layoutY="14.0" mnemonicParsing="false" onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" style="-fx-background-color: fff8dc;">
+        <Button AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" mnemonicParsing="false"
+                onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" style="-fx-background-color: fff8dc;">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

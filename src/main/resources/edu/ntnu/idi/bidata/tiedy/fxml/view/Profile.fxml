@@ -6,9 +6,12 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.ProfileController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.ProfileController">
    <children>
-      <Button layoutX="502.0" layoutY="14.0" mnemonicParsing="false" onAction="#onBackButtonPress" prefHeight="38.0" prefWidth="62.0" style="-fx-background-color: fff8dc;">
+      <Button AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" mnemonicParsing="false"
+              onAction="#onBackButtonPress" prefHeight="38.0" prefWidth="62.0" style="-fx-background-color: fff8dc;">
          <font>
             <Font name="System Bold" size="15.0" />
          </font>
@@ -20,7 +23,8 @@
             </ImageView>
          </graphic>
       </Button>
-      <AnchorPane layoutX="161.0" layoutY="79.0" prefHeight="221.0" prefWidth="278.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
+      <AnchorPane AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="161.0" AnchorPane.topAnchor="79.0"
+                  AnchorPane.bottomAnchor="100.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
          <children>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="9.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true">
                <image>

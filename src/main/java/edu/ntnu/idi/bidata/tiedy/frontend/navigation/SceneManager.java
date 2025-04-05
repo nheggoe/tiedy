@@ -48,7 +48,8 @@ public class SceneManager {
   public void switchScene(SceneName sceneName) {
     try {
       Parent root = FXMLLoader.load(sceneName.getSceneURL());
-      primaryStage.setScene(new Scene(root));
+      Scene scene = new Scene(root, 700, 500);
+      primaryStage.setScene(scene);
       primaryStage.show();
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load FXML file: " + sceneName.getSceneURL(), e);

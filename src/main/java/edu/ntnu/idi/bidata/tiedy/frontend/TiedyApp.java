@@ -7,7 +7,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -19,7 +18,7 @@ import javafx.stage.Stage;
  * class from the JavaFX framework, providing the necessary lifecycle methods such as start.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version
  */
 public class TiedyApp extends Application {
 
@@ -57,7 +56,9 @@ public class TiedyApp extends Application {
     primaryStage
         .getIcons()
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
-    primaryStage.setResizable(false);
+    primaryStage.setResizable(true);
+    primaryStage.setMinWidth(700);
+    primaryStage.setMinHeight(500);
     primaryStage.setOnCloseRequest(event -> onClose());
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
@@ -74,7 +75,6 @@ public class TiedyApp extends Application {
       if (result.isPresent() && result.get() == ButtonType.OK) {
         LOGGER.info("Thank you for using Tiedy!");
         LOGGER.info("Exiting program...");
-        Platform.exit();
       } else {
         exitConfirmation.close();
       }

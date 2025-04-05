@@ -44,10 +44,10 @@
         <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
                 onAction="#onGroupButtonPress" styleClass="menu-bar-item" stylesheets="@../../css/style.css">
             <graphic>
-                <ImageView fx:id="groupButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
+                <ImageView fx:id="groupButton" fitHeight="85.0" fitWidth="88.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/HomeButton.png"/>
+                        <Image url="@../../images/icons/groupIcon.png"/>
                     </image>
                 </ImageView>
             </graphic>

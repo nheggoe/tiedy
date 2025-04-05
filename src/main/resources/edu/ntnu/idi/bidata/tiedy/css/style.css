@@ -2,8 +2,8 @@
     -fx-background-color: #fff8dc;
     -fx-pref-width: 1133px;
     -fx-pref-height: 744px;
-    -wigth: 1133px;
-    -height: 744px;
+    -fx-min-width: 700px;
+    -fx-min-height: 500px;
 }
 
 .menu-bar {
@@ -35,4 +35,34 @@
     -fx-min-height: 64px;
     -fx-max-width: 120px;
     -fx-max-height: 120px;
+}
+
+.login-logo {
+    -fx-alignment: center;
+    -fx-min-height: 120px;
+    -fx-pref-height: 150px;
+}
+
+.login-container {
+    -fx-background-color: #6495ed;
+    -fx-background-radius: 15;
+    -fx-alignment: center;
+    -fx-spacing: 20;
+    -fx-max-width: 550px;
+    -fx-min-width: 450px;
+}
+
+.login-field-container {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+}
+
+.login-field {
+    -fx-background-color: f5f5f5;
+    -fx-min-width: 160;
+    -fx-pref-width: 200;
+}
+
+.transparent-button {
+    -fx-background-color: transparent;
 }

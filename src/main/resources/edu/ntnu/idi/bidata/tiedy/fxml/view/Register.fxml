@@ -7,20 +7,26 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: fff8dc;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@../../css/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
     <children>
-        <AnchorPane AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0" AnchorPane.topAnchor="107.0"
-                    AnchorPane.bottomAnchor="87.0" style="-fx-background-color: #6495ed; -fx-background-radius: 15;">
+        <AnchorPane styleClass="container" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0"
+                    AnchorPane.topAnchor="107.0" AnchorPane.bottomAnchor="87.0">
             <children>
             <ImageView fitHeight="32.0" fitWidth="128.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
                    <Image url="@../../images/lables/UsernameLabel.png"/>
                </image>
             </ImageView>
-                <TextField id="usernameField" fx:id="usernameField" layoutX="154.0" layoutY="15.0" prefHeight="33.0" prefWidth="160.0" promptText="Username" style="-fx-background-color: #f5f5f5;" />
-                <PasswordField id="passwordField" fx:id="passwordField" layoutX="154.0" layoutY="71.0" prefHeight="33.0" prefWidth="160.0" promptText="Password" style="-fx-background-color: #f5f5f5;" />
-                <PasswordField id="passwordField" fx:id="passwordRepeatField" layoutX="154.0" layoutY="124.0" prefHeight="33.0" prefWidth="160.0" promptText="Confirm password" style="-fx-background-color: #f5f5f5;" />
-                <Button id="loginButton" defaultButton="true" layoutX="130.0" layoutY="165.0" mnemonicParsing="false" onAction="#registerUser" prefHeight="33.0" prefWidth="76.0" style="-fx-background-color: #6495ed;">
+                <TextField id="usernameField" fx:id="usernameField" layoutX="154.0" layoutY="15.0"
+                           promptText="Username" styleClass="text-field"/>
+                <PasswordField id="passwordField" fx:id="passwordField" layoutX="154.0" layoutY="71.0"
+                               promptText="Password" styleClass="text-field"/>
+                <PasswordField id="passwordField" fx:id="passwordRepeatField" layoutX="154.0" layoutY="124.0"
+                               promptText="Confirm password" styleClass="text-field"/>
+                <Button id="loginButton" defaultButton="true" layoutX="130.0" layoutY="165.0" mnemonicParsing="false"
+                        onAction="#registerUser" prefHeight="33.0" prefWidth="76.0" styleClass="standard-button">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -44,7 +50,7 @@
             </children>
         </AnchorPane>
         <Button AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" mnemonicParsing="false"
-                onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" style="-fx-background-color: fff8dc;">
+                onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" styleClass="back-button">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>

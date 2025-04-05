@@ -12,7 +12,7 @@
     <!-- Left aligned section -->
     <HBox fx:id="leftSection" styleClass="menu-bar-left-section" HBox.hgrow="ALWAYS">
         <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress"
-                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+                styleClass="menu-bar-item">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -21,8 +21,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress" styleClass="menu-bar-item"
-                stylesheets="@../../css/style.css">
+        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress" styleClass="menu-bar-item">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -31,8 +30,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress" styleClass="menu-bar-item"
-                stylesheets="@../../css/style.css">
+        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress" styleClass="menu-bar-item">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -42,7 +40,7 @@
             </graphic>
         </Button>
         <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
-                onAction="#onGroupButtonPress" styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+                onAction="#onGroupButtonPress" styleClass="menu-bar-item">
             <graphic>
                 <ImageView fx:id="groupButton" fitHeight="85.0" fitWidth="88.0" pickOnBounds="true"
                            preserveRatio="true">
@@ -52,8 +50,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onProfileButtonPress" styleClass="menu-bar-item"
-                stylesheets="@../../css/style.css">
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress" styleClass="menu-bar-item">
             <graphic>
                 <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
                            preserveRatio="true">
@@ -67,7 +64,7 @@
 
     <!-- Right aligned section -->
     <HBox fx:id="rightSection" styleClass="menu-bar-right-section">
-        <MenuButton fx:id="taskFilter" mnemonicParsing="false" style="-fx-background-color: fff8dc;">
+        <MenuButton fx:id="taskFilter" mnemonicParsing="false" styleClass="back-button">
             <items>
                 <MenuItem fx:id="allTasks" mnemonicParsing="false" text="All"/>
                 <MenuItem fx:id="openTasks" mnemonicParsing="false" text="Open"/>

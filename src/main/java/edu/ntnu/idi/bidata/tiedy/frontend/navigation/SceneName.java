@@ -20,10 +20,10 @@ import java.nio.file.Path;
  */
 public enum SceneName {
   LOGIN("Login"),
-  MAIN("Main"),
+  MAIN("MainView"),
   REGISTER("Register"),
   TASK("Task"),
-  PROFILE("Profile");
+  PROFILE("ProfileView");
 
   private static final String FXML_PATH =
       "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/view/%s.fxml";

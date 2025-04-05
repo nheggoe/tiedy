@@ -64,7 +64,7 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
     if (Objects.isNull(task)) {
       return false;
     }
-    return task.getAssignedUsers().add(userId);
+    return task.assignUser(userId);
   }
 
   @Override

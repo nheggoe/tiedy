@@ -97,6 +97,13 @@ public class Task {
     return Set.copyOf(assignedUsers);
   }
 
+  public boolean assignUser(UUID userId) {
+    if (assignedUsers.contains(userId)) {
+      return false;
+    }
+    return assignedUsers.add(userId);
+  }
+
   public String getTitle() {
     return title;
   }

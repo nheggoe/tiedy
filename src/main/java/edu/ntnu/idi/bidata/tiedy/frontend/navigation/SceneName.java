@@ -26,7 +26,7 @@ public enum SceneName {
   PROFILE("Profile");
 
   private static final String FXML_PATH =
-      "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/%s.fxml";
+      "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/view/%s.fxml";
 
   private final URL path;
 
@@ -43,7 +43,7 @@ public enum SceneName {
    *
    * @return the URL path to
    */
-  public URL getPath() {
+  public URL getSceneURL() {
     return path;
   }
 }

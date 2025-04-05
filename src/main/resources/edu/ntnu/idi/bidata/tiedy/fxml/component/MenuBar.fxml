@@ -6,73 +6,71 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<HBox prefHeight="146.0" prefWidth="1133.0" styleClass="menu-bar" stylesheets="@../../css/style.css"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <children>
-        <HBox prefHeight="123.0" prefWidth="354.0" styleClass="menu-bar">
-            <children>
-                <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="64.0"
-                        prefWidth="64.0" styleClass="menu-bar-item" stylesheets="@../../css/style.css">
-                    <graphic>
-                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/buttons/HomeButton.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button mnemonicParsing="false" prefHeight="64.0" prefWidth="64.0" styleClass="menu-bar-item"
-                        stylesheets="@../../css/style.css">
-                    <graphic>
-                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/buttons/StatsButton.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#addTask" prefHeight="64.0"
-                        prefWidth="64.0" styleClass="menu-bar-item" stylesheets="@../../css/style.css">
-                    <graphic>
-                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/buttons/CreateTaskButton.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-                <Button mnemonicParsing="false" onAction="#onProfileButtonPress" prefHeight="64.0" prefWidth="64.0"
-                        styleClass="menu-bar-item" stylesheets="@../../css/style.css">
-                    <graphic>
-                        <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/buttons/ProfileButton.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </Button>
-            </children>
-        </HBox>
-        <HBox prefHeight="100.0" prefWidth="200.0" styleClass="menu-bar-item">
-            <children>
-                <MenuButton fx:id="taskFilter" mnemonicParsing="false" prefHeight="73.0" prefWidth="99.0"
-                            style="-fx-background-color: fff8dc;">
-                    <items>
-                        <MenuItem fx:id="allTasks" mnemonicParsing="false" text="All"/>
-                        <MenuItem fx:id="openTasks" mnemonicParsing="false" text="Open"/>
-                        <MenuItem fx:id="inProgressTasks" mnemonicParsing="false" text="In Progress"/>
-                        <MenuItem fx:id="postponedTasks" mnemonicParsing="false" text="Postponed"/>
-                        <MenuItem fx:id="closedTasks" mnemonicParsing="false" text="Closed"/>
-                    </items>
-                    <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                            <image>
-                                <Image url="@../../images/buttons/FilterButton.png"/>
-                            </image>
-                        </ImageView>
-                    </graphic>
-                </MenuButton>
-            </children>
-        </HBox>
-    </children>
+<HBox fx:id="menuBar" styleClass="menu-bar" stylesheets="@../../css/style.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MenuBarController">
+    <!-- Left aligned section -->
+    <HBox fx:id="leftSection" styleClass="menu-bar-left-section" HBox.hgrow="ALWAYS">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/HomeButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" styleClass="menu-bar-item"
+                stylesheets="@../../css/style.css">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/StatsButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#addTask"
+                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/CreateTaskButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress"
+                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/ProfileButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- Right aligned section -->
+    <HBox fx:id="rightSection" styleClass="menu-bar-right-section">
+        <MenuButton fx:id="taskFilter" mnemonicParsing="false"
+                    style="-fx-background-color: fff8dc;">
+            <items>
+                <MenuItem fx:id="allTasks" mnemonicParsing="false" text="All"/>
+                <MenuItem fx:id="openTasks" mnemonicParsing="false" text="Open"/>
+                <MenuItem fx:id="inProgressTasks" mnemonicParsing="false" text="In Progress"/>
+                <MenuItem fx:id="postponedTasks" mnemonicParsing="false" text="Postponed"/>
+                <MenuItem fx:id="closedTasks" mnemonicParsing="false" text="Closed"/>
+            </items>
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/FilterButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuButton>
+    </HBox>
 </HBox>

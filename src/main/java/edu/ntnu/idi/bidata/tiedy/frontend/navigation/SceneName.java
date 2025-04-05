@@ -19,11 +19,13 @@ import java.nio.file.Path;
  * @version 2025.03.13
  */
 public enum SceneName {
-  LOGIN("Login"),
+  GROUP("GroupView"),
+  LOGIN("LoginView"),
   MAIN("MainView"),
-  REGISTER("Register"),
-  TASK("Task"),
-  PROFILE("ProfileView");
+  PROFILE("ProfileView"),
+  REGISTER("RegisterView"),
+  STATISTIC("StatisticView"),
+  TASK("TaskView");
 
   private static final String FXML_PATH =
       "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/view/%s.fxml";

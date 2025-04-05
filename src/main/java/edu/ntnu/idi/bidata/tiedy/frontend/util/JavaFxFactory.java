@@ -1,7 +1,10 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
+import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
+import java.util.function.Consumer;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Dialog;
 
 /**
  * Utility class for generating JavaFX alerts with predefined configurations. This class simplifies
@@ -23,6 +26,7 @@ public class JavaFxFactory {
    * message. This method is intended to streamline the creation of information alert dialogs in
    * JavaFX applications.
    *
+   * @param title the title of the alert to be displayed
    * @param message the content message to be displayed in the alert dialog
    * @return an Alert object of type INFORMATION with the specified content message
    */
@@ -33,19 +37,28 @@ public class JavaFxFactory {
     return alert;
   }
 
+  public static Alert generateInfoAlert(String message) {
+    return generateInfoAlert("Info", message);
+  }
+
   /**
    * Creates and returns a JavaFX warning alert with a predefined title ("Warning") and the provided
    * content message. This method is designed to simplify the generation of warning alert dialogs in
    * JavaFX applications.
    *
+   * @param title the title of the alert to be displayed
    * @param message the content message to be displayed in the warning alert
    * @return an Alert object of type WARNING with the specified message as content
    */
-  public static Alert generateWarningAlert(String message) {
+  public static Alert generateWarningAlert(String title, String message) {
     Alert alert = new Alert(Alert.AlertType.WARNING);
-    alert.setTitle("Warning");
+    alert.setTitle(title);
     alert.setContentText(message);
     return alert;
+  }
+
+  public static Alert generateWarningAlert(String message) {
+    return generateWarningAlert("Warning", message);
   }
 
   /**
@@ -53,14 +66,30 @@ public class JavaFxFactory {
    * content message. This method is designed to simplify the creation of error alert dialogs in
    * JavaFX applications.
    *
+   * @param title the title of the alert to be displayed
    * @param message the content message to be displayed in the error alert
    * @return an Alert object of type ERROR with the specified message as content
    */
-  public static Alert generateErrorAlert(String message) {
+  public static Alert generateErrorAlert(String title, String message) {
     Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle("Error");
+    alert.setTitle(title);
     alert.setContentText(message);
     return alert;
+  }
+
+  public static Alert generateErrorAlert(String message) {
+    return generateErrorAlert("Error", message);
+  }
+
+  public static Alert generateConfirmationAlert(String title, String message) {
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle(title);
+    alert.setContentText(message);
+    return alert;
+  }
+
+  public static Alert generateConfirmationAlert(String message) {
+    return generateConfirmationAlert("Confirmation", message);
   }
 
   /**
@@ -90,10 +119,21 @@ public class JavaFxFactory {
     return dialog;
   }
 
-  public static Alert generateConfirmationAlert(String title, String message) {
-    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-    alert.setTitle(title);
-    alert.setContentText(message);
-    return alert;
+  public static Dialog<Task> createTaskDialog(Task task, Consumer<Task> onSaveCallback) {
+    return TaskDialogController.createDialog(task, TaskDialogController.Mode.VIEW, onSaveCallback);
+  }
+
+  public static Dialog<Task> createNewTaskDialog(Consumer<Task> onSaveCallback) {
+    return TaskDialogController.createDialog(
+        null, TaskDialogController.Mode.CREATE, onSaveCallback);
+  }
+
+  public static Dialog<Task> editTaskDialog(Task task, Consumer<Task> onSaveCallback) {
+    return TaskDialogController.createDialog(task, TaskDialogController.Mode.EDIT, onSaveCallback);
+  }
+
+  public static Dialog<Task> deleteTaskDialog(Task task, Consumer<Task> onSaveCallback) {
+    return TaskDialogController.createDialog(
+        task, TaskDialogController.Mode.DELETE, onSaveCallback);
   }
 }

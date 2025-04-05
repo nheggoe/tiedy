@@ -6,12 +6,12 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<HBox fx:id="menuBar" styleClass="menu-bar" stylesheets="@../../css/style.css"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+<HBox fx:id="menuBar" styleClass="menu-bar" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MenuBarController">
     <!-- Left aligned section -->
     <HBox fx:id="leftSection" styleClass="menu-bar-left-section" HBox.hgrow="ALWAYS">
-        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false"
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress"
                 styleClass="menu-bar-item" stylesheets="@../../css/style.css">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
@@ -21,7 +21,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" styleClass="menu-bar-item"
+        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress" styleClass="menu-bar-item"
                 stylesheets="@../../css/style.css">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
@@ -31,8 +31,8 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button fx:id="newTaskButton" mnemonicParsing="false" onAction="#addTask"
-                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress" styleClass="menu-bar-item"
+                stylesheets="@../../css/style.css">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -41,10 +41,22 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onProfileButtonPress"
-                styleClass="menu-bar-item" stylesheets="@../../css/style.css">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                onAction="#onGroupButtonPress" styleClass="menu-bar-item" stylesheets="@../../css/style.css">
             <graphic>
-                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="groupButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/HomeButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress" styleClass="menu-bar-item"
+                stylesheets="@../../css/style.css">
+            <graphic>
+                <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
+                           preserveRatio="true">
                     <image>
                         <Image url="@../../images/buttons/ProfileButton.png"/>
                     </image>
@@ -55,8 +67,7 @@
 
     <!-- Right aligned section -->
     <HBox fx:id="rightSection" styleClass="menu-bar-right-section">
-        <MenuButton fx:id="taskFilter" mnemonicParsing="false"
-                    style="-fx-background-color: fff8dc;">
+        <MenuButton fx:id="taskFilter" mnemonicParsing="false" style="-fx-background-color: fff8dc;">
             <items>
                 <MenuItem fx:id="allTasks" mnemonicParsing="false" text="All"/>
                 <MenuItem fx:id="openTasks" mnemonicParsing="false" text="Open"/>

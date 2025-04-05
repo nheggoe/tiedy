@@ -67,6 +67,10 @@ public class TaskController {
         throw new IllegalArgumentException("Task could not be added");
       }
 
+      JavaFxFactory.generateInfoAlert("Task added successfully", "Task added successfully")
+          .showAndWait();
+      backToMain();
+
     } catch (IllegalArgumentException | DateTimeParseException e) {
       JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }

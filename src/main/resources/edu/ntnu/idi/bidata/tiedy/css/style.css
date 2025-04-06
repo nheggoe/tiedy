@@ -18,6 +18,8 @@
     -fx-pref-height: 100px;
     -fx-min-height: 80px;
     -fx-max-height: 120px;
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
 }
 
 .menu-bar-left-section {
@@ -39,6 +41,8 @@
     -fx-min-height: 64px;
     -fx-max-width: 120px;
     -fx-max-height: 120px;
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
 }
 
 .login-logo {
@@ -87,14 +91,20 @@
 
 .transparent-button {
     -fx-background-color: transparent;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .standard-button {
     -fx-background-color: #6495ed;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .back-button {
     -fx-background-color: #fff8dc;
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
 }
 
 .centered-content {

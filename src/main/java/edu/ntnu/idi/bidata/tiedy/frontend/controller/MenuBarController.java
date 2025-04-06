@@ -93,7 +93,9 @@ public class MenuBarController {
   }
 
   @FXML
-  public void onStatisticsButtonPress() {}
+  public void onStatisticsButtonPress() {
+    TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
+  }
 
   @FXML
   public void onNewTaskButtonPress() {
@@ -101,7 +103,9 @@ public class MenuBarController {
   }
 
   @FXML
-  public void onGroupButtonPress() {}
+  public void onGroupButtonPress() {
+    TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
+  }
 
   @FXML
   public void onProfileButtonPress() {

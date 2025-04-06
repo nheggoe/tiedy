@@ -176,6 +176,14 @@ public class DataAccessFacade implements Runnable {
 
   // ------------------------  Task Repository Methods  ------------------------
 
+  public Task updateTask(Task task) {
+    return taskRepository.update(task);
+  }
+
+  public boolean removeTask(UUID taskId) {
+    return taskRepository.remove(taskId);
+  }
+
   /**
    * Adds a new task to the repository.
    *

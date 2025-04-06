@@ -42,7 +42,7 @@
         <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
                 onAction="#onGroupButtonPress" styleClass="menu-bar-item">
             <graphic>
-                <ImageView fx:id="groupButton" fitHeight="85.0" fitWidth="88.0" pickOnBounds="true"
+                <ImageView fx:id="groupButton" fitHeight="77.0" fitWidth="77.0" pickOnBounds="true"
                            preserveRatio="true">
                     <image>
                         <Image url="@../../images/icons/groupIcon.png"/>

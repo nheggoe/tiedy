@@ -3,15 +3,12 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
 import java.util.Collection;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -33,8 +30,6 @@ public class MainController {
   private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
 
   @FXML private FlowPane flowPane;
-  @FXML private Label info;
-  @FXML private Button newTaskButton;
 
   // Reference to the included MenuBar's controller
   @FXML private MenuBarController menuBarController;
@@ -74,7 +69,6 @@ public class MainController {
     tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
 
-
   /**
    * Navigates the application to the task creation scene.
    *
@@ -86,7 +80,18 @@ public class MainController {
    */
   @FXML
   public void addTask() {
-    TiedyApp.getSceneManager().switchScene(SceneName.TASK);
+    JavaFxFactory.createNewTaskDialog(
+            task -> {
+              // After a task is created, refresh the task list
+              if (task != null) {
+                User user =
+                    UserSession.getInstance()
+                        .getCurrentUser()
+                        .orElseThrow(() -> new IllegalStateException("No user logged in"));
+                updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+              }
+            })
+        .showAndWait();
   }
 
   private Pane createTaskPane(Task task) {
@@ -103,7 +108,40 @@ public class MainController {
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
     cardPane.getChildren().addAll(taskBg, rankText);
-    cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
+    cardPane.setOnMouseClicked(
+        event -> {
+          if (event.getClickCount() == 1) {
+            // View task on single click
+            JavaFxFactory.createTaskDialog(
+                    task,
+                    updatedTask -> {
+                      if (updatedTask != null) {
+                        User user =
+                            UserSession.getInstance()
+                                .getCurrentUser()
+                                .orElseThrow(() -> new IllegalStateException("No user logged in"));
+                        updateFlowPane(
+                            TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+                      }
+                    })
+                .showAndWait();
+          } else if (event.getClickCount() == 2) {
+            // Edit task on double click
+            JavaFxFactory.editTaskDialog(
+                    task,
+                    updatedTask -> {
+                      if (updatedTask != null) {
+                        User user =
+                            UserSession.getInstance()
+                                .getCurrentUser()
+                                .orElseThrow(() -> new IllegalStateException("No user logged in"));
+                        updateFlowPane(
+                            TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+                      }
+                    })
+                .showAndWait();
+          }
+        });
     cardPane.setPadding(new Insets(5));
     return cardPane;
   }

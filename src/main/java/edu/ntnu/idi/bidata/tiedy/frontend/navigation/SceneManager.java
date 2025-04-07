@@ -48,7 +48,8 @@ public class SceneManager {
   public void switchScene(SceneName sceneName) {
     try {
       Parent root = FXMLLoader.load(sceneName.getSceneURL());
-      Scene scene = new Scene(root, 700, 500);
+      Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
+
       primaryStage.setScene(scene);
       primaryStage.show();
     } catch (IOException e) {

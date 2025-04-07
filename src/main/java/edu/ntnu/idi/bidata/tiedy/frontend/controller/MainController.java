@@ -3,12 +3,18 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.dialog.TaskDialogController;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.control.DialogPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,7 +29,7 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.03.28
+ * @version 2025.04.07
  */
 public class MainController {
 
@@ -84,10 +90,59 @@ public class MainController {
 
     cardPane.getChildren().addAll(taskBg, rankText);
     cardPane.setPadding(new Insets(5));
-    cardPane.setOnMouseClicked(
-        event -> {
-          JavaFxFactory.generateInfoAlert("Task selected", task.toString());
-        });
+    cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
     return cardPane;
+  }
+
+  /**
+   * Opens the task dialog to edit an existing task.
+   *
+   * @param task The task to edit
+   */
+  private void showEditTaskDialog(Task task) {
+    try {
+      // Load the dialog
+      FXMLLoader loader =
+          new FXMLLoader(
+              TiedyApp.class.getResource("/edu/ntnu/idi/bidata/tiedy/fxml/dialog/TaskDialog.fxml"));
+      DialogPane dialogPane = loader.load();
+
+      // Create the dialog
+      Dialog<ButtonType> dialog = new Dialog<>();
+      dialog.setDialogPane(dialogPane);
+      dialog.setTitle("Edit Task");
+
+      // Get controller reference and set up with existing task
+      TaskDialogController controller = loader.getController();
+      controller.setTask(task);
+
+      // Show dialog and handle result
+      dialog
+          .showAndWait()
+          .ifPresent(
+              buttonType -> {
+                if (buttonType == ButtonType.OK && controller.validateInput()) {
+                  try {
+                    // Get the updated task and update the original task in the repository
+                    Task updatedTask = controller.getTask();
+                    TiedyApp.getDataAccessFacade().updateTask(updatedTask);
+
+                    // Update the task view
+                    User user =
+                        UserSession.getInstance()
+                            .getCurrentUser()
+                            .orElseThrow(() -> new IllegalStateException("No user logged in"));
+                    updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+
+                    AlertFactory.generateInfoAlert("Success", "Task updated successfully!")
+                        .showAndWait();
+                  } catch (IllegalArgumentException e) {
+                    AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+                  }
+                }
+              });
+    } catch (IOException e) {
+      AlertFactory.generateErrorAlert("Error loading dialog: " + e.getMessage()).showAndWait();
+    }
   }
 }

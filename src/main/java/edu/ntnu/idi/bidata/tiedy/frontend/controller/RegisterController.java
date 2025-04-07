@@ -5,7 +5,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -55,14 +55,14 @@ public class RegisterController {
         throw new IllegalArgumentException("Username already taken");
       }
 
-      JavaFxFactory.generateInfoAlert("Registration successful", "Registration successful")
+      AlertFactory.generateInfoAlert("Registration successful", "Registration successful")
           .showAndWait();
 
       UserSession.createSession(registeredUser);
       backToLogin();
 
     } catch (IllegalArgumentException e) {
-      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 

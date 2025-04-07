@@ -3,7 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -18,7 +18,7 @@ import javafx.stage.Stage;
  * class from the JavaFX framework, providing the necessary lifecycle methods such as start.
  *
  * @author Nick Heggø
- * @version
+ * @version 2025.04.07
  */
 public class TiedyApp extends Application {
 
@@ -65,11 +65,11 @@ public class TiedyApp extends Application {
   }
 
   public static void onClose() {
-    JavaFxFactory.generateConfirmationAlert(
+    AlertFactory.generateConfirmationAlert(
         "Exit", "Are you sure you want to exit the application?");
     try {
       Alert exitConfirmation =
-          JavaFxFactory.generateConfirmationAlert(
+          AlertFactory.generateConfirmationAlert(
               "Exit", "Are you sure you want to exit the application?");
       Optional<ButtonType> result = exitConfirmation.showAndWait();
       if (result.isPresent() && result.get() == ButtonType.OK) {
@@ -80,7 +80,7 @@ public class TiedyApp extends Application {
       }
 
     } catch (IllegalStateException e) {
-      JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
 }

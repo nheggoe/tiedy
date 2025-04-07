@@ -176,6 +176,12 @@ public class DataAccessFacade implements Runnable {
 
   // ------------------------  Task Repository Methods  ------------------------
 
+  /**
+   * Updates an existing task in the repository.
+   *
+   * @param task the Task object to be updated
+   * @return the updated Task object
+   */
   public Task updateTask(Task task) {
     return taskRepository.update(task);
   }

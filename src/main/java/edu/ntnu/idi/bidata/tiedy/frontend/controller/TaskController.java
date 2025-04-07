@@ -7,7 +7,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import java.time.format.DateTimeParseException;
 import java.util.Objects;
 import javafx.fxml.FXML;
@@ -67,12 +67,12 @@ public class TaskController {
         throw new IllegalArgumentException("Task could not be added");
       }
 
-      JavaFxFactory.generateInfoAlert("Task added successfully", "Task added successfully")
+      AlertFactory.generateInfoAlert("Task added successfully", "Task added successfully")
           .showAndWait();
       backToMain();
 
     } catch (IllegalArgumentException | DateTimeParseException e) {
-      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 

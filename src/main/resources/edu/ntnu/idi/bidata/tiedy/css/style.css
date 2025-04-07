@@ -67,3 +67,15 @@
     -fx-background-radius: 6;
     -fx-border-radius: 6;
 }
+
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: transparent;
+}
+
+.dialog-pane > .content {
+    -fx-background-color: #6495ed;
+}
+
+.dialog-pane > .content > * {
+    -fx-background-color: #6495ed;
+}

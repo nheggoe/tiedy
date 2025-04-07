@@ -6,15 +6,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The SceneManager class is responsible for managing and switching scenes in a JavaFX application.
- * It encapsulates the logic necessary to load FXML files and update the primary stage with the
- * specified scene, enabling seamless navigation between different user interface views.
+ * The SceneManager class is responsible for managing and switching scenes in the JavaFX
+ * application. By swapping scenes, it enables us the ability to use a single application window.
  *
  * <p>This class is typically used as a singleton, allowing centralized control of scene
  * transitions.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.04.07
  */
 public class SceneManager {
 

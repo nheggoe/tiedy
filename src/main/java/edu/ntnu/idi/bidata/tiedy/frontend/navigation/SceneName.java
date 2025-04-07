@@ -24,8 +24,7 @@ public enum SceneName {
   MAIN("MainView"),
   PROFILE("ProfileView"),
   REGISTER("RegisterView"),
-  STATISTIC("StatisticView"),
-  TASK("TaskView");
+  STATISTIC("StatisticView");
 
   private static final String FXML_PATH =
       "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/view/%s.fxml";

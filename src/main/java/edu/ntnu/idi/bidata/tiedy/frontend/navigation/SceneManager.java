@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.frontend.navigation;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -47,10 +46,12 @@ public class SceneManager {
    */
   public void switchScene(SceneName sceneName) {
     try {
-      Parent root = FXMLLoader.load(sceneName.getSceneURL());
-      Scene scene = new Scene(root, primaryStage.getWidth(), primaryStage.getHeight());
+      Scene oldScene = primaryStage.getScene();
+      double width = (oldScene != null) ? oldScene.getWidth() : primaryStage.getWidth();
+      double height = (oldScene != null) ? oldScene.getHeight() : primaryStage.getHeight();
 
-      primaryStage.setScene(scene);
+      Scene newScene = new Scene(FXMLLoader.load(sceneName.getSceneURL()), width, height);
+      primaryStage.setScene(newScene);
       primaryStage.show();
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load FXML file: " + sceneName.getSceneURL(), e);

@@ -56,9 +56,9 @@ public class TiedyApp extends Application {
     primaryStage
         .getIcons()
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
-    primaryStage.setResizable(true);
     primaryStage.setMinWidth(700);
     primaryStage.setMinHeight(500);
+    // primaryStage.setScene(new Scene(new Pane()));
     primaryStage.setOnCloseRequest(event -> onClose());
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);

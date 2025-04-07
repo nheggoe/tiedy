@@ -1,10 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
-import java.util.function.Consumer;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Dialog;
 
 /**
  * Utility class for generating JavaFX alerts with predefined configurations. This class simplifies
@@ -117,23 +114,5 @@ public class JavaFxFactory {
             task.getPriority().toString(),
             task.getDeadline().toString()));
     return dialog;
-  }
-
-  public static Dialog<Task> createTaskDialog(Task task, Consumer<Task> onSaveCallback) {
-    return TaskDialogController.createDialog(task, TaskDialogController.Mode.VIEW, onSaveCallback);
-  }
-
-  public static Dialog<Task> createNewTaskDialog(Consumer<Task> onSaveCallback) {
-    return TaskDialogController.createDialog(
-        null, TaskDialogController.Mode.CREATE, onSaveCallback);
-  }
-
-  public static Dialog<Task> editTaskDialog(Task task, Consumer<Task> onSaveCallback) {
-    return TaskDialogController.createDialog(task, TaskDialogController.Mode.EDIT, onSaveCallback);
-  }
-
-  public static Dialog<Task> deleteTaskDialog(Task task, Consumer<Task> onSaveCallback) {
-    return TaskDialogController.createDialog(
-        task, TaskDialogController.Mode.DELETE, onSaveCallback);
   }
 }

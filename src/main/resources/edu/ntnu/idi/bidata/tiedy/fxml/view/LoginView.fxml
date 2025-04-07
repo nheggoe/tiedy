@@ -28,7 +28,8 @@
     </top>
 
     <center>
-        <VBox alignment="CENTER" maxHeight="-Infinity" spacing="15.0" styleClass="login-container">
+        <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="318.0" prefWidth="468.0"
+              spacing="15.0" styleClass="container">
             <BorderPane.margin>
                 <Insets bottom="20.0" left="20.0" right="20.0" top="10.0"/>
             </BorderPane.margin>
@@ -36,27 +37,33 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
             </padding>
 
-            <HBox styleClass="login-field-container">
+            <HBox styleClass="container">
+                <Region styleClass="region" visible="false"/>
                 <ImageView fitHeight="40.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../images/lables/UsernameLabel.png"/>
                     </image>
                 </ImageView>
-                <Region minWidth="10.0" HBox.hgrow="ALWAYS"/>
-                <TextField id="usernameField" fx:id="usernameField" promptText="Username" styleClass="login-field"/>
+                <Region styleClass="region" visible="false"/>
+                <TextField fx:id="usernameField" minWidth="150.0" prefHeight="30.0" prefWidth="150.0"
+                           promptText="Username" styleClass="text-field" stylesheets="@../../css/style.css"/>
+                <Region styleClass="region" visible="false"/>
             </HBox>
 
-            <HBox styleClass="login-field-container">
+            <HBox styleClass="container">
+                <Region layoutX="522.0" layoutY="20.0" styleClass="region" visible="false"/>
                 <ImageView fitHeight="40.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../images/lables/PasswordLabel.png"/>
                     </image>
                 </ImageView>
-                <Region minWidth="10.0" HBox.hgrow="ALWAYS"/>
-                <PasswordField id="passwordField" fx:id="passwordField" promptText="Password" styleClass="login-field"/>
+                <Region styleClass="region" visible="false"/>
+                <PasswordField fx:id="passwordField" promptText="Password" styleClass="text-field"
+                               stylesheets="@../../css/style.css"/>
+                <Region layoutX="140.0" layoutY="20.0" styleClass="region" visible="false"/>
             </HBox>
 
-            <HBox alignment="CENTER" spacing="20.0">
+            <HBox alignment="CENTER" spacing="20.0" styleClass="container">
                 <Button id="loginButton" defaultButton="true" mnemonicParsing="false" onAction="#loginUser"
                         styleClass="transparent-button">
                     <graphic>
@@ -78,7 +85,8 @@
                 </Button>
             </HBox>
 
-            <HBox alignment="BOTTOM_RIGHT" VBox.vgrow="ALWAYS">
+            <HBox alignment="CENTER_RIGHT" style="-fx-alignment: center_right;" styleClass="container"
+                  VBox.vgrow="ALWAYS">
                 <Button mnemonicParsing="false" onAction="#exit" styleClass="transparent-button">
                     <graphic>
                         <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">

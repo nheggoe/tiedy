@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.FlowPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
-            prefWidth="600.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1"
-            xmlns:fx="http://javafx.com/fxml/1">
+            prefWidth="600.0" styleClass="root" stylesheets="@../../css/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <top>
         <fx:include fx:id="menuBar" source="../component/MenuBar.fxml"/>
     </top>
@@ -16,19 +17,30 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
     <center>
-        <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="277.0" prefWidth="570.0" styleClass="container">
             <children>
-                <FlowPane fx:id="flowPane" alignment="CENTER" layoutX="27.0" layoutY="11.0" prefHeight="270.0"
-                          prefWidth="526.0">
+                <TableView prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn prefWidth="199.0" text="Username"/>
+                    </columns>
+                </TableView>
+                <VBox prefHeight="280.0" prefWidth="140.0" styleClass="container">
                     <children>
-                        <Label fx:id="info" contentDisplay="CENTER">
-                            <font>
-                                <Font size="53.0"/>
-                            </font>
-                        </Label>
+                        <Button mnemonicParsing="false" text="Add &gt;&gt;" textAlignment="CENTER"/>
+                        <Button mnemonicParsing="false" text="&lt;&lt; Remove" textAlignment="CENTER">
+                            <padding>
+                                <Insets top="20.0"/>
+                            </padding>
+                        </Button>
                     </children>
-                </FlowPane>
+                </VBox>
+                <TableView prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn prefWidth="107.0" text="Username"/>
+                        <TableColumn prefWidth="92.0" text="Role"/>
+                    </columns>
+                </TableView>
             </children>
-        </AnchorPane>
+        </HBox>
     </center>
 </BorderPane>

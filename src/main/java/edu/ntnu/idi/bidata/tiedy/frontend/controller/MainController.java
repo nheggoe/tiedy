@@ -69,31 +69,6 @@ public class MainController {
     tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
   }
 
-  /**
-   * Navigates the application to the task creation scene.
-   *
-   * <p>This method is triggered as a response to user events (e.g., clicking the "Add Task" button)
-   * and uses the SceneManager to switch the current scene to the Task scene.
-   *
-   * <p>It ensures that the application's UI updates to display the task creation interface,
-   * allowing users to add a new task.
-   */
-  @FXML
-  public void addTask() {
-    JavaFxFactory.createNewTaskDialog(
-            task -> {
-              // After a task is created, refresh the task list
-              if (task != null) {
-                User user =
-                    UserSession.getInstance()
-                        .getCurrentUser()
-                        .orElseThrow(() -> new IllegalStateException("No user logged in"));
-                updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
-              }
-            })
-        .showAndWait();
-  }
-
   private Pane createTaskPane(Task task) {
     Pane cardPane = new Pane();
     cardPane.setPrefSize(120, 80);
@@ -108,41 +83,11 @@ public class MainController {
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
     cardPane.getChildren().addAll(taskBg, rankText);
+    cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(
         event -> {
-          if (event.getClickCount() == 1) {
-            // View task on single click
-            JavaFxFactory.createTaskDialog(
-                    task,
-                    updatedTask -> {
-                      if (updatedTask != null) {
-                        User user =
-                            UserSession.getInstance()
-                                .getCurrentUser()
-                                .orElseThrow(() -> new IllegalStateException("No user logged in"));
-                        updateFlowPane(
-                            TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
-                      }
-                    })
-                .showAndWait();
-          } else if (event.getClickCount() == 2) {
-            // Edit task on double click
-            JavaFxFactory.editTaskDialog(
-                    task,
-                    updatedTask -> {
-                      if (updatedTask != null) {
-                        User user =
-                            UserSession.getInstance()
-                                .getCurrentUser()
-                                .orElseThrow(() -> new IllegalStateException("No user logged in"));
-                        updateFlowPane(
-                            TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
-                      }
-                    })
-                .showAndWait();
-          }
+          JavaFxFactory.generateInfoAlert("Task selected", task.toString());
         });
-    cardPane.setPadding(new Insets(5));
     return cardPane;
   }
 }

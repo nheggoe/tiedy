@@ -11,6 +11,7 @@
 <?import javafx.scene.control.TitledPane?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -24,95 +25,98 @@
             <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
          </padding>
          <children>
-            <HBox alignment="CENTER">
+            <AnchorPane>
                <children>
                   <Label style="-fx-background-color: #6495ed;">
                      <padding>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                      </padding>
-                     <graphic>
-                        <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/lables/NameLabel.png"/>
-                           </image>
-                        </ImageView>
-                     </graphic>
                   </Label>
-                  <TextField id="taskNameField" fx:id="taskNameField" prefHeight="33.0" prefWidth="200.0"
-                             style="-fx-background-color: #f5f5f5;"/>
+                  <TextField id="taskNameField" fx:id="taskNameField" layoutX="242.0" layoutY="4.0" prefHeight="33.0"
+                             prefWidth="200.0" style="-fx-background-color: #f5f5f5;"/>
+                  <ImageView fitHeight="32.0" fitWidth="64.0" layoutX="142.0" layoutY="9.0" pickOnBounds="true"
+                             preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/lables/NameLabel.png"/>
+                     </image>
+                  </ImageView>
                </children>
-            </HBox>
-            <HBox>
+            </AnchorPane>
+            <AnchorPane>
                <children>
-                  <Label style="-fx-background-color: #6495ed;">
+                  <Label layoutX="75.0" layoutY="44.0" style="-fx-background-color: #6495ed;">
                      <padding>
                         <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
                      </padding>
-                     <graphic>
-                        <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../images/buttons/DescriptionLabel.png"/>
-                           </image>
-                        </ImageView>
-                     </graphic>
                   </Label>
-                  <TextArea fx:id="descriptionTextArea" prefHeight="100.0" prefWidth="200.0"
-                            style="-fx-background-color: #f5f5f5;"/>
+                  <TextArea fx:id="descriptionTextArea" layoutX="244.0" layoutY="14.0" prefHeight="100.0"
+                            prefWidth="200.0" style="-fx-background-color: #f5f5f5;"/>
+                  <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="92.0" layoutY="14.0" pickOnBounds="true"
+                             preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/buttons/DescriptionLabel.png"/>
+                     </image>
+                  </ImageView>
                </children>
-            </HBox>
+            </AnchorPane>
+            <AnchorPane prefHeight="0.0" prefWidth="245.0">
+               <children>
 
-            <TitledPane fx:id="advancedOptionsPane" expanded="false"
-                        style="-fx-background-color: #fff8dc; -fx-text-fill: #6495ed;" text="Advanced Options">
-               <content>
-                  <VBox spacing="10.0">
-                     <children>
-                        <HBox>
+                  <TitledPane fx:id="advancedOptionsPane" expanded="false" layoutX="99.0" layoutY="10.0"
+                              prefHeight="32.0" prefWidth="354.0"
+                              style="-fx-background-color: #fff8dc; -fx-text-fill: #6495ed;" text="Advanced Options">
+                     <content>
+                        <VBox spacing="10.0">
                            <children>
-                              <Label style="-fx-background-color: #6495ed;">
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
-                                 </padding>
-                                 <graphic>
-                                    <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true"
-                                               preserveRatio="true">
-                              <image>
-                                 <Image url="@../../images/lables/DateLabel.png"/>
-                              </image>
-                                    </ImageView>
-                                 </graphic>
-                              </Label>
-                              <DatePicker fx:id="dueDatePicker" style="-fx-background-color: #f5f5f5;"/>
+                              <HBox>
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true"
+                                                     preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/lables/DateLabel.png"/>
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <DatePicker fx:id="dueDatePicker" style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;" text="Priority:">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                    </Label>
+                                    <ComboBox fx:id="priorityComboBox" prefWidth="150.0"
+                                              style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;" text="Status:">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                    </Label>
+                                    <ComboBox fx:id="statusComboBox" prefWidth="150.0"
+                                              style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
                            </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Label style="-fx-background-color: #6495ed;" text="Priority:">
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
-                                 </padding>
-                              </Label>
-                              <ComboBox fx:id="priorityComboBox" prefWidth="150.0"
-                                        style="-fx-background-color: #f5f5f5;"/>
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="10.0">
-                           <children>
-                              <Label style="-fx-background-color: #6495ed;" text="Status:">
-                                 <padding>
-                                    <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
-                                 </padding>
-                              </Label>
-                              <ComboBox fx:id="statusComboBox" prefWidth="150.0"
-                                        style="-fx-background-color: #f5f5f5;"/>
-                           </children>
-                        </HBox>
-                     </children>
-                     <padding>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-                     </padding>
-                  </VBox>
-               </content>
-            </TitledPane>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           </padding>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+               </children>
+            </AnchorPane>
          </children>
       </VBox>
    </content>

@@ -6,7 +6,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
@@ -51,7 +50,7 @@ public class RegisterController {
       User registeredUser =
           TiedyApp.getDataAccessFacade().registerUser(new User(username, password));
 
-      if (!Objects.nonNull(registeredUser)) {
+      if (registeredUser == null) {
         throw new IllegalArgumentException("Username already taken");
       }
 

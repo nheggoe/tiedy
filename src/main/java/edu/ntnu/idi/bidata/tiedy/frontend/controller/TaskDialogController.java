@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.frontend.dialog;
+package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
@@ -23,19 +23,21 @@ import org.jspecify.annotations.NonNull;
  */
 public class TaskDialogController {
 
+  private final TaskBuilder taskBuilder = new TaskBuilder();
+
   @FXML private TextField taskNameField;
   @FXML private TextArea descriptionTextArea;
-
   @FXML private TitledPane advancedOptionsPane;
   @FXML private DatePicker dueDatePicker;
   @FXML private ComboBox<Priority> priorityComboBox;
   @FXML private ComboBox<Status> statusComboBox;
 
-  private final TaskBuilder taskBuilder = new TaskBuilder();
-  @NonNull private Task existingTask;
+  @NonNull private Mode mode;
+  @NonNull private Task task;
 
   public TaskDialogController() {
-    existingTask = new Task();
+    mode = Mode.CREATE;
+    task = new Task();
   }
 
   /** Initializes the dialog components. */
@@ -58,7 +60,7 @@ public class TaskDialogController {
    * @param task The task to edit
    */
   public void setTask(Task task) {
-    this.existingTask = task;
+    this.task = task;
 
     // Populate fields with task data
     taskNameField.setText(task.getTitle());
@@ -69,12 +71,12 @@ public class TaskDialogController {
   }
 
   public Task getTask() {
-    existingTask.setTitle(taskNameField.getText());
-    existingTask.setDescription(descriptionTextArea.getText());
-    existingTask.setDeadline(dueDatePicker.getValue());
-    existingTask.setPriority(priorityComboBox.getValue());
-    existingTask.setStatus(statusComboBox.getValue());
-    return existingTask;
+    task.setTitle(taskNameField.getText());
+    task.setDescription(descriptionTextArea.getText());
+    task.setDeadline(dueDatePicker.getValue());
+    task.setPriority(priorityComboBox.getValue());
+    task.setStatus(statusComboBox.getValue());
+    return task;
   }
 
   /**
@@ -95,5 +97,11 @@ public class TaskDialogController {
       return false;
     }
     return true;
+  }
+
+  private enum Mode {
+    CREATE,
+    EDIT,
+    VIEW;
   }
 }

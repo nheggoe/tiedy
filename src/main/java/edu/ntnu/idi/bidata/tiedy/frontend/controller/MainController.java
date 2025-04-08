@@ -27,7 +27,7 @@ import javafx.scene.text.Text;
  */
 public class MainController {
 
-  @FXML private FlowPane flowPane;
+  @FXML private FlowPane taskViewPane;
 
   // Reference to the included MenuBar's controller
   @FXML private MenuBarController menuBarController;
@@ -45,8 +45,8 @@ public class MainController {
    */
   @FXML
   public void initialize() {
-    flowPane.setHgap(10);
-    flowPane.setVgap(10);
+    taskViewPane.setHgap(10);
+    taskViewPane.setVgap(10);
 
     User user =
         UserSession.getInstance()
@@ -54,17 +54,17 @@ public class MainController {
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
     // Initialize tasks with all tasks for the current user
-    updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+    updateTaskViewPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {
-      menuBarController.setTaskUpdateCallback(this::updateFlowPane);
+      menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
     }
   }
 
-  private void updateFlowPane(Collection<Task> tasks) {
-    flowPane.getChildren().clear();
-    tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
+  private void updateTaskViewPane(Collection<Task> tasks) {
+    taskViewPane.getChildren().clear();
+    tasks.stream().map(this::createTaskPane).forEach(taskViewPane.getChildren()::add);
   }
 
   private Pane createTaskPane(Task task) {
@@ -94,19 +94,15 @@ public class MainController {
   private void showEditTaskDialog(Task task) {
     DialogFactory.editTaskDialog(
         task,
+        // the callback function to be called when the passed task is updated
         updatedTask -> {
           try {
             // Update the task in the repository
             TiedyApp.getDataAccessFacade().updateTask(updatedTask);
 
-            // Update the task view
-            User user =
-                UserSession.getInstance()
-                    .getCurrentUser()
-                    .orElseThrow(() -> new IllegalStateException("No user logged in"));
-            updateFlowPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+            updateTaskViewPane(
+                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
 
-            AlertFactory.generateInfoAlert("Success", "Task updated successfully!").showAndWait();
           } catch (IllegalArgumentException e) {
             AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
           }

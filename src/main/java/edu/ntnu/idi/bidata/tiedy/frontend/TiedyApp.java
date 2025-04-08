@@ -4,6 +4,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
@@ -52,13 +53,23 @@ public class TiedyApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    if (Taskbar.isTaskbarSupported()) {
+      var taskbar = Taskbar.getTaskbar();
+
+      if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        var dockIcon =
+            defaultToolkit.getImage(
+                getClass().getResource("/edu/ntnu/idi/bidata/tiedy/images/icon_512@2x.png"));
+        taskbar.setIconImage(dockIcon);
+      }
+    }
     primaryStage.setTitle("Tiedy");
     primaryStage
         .getIcons()
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
     primaryStage.setMinWidth(700);
     primaryStage.setMinHeight(500);
-    // primaryStage.setScene(new Scene(new Pane()));
     primaryStage.setOnCloseRequest(event -> onClose());
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);

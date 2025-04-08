@@ -4,19 +4,15 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import edu.ntnu.idi.bidata.tiedy.frontend.dialog.TaskDialogController;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
-import java.io.IOException;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
-import javafx.scene.control.DialogPane;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 
@@ -114,52 +110,26 @@ public class MenuBarController {
             .getCurrentUser()
             .orElseThrow(() -> new IllegalStateException("No user logged in"));
 
-    try {
-      // Load the dialog
-      FXMLLoader loader =
-          new FXMLLoader(
-              TiedyApp.class.getResource("/edu/ntnu/idi/bidata/tiedy/fxml/dialog/TaskDialog.fxml"));
-      DialogPane dialogPane = loader.load();
+    DialogFactory.createTaskDialog(
+        task -> {
+          try {
+            if (Objects.nonNull(TiedyApp.getDataAccessFacade().addTask(task))) {
+              TiedyApp.getDataAccessFacade().assignToUser(task.getId(), user.getId());
 
-      // Create the dialog
-      Dialog<ButtonType> dialog = new Dialog<>();
-      dialog.setDialogPane(dialogPane);
-      dialog.setTitle("Create Task");
+              // Update the task view if we have a callback
+              if (Objects.nonNull(taskUpdateCallback)) {
+                taskUpdateCallback.accept(
+                    TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+              }
 
-      // Get controller reference
-      TaskDialogController controller = loader.getController();
-
-      // Show dialog and handle result
-      dialog
-          .showAndWait()
-          .ifPresent(
-              buttonType -> {
-                if (buttonType == ButtonType.OK && controller.validateInput()) {
-                  try {
-                    Task task = controller.getTask();
-
-                    if (TiedyApp.getDataAccessFacade().addTask(task) != null) {
-                      TiedyApp.getDataAccessFacade().assignToUser(task.getId(), user.getId());
-
-                      // Update the task view if we have a callback
-                      if (taskUpdateCallback != null) {
-                        taskUpdateCallback.accept(
-                            TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
-                      }
-
-                      AlertFactory.generateInfoAlert("Success", "Task created successfully!")
-                          .showAndWait();
-                    } else {
-                      AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
-                    }
-                  } catch (IllegalArgumentException e) {
-                    AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
-                  }
-                }
-              });
-    } catch (IOException e) {
-      AlertFactory.generateErrorAlert("Error loading dialog: " + e.getMessage()).showAndWait();
-    }
+              AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
+            } else {
+              AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
+            }
+          } catch (IllegalArgumentException e) {
+            AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+          }
+        });
   }
 
   @FXML

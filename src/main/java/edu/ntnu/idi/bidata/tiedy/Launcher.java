@@ -2,9 +2,11 @@ package edu.ntnu.idi.bidata.tiedy;
 
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import java.awt.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import javax.swing.*;
 
 /**
  *

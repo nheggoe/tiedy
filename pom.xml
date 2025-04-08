@@ -12,6 +12,7 @@
         <!-- Java version -->
         <java.version>21</java.version>
         <!-- API version -->
+        <jspecify.version>1.0.0</jspecify.version>
         <javafx.version>23.0.2</javafx.version>
         <junit.version>5.12.1</junit.version>
         <gson.version>2.12.1</gson.version>
@@ -23,6 +24,13 @@
     </properties>
 
     <dependencies>
+
+        <!-- https://mvnrepository.com/artifact/org.jspecify/jspecify -->
+        <dependency>
+            <groupId>org.jspecify</groupId>
+            <artifactId>jspecify</artifactId>
+            <version>${jspecify.version}</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.openjfx/javafx-controls -->
         <dependency>

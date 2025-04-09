@@ -9,6 +9,9 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.util.Collection;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,7 +26,7 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.04.07
+ * @version 2025.04.09
  */
 public class MainController {
 
@@ -80,7 +83,30 @@ public class MainController {
     Text rankText = new Text(10, 30, task.getTitle());
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-    cardPane.getChildren().addAll(taskBg, rankText);
+    Button deleteButton = new Button("X");
+    deleteButton.setStyle(
+        "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
+    deleteButton.setLayoutX(90);
+    deleteButton.setLayoutY(10);
+    deleteButton.setVisible(false);
+    deleteButton.setOnAction(
+        event -> {
+          Alert confirmationAlert =
+              AlertFactory.generateConfirmationAlert(
+                  "Delete task", "Are you sure you want to delete this task?");
+
+          // Delete the task only if the OK button is pressed
+          if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            TiedyApp.getDataAccessFacade().deleteTask(task.getId());
+            updateTaskViewPane(
+                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
+          }
+        });
+
+    cardPane.setOnMouseEntered(event -> deleteButton.setVisible(true));
+    cardPane.setOnMouseExited(event -> deleteButton.setVisible(false));
+
+    cardPane.getChildren().addAll(taskBg, rankText, deleteButton);
     cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
     return cardPane;

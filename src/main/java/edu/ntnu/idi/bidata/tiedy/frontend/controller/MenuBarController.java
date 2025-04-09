@@ -2,25 +2,23 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.util.Collection;
-import java.util.UUID;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 
 /**
- * @version 2025.04.07
+ * @version 2025.04.09
  */
 public class MenuBarController {
 
-  @FXML private MenuButton taskFilters; // currently no use
+  @FXML private MenuButton taskFilterMenu; // currently no use
   @FXML private MenuItem allTaskFilter;
   @FXML private MenuItem openTaskFilter;
   @FXML private MenuItem inProgressTaskFilter;
@@ -42,11 +40,13 @@ public class MenuBarController {
   @FXML
   public void onHomeButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
+    taskFilterMenu.setDisable(false);
   }
 
   @FXML
   public void onStatisticsButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
+    taskFilterMenu.setDisable(true);
   }
 
   @FXML
@@ -82,11 +82,13 @@ public class MenuBarController {
   @FXML
   public void onGroupButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
+    taskFilterMenu.setDisable(true);
   }
 
   @FXML
   public void onProfileButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
+    taskFilterMenu.setDisable(true);
   }
 
   private void setupFilterListeners() {
@@ -94,36 +96,33 @@ public class MenuBarController {
       return;
     }
 
-    User user =
-        UserSession.getInstance()
-            .getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user logged in"));
-    UUID userId = user.getId();
-
     allTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(userId)));
+                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade().getTasksByUserAndStatus(userId, Status.OPEN)));
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.OPEN)));
 
     inProgressTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
-                    .getTasksByUserAndStatus(userId, Status.IN_PROGRESS)));
+                    .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.IN_PROGRESS)));
 
     closedTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade().getTasksByUserAndStatus(userId, Status.CLOSED)));
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.CLOSED)));
 
     postponedTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade().getTasksByUserAndStatus(userId, Status.POSTPONED)));
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.POSTPONED)));
   }
 }

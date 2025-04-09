@@ -1,10 +1,6 @@
-package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
+package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonReader;
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonType;
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonWriter;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -78,21 +74,6 @@ public class JsonService<T> {
    * @param set the set of objects to be written into the JSON file
    */
   public void writeCollection(Set<T> set) {
-    Set<T> existingData = loadJsonAsStream().collect(Collectors.toSet());
-    existingData.removeAll(set);
-    existingData.addAll(set);
-    jsonWriter.writeJsonFile(existingData);
-  }
-
-  /**
-   * Adds an item to the JSON collection by writing it to the JSON file. The provided item is
-   * wrapped in a stream and passed to the {@code writeCollection} method for writing. The location
-   * of the JSON file is determined dynamically based on the class type and the environment (test or
-   * production).
-   *
-   * @param item the object of the target type to be added to the JSON collection; must not be null
-   */
-  public void addItem(T item) {
-    writeCollection(Set.of(item));
+    jsonWriter.writeJsonFile(set);
   }
 }

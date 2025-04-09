@@ -63,7 +63,7 @@
 
     <!-- Right aligned section -->
     <HBox fx:id="rightSection" prefHeight="100.0" prefWidth="99.0" styleClass="inner-container">
-        <MenuButton fx:id="taskFilters" mnemonicParsing="false" styleClass="back-button">
+        <MenuButton fx:id="taskFilterMenu" mnemonicParsing="false" styleClass="back-button">
             <items>
                 <MenuItem fx:id="allTaskFilter" mnemonicParsing="false" text="All"/>
                 <MenuItem fx:id="openTaskFilter" mnemonicParsing="false" text="Open"/>

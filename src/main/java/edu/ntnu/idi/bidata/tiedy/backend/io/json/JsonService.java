@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
+import edu.ntnu.idi.bidata.tiedy.backend.io.FileUtil;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -58,6 +59,7 @@ public class JsonService<T> {
    * environment. If the file does not exist, it is created and an empty list is returned. If the
    * file exists, the data in the file is deserialized into a list.
    *
+   * @see FileUtil
    * @return a stream of objects deserialized from the JSON file, or an empty stream if the file is
    *     newly created
    */
@@ -66,12 +68,12 @@ public class JsonService<T> {
   }
 
   /**
-   * Writes a set of objects to a JSON file. The file is created at a location dynamically
-   * determined based on the target class type and whether the operation is performed in a test or
-   * production environment. The method ensures that the directory structure exists before writing.
-   * It will update existing data if present
+   * Serializes and writes the provided set of objects into a JSON file. The JSON file is
+   * dynamically located based on the class type and whether the operation is performed in a test or
+   * production environment.
    *
-   * @param set the set of objects to be written into the JSON file
+   * @see FileUtil
+   * @param set the set of objects to be serialized and written into the JSON file
    */
   public void writeCollection(Set<T> set) {
     jsonWriter.writeJsonFile(set);

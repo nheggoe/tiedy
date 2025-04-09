@@ -15,7 +15,7 @@ import javafx.scene.control.Dialog;
  * dialog types used throughout the application.
  *
  * @author Nick Heggø
- * @version 2025.04.08
+ * @version 2025.04.09
  */
 public class DialogFactory {
 
@@ -66,7 +66,8 @@ public class DialogFactory {
       // Show dialog and handle result
       Optional<ButtonType> result = dialog.showAndWait();
 
-      if (result.isPresent() && result.get() == ButtonType.OK && controller.validateInput()) {
+      if (result.isPresent() && result.get() == ButtonType.OK) {
+        controller.validateInput();
         Task task = controller.getTask();
 
         if (onSuccess != null) {
@@ -76,6 +77,8 @@ public class DialogFactory {
         return Optional.of(task);
       }
 
+    } catch (IllegalArgumentException e) {
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     } catch (IOException e) {
       AlertFactory.generateErrorAlert("Error loading dialog: " + e.getMessage()).showAndWait();
     }

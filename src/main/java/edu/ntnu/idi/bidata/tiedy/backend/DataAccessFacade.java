@@ -211,6 +211,12 @@ public class DataAccessFacade implements Runnable {
     return taskRepository.findByAssignedUser(userId);
   }
 
+  public List<Task> findAllNoneClosedTaskByUserId(UUID userId) {
+    return taskRepository.findByAssignedUser(userId).stream()
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .toList();
+  }
+
   /**
    * Retrieves a list of tasks that match the specified status.
    *

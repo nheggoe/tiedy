@@ -53,7 +53,8 @@ public class MainController {
 
     // Initialize tasks with all tasks for the current user
     updateTaskViewPane(
-        TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
+        TiedyApp.getDataAccessFacade()
+            .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {
@@ -79,7 +80,7 @@ public class MainController {
     Text rankText = new Text(10, 30, task.getTitle());
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-    String statusText = task.getStatus().toString();
+    String statusText = task.getStatus().getDisplayName();
     Text statusIndicator = new Text(10, 65, statusText);
     statusIndicator.setFont(Font.font("Arial", 10));
 
@@ -105,7 +106,8 @@ public class MainController {
           if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             TiedyApp.getDataAccessFacade().deleteTask(task.getId());
             updateTaskViewPane(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
+                TiedyApp.getDataAccessFacade()
+                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
           }
         });
 
@@ -126,7 +128,7 @@ public class MainController {
 
               updateTaskViewPane(
                   TiedyApp.getDataAccessFacade()
-                      .findByAssignedUser(UserSession.getCurrentUserId()));
+                      .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
               AlertFactory.generateInfoAlert(
                       "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
@@ -178,7 +180,8 @@ public class MainController {
             TiedyApp.getDataAccessFacade().updateTask(updatedTask);
 
             updateTaskViewPane(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
+                TiedyApp.getDataAccessFacade()
+                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
           } catch (IllegalArgumentException e) {
             AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();

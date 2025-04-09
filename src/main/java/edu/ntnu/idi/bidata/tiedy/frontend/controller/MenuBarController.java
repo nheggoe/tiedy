@@ -66,7 +66,7 @@ public class MenuBarController {
               if (updateTaskViewPaneCallback != null) {
                 updateTaskViewPaneCallback.accept(
                     TiedyApp.getDataAccessFacade()
-                        .findByAssignedUser(UserSession.getCurrentUserId()));
+                        .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
               }
 
               AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
@@ -99,7 +99,8 @@ public class MenuBarController {
     allTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId())));
+                TiedyApp.getDataAccessFacade()
+                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->

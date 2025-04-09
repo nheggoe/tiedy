@@ -16,7 +16,7 @@ import java.nio.file.Path;
  * different stages or views of the application.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.04.07
  */
 public enum SceneName {
   GROUP("GroupView"),

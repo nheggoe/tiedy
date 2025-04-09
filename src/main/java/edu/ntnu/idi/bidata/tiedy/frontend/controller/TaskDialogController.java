@@ -19,7 +19,7 @@ import org.jspecify.annotations.NonNull;
  * tasks. The dialog includes basic and advanced sections that can be collapsed.
  *
  * @author Nick Heggø
- * @version 2025.04.07
+ * @version 2025.04.09
  */
 public class TaskDialogController {
 
@@ -32,11 +32,9 @@ public class TaskDialogController {
   @FXML private ComboBox<Priority> priorityComboBox;
   @FXML private ComboBox<Status> statusComboBox;
 
-  @NonNull private Mode mode;
   @NonNull private Task task;
 
   public TaskDialogController() {
-    mode = Mode.CREATE;
     task = new Task();
   }
 
@@ -65,7 +63,8 @@ public class TaskDialogController {
     // Populate fields with task data
     taskNameField.setText(task.getTitle());
     descriptionTextArea.setText(task.getDescription());
-    dueDatePicker.setValue(task.getDeadline());
+    dueDatePicker.setValue(
+        task.getDeadline() == null ? LocalDate.now().plusDays(1) : task.getDeadline());
     priorityComboBox.setValue(task.getPriority());
     statusComboBox.setValue(task.getStatus());
   }
@@ -79,29 +78,14 @@ public class TaskDialogController {
     return task;
   }
 
-  /**
-   * Validates the input fields in the dialog.
-   *
-   * @return true if all required fields are valid, false otherwise
-   */
-  public boolean validateInput() {
-    try {
-      taskBuilder
-          .title(taskNameField.getText())
-          .description(descriptionTextArea.getText())
-          .deadline(dueDatePicker.getValue())
-          .priority(priorityComboBox.getValue())
-          .status(statusComboBox.getValue())
-          .build();
-    } catch (IllegalArgumentException e) {
-      return false;
-    }
-    return true;
-  }
-
-  private enum Mode {
-    CREATE,
-    EDIT,
-    VIEW;
+  /** Validates the input fields in the dialog. */
+  public void validateInput() {
+    taskBuilder
+        .title(taskNameField.getText())
+        .description(descriptionTextArea.getText())
+        .deadline(dueDatePicker.getValue())
+        .priority(priorityComboBox.getValue())
+        .status(statusComboBox.getValue())
+        .build();
   }
 }

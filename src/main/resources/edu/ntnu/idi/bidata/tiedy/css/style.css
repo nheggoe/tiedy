@@ -76,5 +76,70 @@
 }
 
 .chart {
-    -fx-background-color: #6495ed;
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+    -fx-min-width: 300px;
+    -fx-min-height: 300px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 300px;
+    -fx-max-width: 300px;
+    -fx-max-height: 300px;
+}
+
+.chart-content {
+    -fx-padding: 10px;
+}
+
+.chart-title {
+    -fx-text-fill: #6495ed;
+    -fx-font-size: 16px;
+}
+
+.chart-pie {
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-min-width: 300px;
+    -fx-min-height: 300px;
+    -fx-pref-width: 300px;
+    -fx-pref-height: 300px;
+    -fx-max-width: 300px;
+    -fx-max-height: 300px;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: #404040;
+    -fx-fill: #404040;
+}
+
+.chart-pie .chart-pie-slice {
+    -fx-background-color: -fx-pie-color !important;
+}
+
+.colored-pie-chart .chart-pie {
+    -fx-background-color: transparent;
+}
+
+.colored-pie-chart .chart-pie-slice {
+    -fx-background-color: -fx-pie-color !important;
+    -fx-border-color: #fff8dc;
+    -fx-border-width: 1px;
+}
+
+.chart-pie-label {
+    -fx-fill: #000000;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+.chart-legend-item {
+    -fx-text-fill: #404040;
+}
+
+.chart-legend-item-symbol {
+    -fx-padding: 5px;
 }

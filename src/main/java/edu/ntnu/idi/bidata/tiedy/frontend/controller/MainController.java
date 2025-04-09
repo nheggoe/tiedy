@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
@@ -83,6 +84,17 @@ public class MainController {
     Text rankText = new Text(10, 30, task.getTitle());
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
+    String statusText = task.getStatus().toString();
+    Text statusIndicator = new Text(10, 65, statusText);
+    statusIndicator.setFont(Font.font("Arial", 10));
+
+    switch (task.getStatus()) {
+      case CLOSED -> statusIndicator.setFill(Color.GREEN);
+      case IN_PROGRESS -> statusIndicator.setFill(Color.BLUE);
+      case POSTPONED -> statusIndicator.setFill(Color.ORANGE);
+      default -> statusIndicator.setFill(Color.BLACK);
+    }
+
     Button deleteButton = new Button("X");
     deleteButton.setStyle(
         "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -95,7 +107,6 @@ public class MainController {
               AlertFactory.generateConfirmationAlert(
                   "Delete task", "Are you sure you want to delete this task?");
 
-          // Delete the task only if the OK button is pressed
           if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
             TiedyApp.getDataAccessFacade().deleteTask(task.getId());
             updateTaskViewPane(
@@ -103,10 +114,54 @@ public class MainController {
           }
         });
 
-    cardPane.setOnMouseEntered(event -> deleteButton.setVisible(true));
-    cardPane.setOnMouseExited(event -> deleteButton.setVisible(false));
+    Button completeButton = new Button("✓");
+    completeButton.setStyle(
+        "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
+    completeButton.setLayoutX(60);
+    completeButton.setLayoutY(10);
+    completeButton.setVisible(false);
 
-    cardPane.getChildren().addAll(taskBg, rankText, deleteButton);
+    if (task.getStatus() != Status.CLOSED) {
+      completeButton.setOnAction(
+          event -> {
+            task.setStatus(Status.CLOSED);
+
+            try {
+              TiedyApp.getDataAccessFacade().updateTask(task);
+
+              updateTaskViewPane(
+                  TiedyApp.getDataAccessFacade()
+                      .findByAssignedUser(UserSession.getCurrentUserId()));
+
+              AlertFactory.generateInfoAlert(
+                      "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
+                  .showAndWait();
+            } catch (Exception e) {
+              AlertFactory.generateWarningAlert("Error updating task: " + e.getMessage())
+                  .showAndWait();
+            }
+          });
+    } else {
+      completeButton.setStyle(
+          "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
+    }
+
+    // Show/hide buttons on hover
+    cardPane.setOnMouseEntered(
+        event -> {
+          deleteButton.setVisible(true);
+          if (task.getStatus() != Status.CLOSED) {
+            completeButton.setVisible(true);
+          }
+        });
+
+    cardPane.setOnMouseExited(
+        event -> {
+          deleteButton.setVisible(false);
+          completeButton.setVisible(false);
+        });
+
+    cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
     cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
     return cardPane;

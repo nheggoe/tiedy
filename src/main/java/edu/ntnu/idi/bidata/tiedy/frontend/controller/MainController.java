@@ -142,6 +142,7 @@ public class MainController {
             }
           });
     } else {
+      taskBg.setFill(Color.LIGHTGRAY);
       completeButton.setStyle(
           "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
     }

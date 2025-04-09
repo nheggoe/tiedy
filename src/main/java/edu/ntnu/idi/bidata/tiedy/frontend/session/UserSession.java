@@ -11,14 +11,16 @@ import java.util.UUID;
  * session and the associated user.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.04.09
  */
 public class UserSession {
-  private static UserSession instance;
+
+  private static final UserSession instance = new UserSession();
+
   private User currentUser;
 
-  private UserSession(User user) {
-    this.currentUser = user;
+  private UserSession() {
+    currentUser = null;
   }
 
   /**
@@ -28,13 +30,29 @@ public class UserSession {
    * @param user the User object for whom the session should be created
    */
   public static void createSession(User user) {
-    instance = new UserSession(user);
+    instance.setCurrentUser(user);
   }
 
+  /**
+   * Terminates the current user session by clearing the information of the active user.
+   *
+   * <p>This method sets the active user associated with the session to {@code null}, effectively
+   * destroying the session. If no session is currently active, this operation has no effect.
+   */
+  public static void destroySession() {
+    instance.setCurrentUser(null);
+  }
+
+  /**
+   * Retrieves the unique identifier (UUID) of the currently logged-in user.
+   *
+   * <p>This method checks if a user session exists and whether a user is currently logged in. If no
+   * session exists or no user is logged in, an IllegalStateException will be thrown.
+   *
+   * @return the UUID of the currently logged-in user
+   * @throws IllegalStateException if no user session exists or no user is logged in
+   */
   public static UUID getCurrentUserId() {
-    if (instance == null) {
-      throw new IllegalStateException("No user session exists");
-    }
     return instance
         .getCurrentUser()
         .orElseThrow(() -> new IllegalStateException("No user logged in"))
@@ -42,35 +60,35 @@ public class UserSession {
   }
 
   /**
-   * Retrieves the singleton instance of the UserSession class. If no session has been created, this
-   * method will return null. To initialize a session, use the createSession method.
+   * Retrieves the username of the currently logged-in user.
    *
-   * @return the singleton instance of UserSession if a session exists; otherwise, returns null.
+   * <p>This method checks if a user session exists and if a user is currently logged in. If there
+   * is no active user session or no user is logged in, an {@link IllegalStateException} is thrown.
+   *
+   * @return the username of the currently logged-in user
+   * @throws IllegalStateException if no user session exists or no user is logged in
    */
-  public static UserSession getInstance() {
-    if (instance == null) {
-      throw new IllegalStateException("No user session exists");
-    }
-    return instance;
+  public static String getCurrentUsername() {
+    return instance
+        .getCurrentUser()
+        .orElseThrow(() -> new IllegalStateException("No user logged in"))
+        .getUsername();
   }
 
   /**
-   * Retrieves the currently active user associated with the UserSession.
+   * Retrieves the current user associated with this session.
    *
-   * @return the User object representing the current user, or null if no user is set.
+   * <p>This method returns an {@link Optional} containing the currently logged-in user, if such a
+   * user exists. If no user is currently logged in, an empty {@link Optional} is returned.
+   *
+   * @return an {@link Optional} containing the current user if one exists, or an empty {@link
+   *     Optional} if no user is logged in
    */
-  public Optional<User> getCurrentUser() {
-    return Optional.of(currentUser);
+  private Optional<User> getCurrentUser() {
+    return Optional.ofNullable(currentUser);
   }
 
-  /**
-   * Sets the currently active user for the session. This method updates the `currentUser` field in
-   * the `UserSession` class with the provided `User` object. The active user represents the user
-   * currently associated with the session.
-   *
-   * @param currentUser the User object to set as the currently active user in the session
-   */
-  public void setCurrentUser(User currentUser) {
+  private void setCurrentUser(User currentUser) {
     this.currentUser = currentUser;
   }
 }

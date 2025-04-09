@@ -1,7 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
@@ -13,7 +12,7 @@ import javafx.scene.control.Label;
  * about the current profile.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.03.25
+ * @version 2025.04.09
  */
 public class ProfileController {
 
@@ -35,7 +34,7 @@ public class ProfileController {
    * to the corresponding label.
    */
   public void displayName() {
-    nameLabel.setText(UserSession.getInstance().getCurrentUser().get().getUsername());
+    nameLabel.setText(UserSession.getCurrentUsername());
   }
 
   /**
@@ -50,16 +49,11 @@ public class ProfileController {
   /** The displayTasks method gets and displays the number of tasks this user has completed. */
   @FXML
   public void displayCompletedTasks() {
-    User user =
-        UserSession.getInstance()
-            .getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user is logged in"));
-
     tasksLabel.setText(
         String.valueOf(
-            TiedyApp.getDataAccessFacade().findByStatus(Status.CLOSED).stream()
-                .filter(task -> task.getAssignedUsers().contains(user.getId()))
-                .count()));
+            TiedyApp.getDataAccessFacade()
+                .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.CLOSED)
+                .size()));
   }
 
   /**
@@ -68,7 +62,7 @@ public class ProfileController {
    */
   @FXML
   public void onLogoutButtonPress() {
-    UserSession.getInstance().setCurrentUser(null);
+    UserSession.destroySession();
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
   }
 }

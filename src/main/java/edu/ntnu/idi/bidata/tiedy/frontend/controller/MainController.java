@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
@@ -52,13 +51,9 @@ public class MainController {
     taskViewPane.setHgap(10);
     taskViewPane.setVgap(10);
 
-    User user =
-        UserSession.getInstance()
-            .getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user logged in"));
-
     // Initialize tasks with all tasks for the current user
-    updateTaskViewPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+    updateTaskViewPane(
+        TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {

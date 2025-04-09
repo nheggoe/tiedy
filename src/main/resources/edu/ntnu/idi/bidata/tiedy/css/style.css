@@ -1,10 +1,19 @@
+* {
+    -fx-border-color: #6495ed;
+    -fx-background-color: #fff8dc;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6495ed;
+    -fx-text-alignment: center;
+    -fx-border-width: 0;
+    -fx-padding: 4;
+}
+
 .root {
     -fx-background-color: #fff8dc;
-    -min-width: 700px;
-    -min-height: 500px;
-    -pref-width: 1133px;
-    -pref-height: 744px;
-    -fx-border-radius: 10;
     -fx-alignment: center;
     -fx-padding: 20;
 }
@@ -27,20 +36,6 @@
     -fx-border-radius: 6;
     -fx-background-radius: 6;
     -fx-spacing: 10;
-}
-
-* {
-    -fx-border-color: #6495ed;
-    -fx-background-color: #fff8dc;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
-    -fx-font-family: "Arial";
-    -fx-font-size: 14;
-    -fx-font-weight: bold;
-    -fx-text-fill: #6495ed;
-    -fx-text-alignment: center;
-    -fx-border-width: 0;
-    -fx-padding: 4;
 }
 
 .label-display {
@@ -77,5 +72,9 @@
 }
 
 .dialog-pane > .content > * {
+    -fx-background-color: #6495ed;
+}
+
+.chart {
     -fx-background-color: #6495ed;
 }

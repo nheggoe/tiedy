@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css"
+      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MenuBarController">
+    <!-- Left aligned section -->
+    <HBox fx:id="leftSection" styleClass="inner-container" HBox.hgrow="ALWAYS">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/HomeButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/StatsButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress">
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/CreateTaskButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
+                onAction="#onGroupButtonPress">
+            <graphic>
+                <ImageView fx:id="groupButton" fitHeight="91.0" fitWidth="84.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/icons/groupIcon.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress">
+            <graphic>
+                <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
+                           preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/ProfileButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </HBox>
+
+    <!-- Right aligned section -->
+    <HBox fx:id="rightSection" prefHeight="100.0" prefWidth="99.0" styleClass="inner-container">
+        <MenuButton fx:id="taskFilterMenu" mnemonicParsing="false" styleClass="back-button">
+            <items>
+                <MenuItem fx:id="allTaskFilter" mnemonicParsing="false" text="All"/>
+                <MenuItem fx:id="openTaskFilter" mnemonicParsing="false" text="Open"/>
+                <MenuItem fx:id="inProgressTaskFilter" mnemonicParsing="false" text="In Progress"/>
+                <MenuItem fx:id="postponedTaskFilter" mnemonicParsing="false" text="Postponed"/>
+                <MenuItem fx:id="closedTaskFilter" mnemonicParsing="false" text="Closed"/>
+            </items>
+            <graphic>
+                <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/FilterButton.png"/>
+                    </image>
+                </ImageView>
+            </graphic>
+        </MenuButton>
+    </HBox>
+</HBox>

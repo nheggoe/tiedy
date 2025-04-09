@@ -6,7 +6,6 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -61,7 +60,7 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   @Override
   public boolean assignToUser(UUID taskId, UUID userId) {
     Task task = getById(taskId).orElse(null);
-    if (Objects.isNull(task)) {
+    if (task == null) {
       return false;
     }
     return task.assignUser(userId);
@@ -70,7 +69,7 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   @Override
   public boolean unassignFromUser(UUID taskId, UUID userId) {
     Task task = getById(taskId).orElse(null);
-    if (Objects.isNull(task)) {
+    if (task == null) {
       return false;
     }
     return task.getAssignedUsers().remove(userId);

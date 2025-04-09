@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * necessary public interface.
  *
  * @author Nick Heggø
- * @version 2025.04.03
+ * @version 2025.04.09
  */
 public class DataAccessFacade implements Runnable {
 
@@ -177,6 +177,20 @@ public class DataAccessFacade implements Runnable {
   // ------------------------  Task Repository Methods  ------------------------
 
   /**
+   * Updates an existing task in the repository.
+   *
+   * @param task the Task object to be updated
+   * @return the updated Task object
+   */
+  public Task updateTask(Task task) {
+    return taskRepository.update(task);
+  }
+
+  public boolean removeTask(UUID taskId) {
+    return taskRepository.remove(taskId);
+  }
+
+  /**
    * Adds a new task to the repository.
    *
    * @param task the Task object to be added
@@ -235,10 +249,9 @@ public class DataAccessFacade implements Runnable {
    *
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
-   * @return true if the task was successfully assigned to the user, false otherwise
    */
-  public boolean assignToUser(UUID taskId, UUID userId) {
-    return taskRepository.assignToUser(taskId, userId);
+  public void /**/ assignToUser(UUID taskId, UUID userId) {
+    taskRepository.assignToUser(taskId, userId);
   }
 
   /**
@@ -263,5 +276,14 @@ public class DataAccessFacade implements Runnable {
   public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
     List<Task> tasksByUser = findByAssignedUser(userId);
     return tasksByUser.stream().filter(task -> task.getStatus() == status).toList();
+  }
+
+  /**
+   * Deletes a task from the task repository using its unique identifier.
+   *
+   * @param taskId the unique identifier of the task to be deleted; must not be null
+   */
+  public void deleteTask(UUID taskId) {
+    taskRepository.remove(taskId);
   }
 }

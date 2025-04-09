@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util;
 
-import java.util.Objects;
 import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -42,7 +41,7 @@ public class PasswordUtil {
    *     inputs are null
    */
   public static boolean isPasswordCorrect(String plainTextPassword, String hashedPassword) {
-    if (Objects.isNull(plainTextPassword) || Objects.isNull(hashedPassword)) {
+    if ((plainTextPassword == null) || (hashedPassword == null)) {
       return false;
     }
     try {
@@ -63,7 +62,7 @@ public class PasswordUtil {
    *     criteria
    */
   private static void validatePasswordFormat(String plainTextPassword) {
-    if (Objects.isNull(plainTextPassword) || plainTextPassword.isBlank()) {
+    if ((plainTextPassword == null) || plainTextPassword.isBlank()) {
       throw new IllegalArgumentException("Password cannot be blank!");
     }
     Pattern validFormat = Pattern.compile("^[a-zA-Z\\d]{8,24}$");

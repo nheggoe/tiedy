@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend.session;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * The UserSession class is responsible for managing a single user session in the application. This
@@ -30,6 +31,16 @@ public class UserSession {
     instance = new UserSession(user);
   }
 
+  public static UUID getCurrentUserId() {
+    if (instance == null) {
+      throw new IllegalStateException("No user session exists");
+    }
+    return instance
+        .getCurrentUser()
+        .orElseThrow(() -> new IllegalStateException("No user logged in"))
+        .getId();
+  }
+
   /**
    * Retrieves the singleton instance of the UserSession class. If no session has been created, this
    * method will return null. To initialize a session, use the createSession method.
@@ -37,6 +48,9 @@ public class UserSession {
    * @return the singleton instance of UserSession if a session exists; otherwise, returns null.
    */
   public static UserSession getInstance() {
+    if (instance == null) {
+      throw new IllegalStateException("No user session exists");
+    }
     return instance;
   }
 

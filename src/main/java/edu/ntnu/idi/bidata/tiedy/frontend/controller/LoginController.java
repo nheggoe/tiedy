@@ -6,7 +6,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -42,7 +42,7 @@ public class LoginController {
 
       validateCredential(username, plainTextPassword);
     } catch (IllegalArgumentException e) {
-      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 
@@ -73,16 +73,16 @@ public class LoginController {
 
       UserSession.createSession(foundUser);
 
-      JavaFxFactory.generateInfoAlert(
+      AlertFactory.generateInfoAlert(
               "Login successful", "You are now logged in as %s".formatted(username))
           .showAndWait();
 
       TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
 
     } catch (IllegalArgumentException e) {
-      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     } catch (IllegalStateException e) {
-      JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
 

@@ -1,10 +1,7 @@
-package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
+package edu.ntnu.idi.bidata.tiedy.backend.io.json;
 
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonReader;
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonType;
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonWriter;
+import edu.ntnu.idi.bidata.tiedy.backend.io.FileUtil;
 import java.util.Set;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -62,6 +59,7 @@ public class JsonService<T> {
    * environment. If the file does not exist, it is created and an empty list is returned. If the
    * file exists, the data in the file is deserialized into a list.
    *
+   * @see FileUtil
    * @return a stream of objects deserialized from the JSON file, or an empty stream if the file is
    *     newly created
    */
@@ -70,29 +68,14 @@ public class JsonService<T> {
   }
 
   /**
-   * Writes a set of objects to a JSON file. The file is created at a location dynamically
-   * determined based on the target class type and whether the operation is performed in a test or
-   * production environment. The method ensures that the directory structure exists before writing.
-   * It will update existing data if present
+   * Serializes and writes the provided set of objects into a JSON file. The JSON file is
+   * dynamically located based on the class type and whether the operation is performed in a test or
+   * production environment.
    *
-   * @param set the set of objects to be written into the JSON file
+   * @see FileUtil
+   * @param set the set of objects to be serialized and written into the JSON file
    */
   public void writeCollection(Set<T> set) {
-    Set<T> existingData = loadJsonAsStream().collect(Collectors.toSet());
-    existingData.removeAll(set);
-    existingData.addAll(set);
-    jsonWriter.writeJsonFile(existingData);
-  }
-
-  /**
-   * Adds an item to the JSON collection by writing it to the JSON file. The provided item is
-   * wrapped in a stream and passed to the {@code writeCollection} method for writing. The location
-   * of the JSON file is determined dynamically based on the class type and the environment (test or
-   * production).
-   *
-   * @param item the object of the target type to be added to the JSON collection; must not be null
-   */
-  public void addItem(T item) {
-    writeCollection(Set.of(item));
+    jsonWriter.writeJsonFile(set);
   }
 }

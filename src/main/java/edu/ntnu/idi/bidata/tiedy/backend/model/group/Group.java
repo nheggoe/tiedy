@@ -3,7 +3,6 @@ package edu.ntnu.idi.bidata.tiedy.backend.model.group;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -109,7 +108,7 @@ public class Group {
       return false;
     }
 
-    return Objects.nonNull(members.replace(userId, isAdmin));
+    return members.replace(userId, isAdmin) != null;
   }
 
   // ------------------------   Getters and Setters ------------------------

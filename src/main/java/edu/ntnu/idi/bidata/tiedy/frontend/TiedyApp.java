@@ -3,11 +3,11 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -19,7 +19,7 @@ import javafx.stage.Stage;
  * class from the JavaFX framework, providing the necessary lifecycle methods such as start.
  *
  * @author Nick Heggø
- * @version 2025.03.25
+ * @version 2025.04.07
  */
 public class TiedyApp extends Application {
 
@@ -53,34 +53,45 @@ public class TiedyApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    if (Taskbar.isTaskbarSupported()) {
+      var taskbar = Taskbar.getTaskbar();
+
+      if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        var dockIcon =
+            defaultToolkit.getImage(
+                getClass().getResource("/edu/ntnu/idi/bidata/tiedy/images/icon_512@2x.png"));
+        taskbar.setIconImage(dockIcon);
+      }
+    }
     primaryStage.setTitle("Tiedy");
     primaryStage
         .getIcons()
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
-    primaryStage.setResizable(false);
+    primaryStage.setMinWidth(700);
+    primaryStage.setMinHeight(500);
     primaryStage.setOnCloseRequest(event -> onClose());
     sceneManager = new SceneManager(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
   }
 
   public static void onClose() {
-    JavaFxFactory.generateConfirmationAlert(
+    AlertFactory.generateConfirmationAlert(
         "Exit", "Are you sure you want to exit the application?");
     try {
       Alert exitConfirmation =
-          JavaFxFactory.generateConfirmationAlert(
+          AlertFactory.generateConfirmationAlert(
               "Exit", "Are you sure you want to exit the application?");
       Optional<ButtonType> result = exitConfirmation.showAndWait();
       if (result.isPresent() && result.get() == ButtonType.OK) {
         LOGGER.info("Thank you for using Tiedy!");
         LOGGER.info("Exiting program...");
-        Platform.exit();
       } else {
         exitConfirmation.close();
       }
 
     } catch (IllegalStateException e) {
-      JavaFxFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
   }
 }

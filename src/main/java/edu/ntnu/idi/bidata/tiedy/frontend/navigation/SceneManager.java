@@ -2,20 +2,18 @@ package edu.ntnu.idi.bidata.tiedy.frontend.navigation;
 
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * The SceneManager class is responsible for managing and switching scenes in a JavaFX application.
- * It encapsulates the logic necessary to load FXML files and update the primary stage with the
- * specified scene, enabling seamless navigation between different user interface views.
+ * The SceneManager class is responsible for managing and switching scenes in the JavaFX
+ * application. By swapping scenes, it enables us the ability to use a single application window.
  *
  * <p>This class is typically used as a singleton, allowing centralized control of scene
  * transitions.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.04.07
  */
 public class SceneManager {
 
@@ -47,11 +45,15 @@ public class SceneManager {
    */
   public void switchScene(SceneName sceneName) {
     try {
-      Parent root = FXMLLoader.load(sceneName.getPath());
-      primaryStage.setScene(new Scene(root));
+      Scene oldScene = primaryStage.getScene();
+      double width = (oldScene != null) ? oldScene.getWidth() : primaryStage.getWidth();
+      double height = (oldScene != null) ? oldScene.getHeight() : primaryStage.getHeight();
+
+      Scene newScene = new Scene(FXMLLoader.load(sceneName.getSceneURL()), width, height);
+      primaryStage.setScene(newScene);
       primaryStage.show();
     } catch (IOException e) {
-      throw new IllegalStateException("Cannot load FXML file: " + sceneName.getPath(), e);
+      throw new IllegalStateException("Cannot load FXML file: " + sceneName.getSceneURL(), e);
     }
   }
 }

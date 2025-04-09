@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ButtonType?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.DialogPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<DialogPane expanded="true" prefHeight="500.0" prefWidth="600.0" stylesheets="@../../css/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController">
+   <content>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" spacing="15.0" styleClass="content"
+            stylesheets="@../../css/style.css">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+         </padding>
+         <children>
+            <AnchorPane>
+               <children>
+                  <Label style="-fx-background-color: #6495ed;">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                     </padding>
+                  </Label>
+                  <TextField id="taskNameField" fx:id="taskNameField" layoutX="242.0" layoutY="4.0" prefHeight="33.0"
+                             prefWidth="200.0" style="-fx-background-color: #f5f5f5;"/>
+                  <ImageView fitHeight="32.0" fitWidth="64.0" layoutX="142.0" layoutY="9.0" pickOnBounds="true"
+                             preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/lables/NameLabel.png"/>
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane>
+               <children>
+                  <Label layoutX="75.0" layoutY="44.0" style="-fx-background-color: #6495ed;">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                     </padding>
+                  </Label>
+                  <TextArea fx:id="descriptionTextArea" layoutX="244.0" layoutY="14.0" prefHeight="100.0"
+                            prefWidth="200.0" style="-fx-background-color: #f5f5f5;"/>
+                  <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="92.0" layoutY="14.0" pickOnBounds="true"
+                             preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/buttons/DescriptionLabel.png"/>
+                     </image>
+                  </ImageView>
+               </children>
+            </AnchorPane>
+            <AnchorPane prefHeight="0.0" prefWidth="245.0">
+               <children>
+
+                  <TitledPane fx:id="advancedOptionsPane" expanded="false" layoutX="99.0" layoutY="10.0"
+                              prefHeight="32.0" prefWidth="354.0"
+                              style="-fx-background-color: #fff8dc; -fx-text-fill: #6495ed;" text="Advanced Options">
+                     <content>
+                        <VBox spacing="10.0">
+                           <children>
+                              <HBox>
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                       <graphic>
+                                          <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true"
+                                                     preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../images/lables/DateLabel.png"/>
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Label>
+                                    <DatePicker fx:id="dueDatePicker" style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;" text="Priority:">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                    </Label>
+                                    <ComboBox fx:id="priorityComboBox" prefWidth="150.0"
+                                              style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                 <children>
+                                    <Label style="-fx-background-color: #6495ed;" text="Status:">
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0"/>
+                                       </padding>
+                                    </Label>
+                                    <ComboBox fx:id="statusComboBox" prefWidth="150.0"
+                                              style="-fx-background-color: #f5f5f5;"/>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+                           </padding>
+                        </VBox>
+                     </content>
+                  </TitledPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </VBox>
+   </content>
+   <header>
+      <Label text="TASK">
+         <font>
+            <Font size="24.0"/>
+         </font>
+      </Label>
+   </header>
+   <buttonTypes>
+      <ButtonType fx:constant="CANCEL"/>
+      <ButtonType fx:constant="OK"/>
+   </buttonTypes>
+</DialogPane>

@@ -143,3 +143,14 @@
 .chart-legend-item-symbol {
     -fx-padding: 5px;
 }
+.date-picker .arrow-button {
+    -fx-background-color: #6495ed;
+    -fx-border-radius: 15px;
+    -fx-order: -1;
+}
+
+.date-picker .text-field {
+    -fx-padding: 0 5px 0 30px;
+    -fx-order: 1;
+}
+

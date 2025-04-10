@@ -8,6 +8,7 @@ import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
@@ -86,6 +87,7 @@ public class TiedyApp extends Application {
       if (result.isPresent() && result.get() == ButtonType.OK) {
         LOGGER.info("Thank you for using Tiedy!");
         LOGGER.info("Exiting program...");
+        Platform.exit();
       } else {
         exitConfirmation.close();
       }

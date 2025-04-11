@@ -12,7 +12,7 @@ import java.util.UUID;
  * design pattern to ensure only one instance of the repository is created and used.
  *
  * @author Nick Heggø
- * @version 2025.04.04
+ * @version 2025.04.11
  * @see Group
  * @see JsonRepository
  * @see GroupRepository
@@ -47,7 +47,7 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   @Override
   public List<Group> findByAdmin(UUID userId) {
     return findAllByUserId(userId).stream()
-        .dropWhile(group -> !group.getMembers().get(userId)) // returns true if isAdmin
+        .filter(group -> group.getMembers().get(userId)) // returns true if isAdmin
         .toList();
   }
 

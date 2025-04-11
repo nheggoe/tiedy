@@ -185,6 +185,11 @@ public class DataAccessFacade implements Runnable {
     return taskRepository.update(task);
   }
 
+  /**
+   * Deletes a task from the task repository using its unique identifier.
+   *
+   * @param taskId the unique identifier of the task to be deleted; must not be null
+   */
   public boolean removeTask(UUID taskId) {
     return taskRepository.remove(taskId);
   }
@@ -210,6 +215,15 @@ public class DataAccessFacade implements Runnable {
     return taskRepository.findByAssignedUser(userId);
   }
 
+  /**
+   * Retrieves a list of tasks assigned to a specific user that are not in the CLOSED status. The
+   * default filter option
+   *
+   * @param userId the unique identifier (UUID) of the user whose non-closed tasks are to be
+   *     retrieved
+   * @return a list of Task objects that are assigned to the specified user and are not in the
+   *     CLOSED status; an empty list is returned if no such tasks are found
+   */
   public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
     return taskRepository.findByAssignedUser(userId).stream()
         .filter(task -> task.getStatus() != Status.CLOSED)
@@ -262,14 +276,5 @@ public class DataAccessFacade implements Runnable {
   public List<Task> getTasksByUserAndPriority(UUID userId, Priority priority) {
     List<Task> tasksByUser = getTaskByAssignedUser(userId);
     return tasksByUser.stream().filter(task -> task.getPriority() == priority).toList();
-  }
-
-  /**
-   * Deletes a task from the task repository using its unique identifier.
-   *
-   * @param taskId the unique identifier of the task to be deleted; must not be null
-   */
-  public void deleteTask(UUID taskId) {
-    taskRepository.remove(taskId);
   }
 }

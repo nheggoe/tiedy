@@ -47,7 +47,7 @@ public class StatisticController implements DataController {
                   TiedyApp.getDataAccessFacade()
                       .getTasksByUserAndStatus(UserSession.getCurrentUserId(), status)
                       .stream()
-                      .dropWhile(task -> task.getStatus() == Status.CLOSED)
+                      .filter(task -> task.getStatus() != Status.CLOSED)
                       .toList()
                       .size();
               if (count > 0) {
@@ -71,7 +71,7 @@ public class StatisticController implements DataController {
                   TiedyApp.getDataAccessFacade()
                       .getTasksByUserAndPriority(UserSession.getCurrentUserId(), priority)
                       .stream()
-                      .dropWhile(task -> task.getStatus() == Status.CLOSED)
+                      .filter(task -> task.getStatus() != Status.CLOSED)
                       .toList()
                       .size();
               if (count > 0) {

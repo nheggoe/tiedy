@@ -107,7 +107,7 @@ public class MainController implements DataController {
                   "Delete task", "Are you sure you want to delete this task?");
 
           if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            TiedyApp.getDataAccessFacade().deleteTask(task.getId());
+            TiedyApp.getDataAccessFacade().removeTask(task.getId());
             updateTaskViewPane(
                 TiedyApp.getDataAccessFacade()
                     .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));

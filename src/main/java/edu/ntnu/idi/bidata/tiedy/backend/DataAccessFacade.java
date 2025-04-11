@@ -82,7 +82,7 @@ public class DataAccessFacade implements Runnable {
    *     list is returned
    */
   public List<Group> findGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId);
+    return groupRepository.findAllByUserId(userId).toList();
   }
 
   /**
@@ -93,7 +93,7 @@ public class DataAccessFacade implements Runnable {
    *     the user is not an admin in any group
    */
   public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId);
+    return groupRepository.findByAdmin(userId).toList();
   }
 
   /**
@@ -212,7 +212,7 @@ public class DataAccessFacade implements Runnable {
    *     an empty list
    */
   public List<Task> getTaskByAssignedUser(UUID userId) {
-    return taskRepository.findByAssignedUser(userId);
+    return taskRepository.findByAssignedUser(userId).toList();
   }
 
   /**
@@ -225,7 +225,8 @@ public class DataAccessFacade implements Runnable {
    *     CLOSED status; an empty list is returned if no such tasks are found
    */
   public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
-    return taskRepository.findByAssignedUser(userId).stream()
+    return taskRepository
+        .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .toList();
   }
@@ -260,8 +261,10 @@ public class DataAccessFacade implements Runnable {
    *     status. Returns an empty list if no tasks meet the criteria.
    */
   public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
-    List<Task> tasksByUser = getTaskByAssignedUser(userId);
-    return tasksByUser.stream().filter(task -> task.getStatus() == status).toList();
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() == status)
+        .toList();
   }
 
   /**
@@ -274,7 +277,9 @@ public class DataAccessFacade implements Runnable {
    *     empty list if no tasks meet the criteria
    */
   public List<Task> getTasksByUserAndPriority(UUID userId, Priority priority) {
-    List<Task> tasksByUser = getTaskByAssignedUser(userId);
-    return tasksByUser.stream().filter(task -> task.getPriority() == priority).toList();
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getPriority() == priority)
+        .toList();
   }
 }

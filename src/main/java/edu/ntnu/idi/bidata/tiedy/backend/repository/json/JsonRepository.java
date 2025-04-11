@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonService;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -19,7 +18,7 @@ import java.util.stream.Stream;
  * @see JsonUserRepository
  * @see JsonTaskRepository
  * @author Nick Heggø
- * @version 2025.04.04
+ * @version 2025.04.11
  * @param <T> the concrete type the Repository will be working with.
  */
 public abstract class JsonRepository<T> implements DataRepository<T> {
@@ -52,8 +51,8 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
   }
 
   @Override
-  public Collection<T> getAll() {
-    return entities.values();
+  public Stream<T> getAll() {
+    return entities.values().stream();
   }
 
   @Override

@@ -15,7 +15,8 @@ import java.util.Optional;
  * removing User objects while maintaining any persistence mechanisms such as file systems or
  * databases.
  *
- * @param <User> the type of entity managed by this repository, specifically a User
+ * @author Nick Heggø
+ * @version 2025.04.04
  */
 public interface UserRepository extends DataRepository<User> {
   /**

@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.backend.repository;
 
-import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
@@ -13,7 +12,7 @@ import java.util.stream.Stream;
  *
  * @param <T> the type of entity that the repository will manage
  * @author Nick Heggø
- * @version 2025.04.03
+ * @version 2025.04.11
  */
 public interface DataRepository<T> {
 
@@ -35,9 +34,9 @@ public interface DataRepository<T> {
   /**
    * Gets all entities managed by this repository.
    *
-   * @return a collection of all entities
+   * @return a stream of all entities
    */
-  Collection<T> getAll();
+  Stream<T> getAll();
 
   /**
    * Adds a new entity in the repository.

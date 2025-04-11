@@ -1,15 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.backend.repository;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * This interface defines a repository for managing Group entities. It extends the generic
  * DataRepository interface, providing additional task-specific CRUD and query methods.
  *
  * @author Nick Heggø
- * @version 2025.04.03
+ * @version 2025.04.11
  */
 public interface GroupRepository extends DataRepository<Group> {
 
@@ -17,17 +17,17 @@ public interface GroupRepository extends DataRepository<Group> {
    * Finds all groups that a specific user is a member of.
    *
    * @param userId the UUID of the user
-   * @return a list of groups that the user is a member of
+   * @return a stream of groups that the user is a member of
    */
-  List<Group> findAllByUserId(UUID userId);
+  Stream<Group> findAllByUserId(UUID userId);
 
   /**
    * Retrieves a list of groups where the specified user is an admin.
    *
    * @param userId the UUID of the user whose admin groups are to be found
-   * @return a list of Group objects where the user is an admin
+   * @return a stream of Group objects where the user is an admin
    */
-  List<Group> findByAdmin(UUID userId);
+  Stream<Group> findByAdmin(UUID userId);
 
   /**
    * Adds a user to a group with the specified membership and admin status.

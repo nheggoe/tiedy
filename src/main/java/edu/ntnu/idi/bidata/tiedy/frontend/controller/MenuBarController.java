@@ -7,7 +7,9 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
@@ -16,7 +18,9 @@ import javafx.scene.control.MenuItem;
 /**
  * @version 2025.04.09
  */
-public class MenuBarController {
+public class MenuBarController implements Controller {
+
+  private final List<Observer> observers = new ArrayList<>();
 
   @FXML private MenuButton taskFilterMenu; // currently no use
   @FXML private MenuItem allTaskFilter;
@@ -26,6 +30,9 @@ public class MenuBarController {
   @FXML private MenuItem closedTaskFilter;
 
   private Consumer<Collection<Task>> updateTaskViewPaneCallback;
+
+  @Override
+  public void initialize() {}
 
   /**
    * Sets up a callback that will be triggered when filter menu items are selected.
@@ -46,6 +53,7 @@ public class MenuBarController {
   @FXML
   public void onStatisticsButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
+
     taskFilterMenu.setDisable(true);
   }
 
@@ -66,7 +74,7 @@ public class MenuBarController {
               if (updateTaskViewPaneCallback != null) {
                 updateTaskViewPaneCallback.accept(
                     TiedyApp.getDataAccessFacade()
-                        .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+                        .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
               }
 
               AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
@@ -100,7 +108,7 @@ public class MenuBarController {
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
-                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())));
+                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->
@@ -125,5 +133,9 @@ public class MenuBarController {
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.POSTPONED)));
+  }
+
+  public interface Observer {
+    void update();
   }
 }

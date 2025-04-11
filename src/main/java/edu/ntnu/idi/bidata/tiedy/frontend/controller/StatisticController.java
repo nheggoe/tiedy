@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
@@ -14,13 +15,18 @@ import javafx.scene.chart.PieChart;
  * @author Nick Heggø
  * @version 2025.04.09
  */
-public class StatisticController {
+public class StatisticController implements DataController {
 
   @FXML private PieChart pieChartLeft;
   @FXML private PieChart pieChartRight;
 
   @FXML
   public void initialize() {
+    refresh();
+  }
+
+  @Override
+  public void updateData() {
     refresh();
   }
 
@@ -37,7 +43,13 @@ public class StatisticController {
     Arrays.stream(Status.values())
         .forEach(
             status -> {
-              int count = TiedyApp.getDataAccessFacade().findByStatus(status).size();
+              int count =
+                  TiedyApp.getDataAccessFacade()
+                      .getTasksByUserAndStatus(UserSession.getCurrentUserId(), status)
+                      .stream()
+                      .dropWhile(task -> task.getStatus() == Status.CLOSED)
+                      .toList()
+                      .size();
               if (count > 0) {
                 pieChartRight.getData().add(new PieChart.Data(status.toString(), count));
               }
@@ -55,7 +67,13 @@ public class StatisticController {
     Arrays.stream(Priority.values())
         .forEach(
             priority -> {
-              int count = TiedyApp.getDataAccessFacade().findByPriority(priority).size();
+              int count =
+                  TiedyApp.getDataAccessFacade()
+                      .getTasksByUserAndPriority(UserSession.getCurrentUserId(), priority)
+                      .stream()
+                      .dropWhile(task -> task.getStatus() == Status.CLOSED)
+                      .toList()
+                      .size();
               if (count > 0) {
                 pieChartLeft.getData().add(new PieChart.Data(priority.toString(), count));
               }

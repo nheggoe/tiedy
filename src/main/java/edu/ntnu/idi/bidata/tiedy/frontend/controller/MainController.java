@@ -28,7 +28,7 @@ import javafx.scene.text.Text;
  * @author Nick Heggø
  * @version 2025.04.09
  */
-public class MainController {
+public class MainController implements DataController {
 
   @FXML private FlowPane taskViewPane;
 
@@ -54,13 +54,16 @@ public class MainController {
     // Initialize tasks with all tasks for the current user
     updateTaskViewPane(
         TiedyApp.getDataAccessFacade()
-            .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+            .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {
       menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
     }
   }
+
+  @Override
+  public void updateData() {}
 
   private void updateTaskViewPane(Collection<Task> tasks) {
     taskViewPane.getChildren().clear();
@@ -107,7 +110,7 @@ public class MainController {
             TiedyApp.getDataAccessFacade().deleteTask(task.getId());
             updateTaskViewPane(
                 TiedyApp.getDataAccessFacade()
-                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
           }
         });
 
@@ -128,7 +131,7 @@ public class MainController {
 
               updateTaskViewPane(
                   TiedyApp.getDataAccessFacade()
-                      .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
               AlertFactory.generateInfoAlert(
                       "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
@@ -181,7 +184,7 @@ public class MainController {
 
             updateTaskViewPane(
                 TiedyApp.getDataAccessFacade()
-                    .findAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
 
           } catch (IllegalArgumentException e) {
             AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();

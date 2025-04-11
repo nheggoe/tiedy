@@ -66,7 +66,7 @@ public class DialogFactory {
       // Show dialog and handle result
       Optional<ButtonType> result = dialog.showAndWait();
 
-      if (result.isPresent() && result.get() == ButtonType.OK) {
+      if (result.isPresent() && (result.get() == ButtonType.OK)) {
         controller.validateInput();
         Task task = controller.getTask();
 

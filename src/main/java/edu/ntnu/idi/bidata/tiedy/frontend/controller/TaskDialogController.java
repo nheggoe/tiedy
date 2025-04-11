@@ -21,7 +21,7 @@ import org.jspecify.annotations.NonNull;
  * @author Nick Heggø
  * @version 2025.04.09
  */
-public class TaskDialogController {
+public class TaskDialogController implements Controller {
 
   private final TaskBuilder taskBuilder = new TaskBuilder();
 
@@ -39,16 +39,16 @@ public class TaskDialogController {
   }
 
   /** Initializes the dialog components. */
-  @FXML
+  @Override
   public void initialize() {
     priorityComboBox.setItems(FXCollections.observableArrayList(Priority.values()));
     statusComboBox.setItems(FXCollections.observableArrayList(Status.values()));
+    statusComboBox.setValue(Status.OPEN);
 
     // --------  start hidden advanced options  --------
     advancedOptionsPane.setExpanded(false);
     // default value
     priorityComboBox.setValue(Priority.NONE);
-    statusComboBox.setValue(Status.OPEN);
     dueDatePicker.setValue(LocalDate.now().plusDays(1));
   }
 

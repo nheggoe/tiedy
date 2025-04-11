@@ -12,7 +12,6 @@ import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonGroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
  * necessary public interface.
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.11
  */
 public class DataAccessFacade implements Runnable {
 
@@ -207,47 +206,14 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects assigned to the specified user; if no tasks are found, returns
    *     an empty list
    */
-  public List<Task> findByAssignedUser(UUID userId) {
+  public List<Task> getTaskByAssignedUser(UUID userId) {
     return taskRepository.findByAssignedUser(userId);
   }
 
-  public List<Task> findAllNoneClosedTaskByUserId(UUID userId) {
+  public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
     return taskRepository.findByAssignedUser(userId).stream()
         .filter(task -> task.getStatus() != Status.CLOSED)
         .toList();
-  }
-
-  /**
-   * Retrieves a list of tasks that match the specified status.
-   *
-   * @param status the status of the tasks to be retrieved; must not be null
-   * @return a list of Task objects with the specified status; if no tasks match the status, an
-   *     empty list is returned
-   */
-  public List<Task> findByStatus(Status status) {
-    return taskRepository.findByStatus(status);
-  }
-
-  /**
-   * Retrieves a list of tasks that have the specified priority.
-   *
-   * @param priority the priority level to filter tasks by; must not be null
-   * @return a list of Task objects with the specified priority; if no tasks match the priority, an
-   *     empty list is returned
-   */
-  public List<Task> findByPriority(Priority priority) {
-    return taskRepository.findByPriority(priority);
-  }
-
-  /**
-   * Retrieves a list of tasks that have a deadline before the specified date.
-   *
-   * @param date the cutoff date; tasks with a deadline earlier than this date will be retrieved
-   * @return a list of Task objects with deadlines before the specified date; returns an empty list
-   *     if no such tasks exist
-   */
-  public List<Task> findByDeadLineBefore(LocalDate date) {
-    return taskRepository.findByDeadLineBefore(date);
   }
 
   /**
@@ -256,7 +222,7 @@ public class DataAccessFacade implements Runnable {
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
    */
-  public void /**/ assignToUser(UUID taskId, UUID userId) {
+  public void assignToUser(UUID taskId, UUID userId) {
     taskRepository.assignToUser(taskId, userId);
   }
 
@@ -280,8 +246,22 @@ public class DataAccessFacade implements Runnable {
    *     status. Returns an empty list if no tasks meet the criteria.
    */
   public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
-    List<Task> tasksByUser = findByAssignedUser(userId);
+    List<Task> tasksByUser = getTaskByAssignedUser(userId);
     return tasksByUser.stream().filter(task -> task.getStatus() == status).toList();
+  }
+
+  /**
+   * Retrieves a list of tasks assigned to a specific user and filtered by the specified priority
+   * level.
+   *
+   * @param userId the unique identifier of the user whose tasks are to be retrieved
+   * @param priority the priority level to filter tasks (e.g., HIGH, MEDIUM, LOW)
+   * @return a list of Task objects assigned to the specified user that match the given priority; an
+   *     empty list if no tasks meet the criteria
+   */
+  public List<Task> getTasksByUserAndPriority(UUID userId, Priority priority) {
+    List<Task> tasksByUser = getTaskByAssignedUser(userId);
+    return tasksByUser.stream().filter(task -> task.getPriority() == priority).toList();
   }
 
   /**

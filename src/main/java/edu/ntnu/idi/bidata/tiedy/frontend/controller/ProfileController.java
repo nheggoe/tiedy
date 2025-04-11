@@ -14,7 +14,7 @@ import javafx.scene.control.Label;
  * @author Odin Arvhage and Nick Heggø
  * @version 2025.04.09
  */
-public class ProfileController {
+public class ProfileController implements Controller {
 
   @FXML private Label nameLabel;
   @FXML private Label tasksLabel;
@@ -23,7 +23,7 @@ public class ProfileController {
    * The initialize method is called when the PROFILE scene is loaded. It initializes the display
    * labels in the scene with information.
    */
-  @FXML
+  @Override
   public void initialize() {
     displayName();
     displayCompletedTasks();

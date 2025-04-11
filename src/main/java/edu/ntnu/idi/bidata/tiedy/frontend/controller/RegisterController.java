@@ -18,13 +18,16 @@ import javafx.scene.control.TextField;
  * @author Nick Heggø
  * @version 2025.03.28
  */
-public class RegisterController {
+public class RegisterController implements Controller {
 
   private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
   @FXML private PasswordField passwordRepeatField;
+
+  @Override
+  public void initialize() {}
 
   /**
    * Handles the user registration process. This method validates the input provided by the user,

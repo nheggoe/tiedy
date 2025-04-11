@@ -21,17 +21,6 @@ public class DialogFactory {
 
   private DialogFactory() {}
 
-  private static Dialog<ButtonType> generateTaskDialog(String title) throws IOException {
-    FXMLLoader loader =
-        new FXMLLoader(
-            TiedyApp.class.getResource("/edu/ntnu/idi/bidata/tiedy/fxml/dialog/TaskDialog.fxml"));
-
-    Dialog<ButtonType> dialog = new Dialog<>();
-    dialog.setTitle(title);
-    dialog.setDialogPane(loader.load());
-    return dialog;
-  }
-
   /**
    * Creates a dialog for editing an existing task.
    *

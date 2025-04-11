@@ -13,7 +13,7 @@ import javafx.scene.chart.PieChart;
  * fetches the data and updates the graph to make it dynamic.
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.11
  */
 public class StatisticController implements DataController {
 
@@ -22,16 +22,12 @@ public class StatisticController implements DataController {
 
   @FXML
   public void initialize() {
-    refresh();
+    updatePieChartLeft();
+    updatePieChartRight();
   }
 
   @Override
   public void updateData() {
-    refresh();
-  }
-
-  /** Refreshes both charts with the latest data */
-  public void refresh() {
     updatePieChartLeft();
     updatePieChartRight();
   }

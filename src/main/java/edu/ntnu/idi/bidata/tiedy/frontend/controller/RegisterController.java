@@ -4,7 +4,6 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
-import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
@@ -60,7 +59,6 @@ public class RegisterController implements Controller {
       AlertFactory.generateInfoAlert("Registration successful", "Registration successful")
           .showAndWait();
 
-      UserSession.createSession(registeredUser);
       backToLogin();
 
     } catch (IllegalArgumentException e) {

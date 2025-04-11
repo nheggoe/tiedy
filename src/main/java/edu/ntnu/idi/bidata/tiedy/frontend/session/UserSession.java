@@ -75,15 +75,6 @@ public class UserSession {
         .getUsername();
   }
 
-  /**
-   * Retrieves the current user associated with this session.
-   *
-   * <p>This method returns an {@link Optional} containing the currently logged-in user, if such a
-   * user exists. If no user is currently logged in, an empty {@link Optional} is returned.
-   *
-   * @return an {@link Optional} containing the current user if one exists, or an empty {@link
-   *     Optional} if no user is logged in
-   */
   private Optional<User> getCurrentUser() {
     return Optional.ofNullable(currentUser);
   }

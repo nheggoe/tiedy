@@ -16,7 +16,12 @@ import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 
 /**
- * @version 2025.04.09
+ * The MenuBarController handles the interactions with the menu bar in the application's user
+ * interface. It manages button clicks, navigation between scenes, and filtering of tasks based on
+ * the user's selection.
+ *
+ * @author Nick Heggø
+ * @version 2025.04.11
  */
 public class MenuBarController implements Controller {
 
@@ -32,7 +37,14 @@ public class MenuBarController implements Controller {
   private Consumer<Collection<Task>> updateTaskViewPaneCallback;
 
   @Override
-  public void initialize() {}
+  public void initialize() {
+    observers.add(
+        () -> {
+          if (TiedyApp.getSceneManager().getController() instanceof DataController controller) {
+            controller.updateData();
+          }
+        });
+  }
 
   /**
    * Sets up a callback that will be triggered when filter menu items are selected.
@@ -77,6 +89,7 @@ public class MenuBarController implements Controller {
                         .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
               }
 
+              observers.forEach(Observer::update);
               AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
             } else {
               AlertFactory.generateWarningAlert("Failed to create task").showAndWait();

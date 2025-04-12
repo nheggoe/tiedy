@@ -12,7 +12,6 @@ import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonGroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -24,7 +23,7 @@ import java.util.logging.Logger;
  * necessary public interface.
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.12
  */
 public class DataAccessFacade implements Runnable {
 
@@ -83,7 +82,7 @@ public class DataAccessFacade implements Runnable {
    *     list is returned
    */
   public List<Group> findGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId);
+    return groupRepository.findAllByUserId(userId).map(Group::new).toList();
   }
 
   /**
@@ -94,7 +93,7 @@ public class DataAccessFacade implements Runnable {
    *     the user is not an admin in any group
    */
   public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId);
+    return groupRepository.findByAdmin(userId).map(Group::new).toList();
   }
 
   /**
@@ -186,6 +185,11 @@ public class DataAccessFacade implements Runnable {
     return taskRepository.update(task);
   }
 
+  /**
+   * Deletes a task from the task repository using its unique identifier.
+   *
+   * @param taskId the unique identifier of the task to be deleted; must not be null
+   */
   public boolean removeTask(UUID taskId) {
     return taskRepository.remove(taskId);
   }
@@ -207,41 +211,43 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects assigned to the specified user; if no tasks are found, returns
    *     an empty list
    */
-  public List<Task> findByAssignedUser(UUID userId) {
-    return taskRepository.findByAssignedUser(userId);
+  public List<Task> getTaskByAssignedUser(UUID userId) {
+    return taskRepository.findByAssignedUser(userId).map(Task::new).toList();
   }
 
   /**
-   * Retrieves a list of tasks that match the specified status.
+   * Retrieves a list of tasks assigned to a specific user that are not in the CLOSED status. The
+   * default filter option
    *
-   * @param status the status of the tasks to be retrieved; must not be null
-   * @return a list of Task objects with the specified status; if no tasks match the status, an
-   *     empty list is returned
+   * @param userId the unique identifier (UUID) of the user whose non-closed tasks are to be
+   *     retrieved
+   * @return a list of Task objects that are assigned to the specified user and are not in the
+   *     CLOSED status; an empty list is returned if no such tasks are found
    */
-  public List<Task> findByStatus(Status status) {
-    return taskRepository.findByStatus(status);
+  public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .map(Task::new)
+        .toList();
   }
 
-  /**
-   * Retrieves a list of tasks that have the specified priority.
-   *
-   * @param priority the priority level to filter tasks by; must not be null
-   * @return a list of Task objects with the specified priority; if no tasks match the priority, an
-   *     empty list is returned
-   */
-  public List<Task> findByPriority(Priority priority) {
-    return taskRepository.findByPriority(priority);
+  public List<Task> getAllNoneClosedTaskByUserIdAndStatus(UUID userId, Status status) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .filter(task -> task.getStatus() == status)
+        .map(Task::new)
+        .toList();
   }
 
-  /**
-   * Retrieves a list of tasks that have a deadline before the specified date.
-   *
-   * @param date the cutoff date; tasks with a deadline earlier than this date will be retrieved
-   * @return a list of Task objects with deadlines before the specified date; returns an empty list
-   *     if no such tasks exist
-   */
-  public List<Task> findByDeadLineBefore(LocalDate date) {
-    return taskRepository.findByDeadLineBefore(date);
+  public List<Task> getAllNoneClosedTaskByUserIdAndPriority(UUID userId, Priority priority) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .filter(task -> task.getPriority() == priority)
+        .map(Task::new)
+        .toList();
   }
 
   /**
@@ -250,7 +256,7 @@ public class DataAccessFacade implements Runnable {
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
    */
-  public void /**/ assignToUser(UUID taskId, UUID userId) {
+  public void assignToUser(UUID taskId, UUID userId) {
     taskRepository.assignToUser(taskId, userId);
   }
 
@@ -274,16 +280,27 @@ public class DataAccessFacade implements Runnable {
    *     status. Returns an empty list if no tasks meet the criteria.
    */
   public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
-    List<Task> tasksByUser = findByAssignedUser(userId);
-    return tasksByUser.stream().filter(task -> task.getStatus() == status).toList();
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() == status)
+        .map(Task::new)
+        .toList();
   }
 
   /**
-   * Deletes a task from the task repository using its unique identifier.
+   * Retrieves a list of tasks assigned to a specific user and filtered by the specified priority
+   * level.
    *
-   * @param taskId the unique identifier of the task to be deleted; must not be null
+   * @param userId the unique identifier of the user whose tasks are to be retrieved
+   * @param priority the priority level to filter tasks (e.g., HIGH, MEDIUM, LOW)
+   * @return a list of Task objects assigned to the specified user that match the given priority; an
+   *     empty list if no tasks meet the criteria
    */
-  public void deleteTask(UUID taskId) {
-    taskRepository.remove(taskId);
+  public List<Task> getTasksByUserAndPriority(UUID userId, Priority priority) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getPriority() == priority)
+        .map(Task::new)
+        .toList();
   }
 }

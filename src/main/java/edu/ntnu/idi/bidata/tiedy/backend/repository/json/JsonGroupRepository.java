@@ -2,8 +2,8 @@ package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * A repository for managing {@link Group} entities stored in a JSON-based persistence layer. This
@@ -12,7 +12,7 @@ import java.util.UUID;
  * design pattern to ensure only one instance of the repository is created and used.
  *
  * @author Nick Heggø
- * @version 2025.04.04
+ * @version 2025.04.11
  * @see Group
  * @see JsonRepository
  * @see GroupRepository
@@ -40,21 +40,20 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   }
 
   @Override
-  public List<Group> findAllByUserId(UUID userId) {
-    return getAll().stream().filter(group -> group.getMembers().containsKey(userId)).toList();
+  public Stream<Group> findAllByUserId(UUID userId) {
+    return getAll().filter(group -> group.getMembers().containsKey(userId));
   }
 
   @Override
-  public List<Group> findByAdmin(UUID userId) {
-    return findAllByUserId(userId).stream()
-        .dropWhile(group -> !group.getMembers().get(userId)) // returns true if isAdmin
-        .toList();
+  public Stream<Group> findByAdmin(UUID userId) {
+    return findAllByUserId(userId)
+        .filter(group -> group.getMembers().get(userId)); // returns true if isAdmin
   }
 
   @Override
   public boolean addMember(UUID groupId, UUID userId, boolean isAdmin) {
     Group foundGroup =
-        getAll().stream().filter(group -> group.getId().equals(groupId)).findFirst().orElse(null);
+        getAll().filter(group -> group.getId().equals(groupId)).findFirst().orElse(null);
 
     if (foundGroup == null) {
       return false;

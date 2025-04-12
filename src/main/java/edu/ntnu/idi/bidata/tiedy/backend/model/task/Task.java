@@ -12,7 +12,7 @@ import java.util.UUID;
  * assigned to, deadline and priority. It provides methods to retrieve and update the task's values.
  *
  * @author Nick Heggø and Ida Løvås
- * @version 2025.03.28
+ * @version 2025.04.12
  */
 public class Task {
 
@@ -41,6 +41,17 @@ public class Task {
     this.assignedUsers = new HashSet<>();
     this.status = Status.OPEN;
     this.priority = Priority.NONE;
+  }
+
+  public Task(Task other) {
+    this.id = other.id;
+    this.createdAt = other.createdAt;
+    this.assignedUsers = new HashSet<>(other.assignedUsers); // shallow copy, but UUID is immutable
+    this.title = other.title;
+    this.description = other.description;
+    this.deadline = other.deadline;
+    this.status = other.status;
+    this.priority = other.priority;
   }
 
   // ------------------------  Overrides  ------------------------

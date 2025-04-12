@@ -15,7 +15,7 @@ import java.util.stream.Stream;
  * @author Nick Heggø
  * @version 2025.03.28
  */
-public class JsonService<T> {
+public class JsonDAO<T> {
 
   private final JsonReader<T> jsonReader;
   private final JsonWriter<T> jsonWriter;
@@ -29,7 +29,7 @@ public class JsonService<T> {
    *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public JsonService(Class<T> targetClass) {
+  public JsonDAO(Class<T> targetClass) {
     this(targetClass, false);
   }
 
@@ -45,7 +45,7 @@ public class JsonService<T> {
    *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public JsonService(Class<T> targetClas, boolean isTest) {
+  public JsonDAO(Class<T> targetClas, boolean isTest) {
     if (JsonType.getType(targetClas) == null) {
       throw new UnsupportedOperationException("Unsupported target class type: " + targetClas);
     }

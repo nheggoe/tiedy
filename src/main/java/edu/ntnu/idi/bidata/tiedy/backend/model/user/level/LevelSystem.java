@@ -4,36 +4,48 @@ package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
  * The LevelSystem class represent a user's level and experience. It contains methods to get and set
  * level and experience, and to calculate the amount needed for the next level.
  *
- * @author Odin Arvhage
- * @version 2025.02.25
+ * @author Odin Arvhage and Nick Heggø
+ * @version 2025.04.12
  */
 public class LevelSystem {
 
-  private int level;
-  private int experience;
-  private int experienceToNextLevel;
+  // Stats
+  private int currentLevel;
+  private int currentExperience;
+  private int totalExperience;
+  private int completedTaskCount;
 
-  /**
-   * Creates an instance of the LevelSystem class with the provided level, experience and experience
-   * to the next level.
-   *
-   * @param level The level that the user will have.
-   * @param experience The current amount of experience accumulated.
-   * @param experienceToNextLevel The experience that is needed to reach the next level.
-   */
-  public LevelSystem(int level, int experience, int experienceToNextLevel) {
-    setLevel(level);
-    setExperience(experience);
-    setExperienceToNextLevel(experienceToNextLevel);
+  // Algorithm
+  private int experienceThreshold;
+
+  public LevelSystem() {
+    this.currentLevel = 0;
+    this.currentExperience = 0;
+    this.totalExperience = 0;
+    this.completedTaskCount = 0;
+    this.experienceThreshold = 10;
+  }
+
+  public LevelSystem(LevelSystem other) {
+    this.currentLevel = other.currentLevel;
+    this.currentExperience = other.currentExperience;
+    this.totalExperience = other.totalExperience;
+    this.completedTaskCount = other.completedTaskCount;
+    this.experienceThreshold = other.experienceThreshold;
   }
 
   /**
-   * Sets the level of the user.
+   * Marks a task as completed by incrementing the user's experience, total experience, and the
+   * number of completed tasks. This method also evaluates if the user meets the criteria for
+   * leveling up, and processes the leveling up if applicable.
    *
-   * @param level The level that the user will have.
+   * @return true if the user levels up as a result of completing the task, false otherwise.
    */
-  public void setLevel(int level) {
-    this.level = level;
+  public boolean completeTask() {
+    currentExperience += 10;
+    totalExperience += 10;
+    completedTaskCount++;
+    return handleLevelUp();
   }
 
   /**
@@ -41,17 +53,8 @@ public class LevelSystem {
    *
    * @return The level of the user.
    */
-  public int getLevel() {
-    return level;
-  }
-
-  /**
-   * Sets the experience amount of the user.
-   *
-   * @param experience The amount of experience to be set.
-   */
-  public void setExperience(int experience) {
-    this.experience = experience;
+  public int getCurrentLevel() {
+    return currentLevel;
   }
 
   /**
@@ -59,68 +62,46 @@ public class LevelSystem {
    *
    * @return The amount of experience.
    */
-  public int getExperience() {
-    return experience;
+  public int getCurrentExperience() {
+    return currentExperience;
   }
 
-  /**
-   * Sets the experience needed to reach the next level.
-   *
-   * @param experienceToNextLevel Amount of experience needed to level up.
-   */
-  public void setExperienceToNextLevel(int experienceToNextLevel) {
-    this.experienceToNextLevel = experienceToNextLevel;
+  public int getCompletedTaskCount() {
+    return completedTaskCount;
   }
 
-  /**
-   * Returns the amount of experience needed to reach the next level.
-   *
-   * @return The amount of experience needed to reach the next level.
-   */
-  public int getExperienceToNextLevel() {
-    return experienceToNextLevel;
+  public int getExperienceThreshold() {
+    return experienceThreshold;
   }
 
-  /**
-   * Calculates the amount of experience needed to reach the next level based on the increment.
-   *
-   * @param increment The amount of experience at the next level up will be increased by.
-   */
-  public void calculateExperienceToNextLevel(int increment) {
-    this.experienceToNextLevel += increment;
+  public int getTotalExperience() {
+    return totalExperience;
   }
 
-  /** Resets the user's experience to 0. To be used when a level up happens. */
-  public void resetExperience() {
-    this.experience = 0;
-  }
-
-  /**
-   * Checks if the user has the amount of experience needed for the next level. To be used each time
-   * the experience of a user is updated.
-   *
-   * @return True, if the user has enough experience to level up, false otherwise.
-   */
-  public boolean isReadyForLevelUp() {
-    return getExperience() >= getExperienceToNextLevel();
-  }
-
-  /** Levels up the user by increasing the level by 1. */
-  public void increaseLevelByOne() {
-    this.level++;
-  }
-
-  /**
-   * Levels up the user by increasing the level by 1 and resets the experience to 0. Calculates the
-   * amount of experience needed for the next level based on the increment.
-   *
-   * @param increment The amount of experience at the next level up will be increased by.
-   */
-  public void levelUp(int increment) {
-    if (isReadyForLevelUp()) {
-      increaseLevelByOne();
-      resetExperience();
-      calculateExperienceToNextLevel(increment);
+  private boolean handleLevelUp() {
+    boolean isLeveledUp = false;
+    while (isReadyForLevelUp()) {
+      increaseLevel();
+      adjustCurrentExperience();
+      computeExperienceToNextLevel();
+      isLeveledUp = true;
     }
+    return isLeveledUp;
+  }
+
+  private boolean isReadyForLevelUp() {
+    return currentExperience >= experienceThreshold;
+  }
+
+  private void increaseLevel() {
+    this.currentLevel++;
+  }
+
+  private void adjustCurrentExperience() {
+    this.currentExperience -= experienceThreshold;
+  }
+
+  private void computeExperienceToNextLevel() {
+    this.experienceThreshold += (int) (experienceThreshold * 0.1);
   }
 }

@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.navigation;
 
+import edu.ntnu.idi.bidata.tiedy.frontend.controller.Controller;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -17,16 +18,21 @@ import javafx.stage.Stage;
  */
 public class SceneManager {
 
-  private final Stage primaryStage;
+  private static SceneManager instance;
 
-  /**
-   * Constructs a SceneManager instance with a specified primary stage. This stage is used to manage
-   * and display scenes in a JavaFX application.
-   *
-   * @param primaryStage the primary stage of the JavaFX application that the scenes will be managed
-   *     on
-   */
-  public SceneManager(Stage primaryStage) {
+  private Stage primaryStage;
+  private Controller currentController;
+
+  private SceneManager() {}
+
+  public static synchronized SceneManager getInstance() {
+    if (instance == null) {
+      instance = new SceneManager();
+    }
+    return instance;
+  }
+
+  public void setPrimaryStage(Stage primaryStage) {
     this.primaryStage = primaryStage;
   }
 
@@ -48,12 +54,19 @@ public class SceneManager {
       Scene oldScene = primaryStage.getScene();
       double width = (oldScene != null) ? oldScene.getWidth() : primaryStage.getWidth();
       double height = (oldScene != null) ? oldScene.getHeight() : primaryStage.getHeight();
+      FXMLLoader loader = new FXMLLoader(sceneName.getSceneURL());
 
-      Scene newScene = new Scene(FXMLLoader.load(sceneName.getSceneURL()), width, height);
+      Scene newScene = new Scene(loader.load(), width, height);
+      currentController = loader.getController();
+
       primaryStage.setScene(newScene);
       primaryStage.show();
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load FXML file: " + sceneName.getSceneURL(), e);
     }
+  }
+
+  public Controller getController() {
+    return currentController;
   }
 }

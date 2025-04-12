@@ -143,6 +143,7 @@
 .chart-legend-item-symbol {
     -fx-padding: 5px;
 }
+
 .date-picker .arrow-button {
     -fx-background-color: #6495ed;
     -fx-border-radius: 15px;
@@ -152,5 +153,21 @@
 .date-picker .text-field {
     -fx-padding: 0 5px 0 30px;
     -fx-order: 1;
+}
+
+.progress-bar {
+    -fx-accent: #6495ed;
+}
+
+.progress-bar > .track {
+    -fx-control-inner-background: #fff8dc;
+    -fx-background-insets: 0;
+}
+
+.progress-bar > .bar {
+    -fx-background-color: #6495ed;
+    -fx-background-insets: 0;
+    -fx-background-radius: 2;
+    -fx-padding: 0;
 }
 

@@ -1,6 +1,11 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 
 /**
  * A utility class designed for generating JavaFX alert dialogs of various types, such as
@@ -8,7 +13,7 @@ import javafx.scene.control.Alert;
  * creation of alerts with predefined or custom titles and messages.
  *
  * @author Nick Heggø
- * @version 2025.04.07
+ * @version 2025.04.11
  */
 public class AlertFactory {
   private AlertFactory() {}
@@ -96,6 +101,19 @@ public class AlertFactory {
    */
   public static Alert generateErrorAlert(String message) {
     return generateErrorAlert("Error", message);
+  }
+
+  public static Alert generateErrorAlert(Throwable throwable) {
+    Alert alert = new Alert(Alert.AlertType.ERROR);
+    alert.setTitle(throwable.getMessage());
+    StringWriter sw = new StringWriter();
+    PrintWriter pw = new PrintWriter(sw);
+    throwable.printStackTrace(pw);
+
+    TextArea textArea = new TextArea(sw.toString());
+    textArea.setEditable(false);
+    alert.getDialogPane().setExpandableContent(new HBox(new ScrollPane(textArea)));
+    return alert;
   }
 
   /**

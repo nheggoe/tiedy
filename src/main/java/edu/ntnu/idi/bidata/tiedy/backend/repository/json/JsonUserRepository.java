@@ -22,6 +22,8 @@ import java.util.Optional;
  *
  * @see JsonRepository
  * @see UserRepository
+ * @author Nick Heggø
+ * @version 2025.04.11
  */
 public class JsonUserRepository extends JsonRepository<User> implements UserRepository {
 
@@ -46,9 +48,7 @@ public class JsonUserRepository extends JsonRepository<User> implements UserRepo
 
   @Override
   public Optional<User> findByUsername(String username) {
-    return getAll().stream()
-        .filter(user -> Objects.equals(user.getUsername(), username))
-        .findFirst();
+    return getAll().filter(user -> Objects.equals(user.getUsername(), username)).findFirst();
   }
 
   @Override

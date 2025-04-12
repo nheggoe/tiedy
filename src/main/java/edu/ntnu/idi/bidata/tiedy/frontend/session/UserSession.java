@@ -11,14 +11,16 @@ import java.util.UUID;
  * session and the associated user.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.04.09
  */
 public class UserSession {
-  private static UserSession instance;
+
+  private static final UserSession instance = new UserSession();
+
   private User currentUser;
 
-  private UserSession(User user) {
-    this.currentUser = user;
+  private UserSession() {
+    currentUser = null;
   }
 
   /**
@@ -28,49 +30,79 @@ public class UserSession {
    * @param user the User object for whom the session should be created
    */
   public static void createSession(User user) {
-    instance = new UserSession(user);
+    instance.setCurrentUser(user);
   }
 
+  /**
+   * Terminates the current user session by clearing the information of the active user.
+   *
+   * <p>This method sets the active user associated with the session to {@code null}, effectively
+   * destroying the session. If no session is currently active, this operation has no effect.
+   */
+  public static void destroySession() {
+    instance.setCurrentUser(null);
+  }
+
+  /**
+   * Retrieves the unique identifier (UUID) of the currently logged-in user.
+   *
+   * <p>This method checks if a user session is active. If there is no active user session or no
+   * user is logged in, it throws an {@link InvalidSessionException}.
+   *
+   * @return the UUID of the currently logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
   public static UUID getCurrentUserId() {
-    if (instance == null) {
-      throw new IllegalStateException("No user session exists");
-    }
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getId();
+  }
+
+  /**
+   * Retrieves the username of the currently logged-in user.
+   *
+   * <p>This method fetches the username of the user associated with the active session. If no
+   * session exists or no user is logged in, an {@link InvalidSessionException} will be thrown.
+   *
+   * @return the username of the currently logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
+  public static String getCurrentUsername() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getUsername();
+  }
+
+  public static boolean completeTask() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).completeTask();
+  }
+
+  public static int getCurrentExperience() {
     return instance
         .getCurrentUser()
-        .orElseThrow(() -> new IllegalStateException("No user logged in"))
-        .getId();
+        .orElseThrow(InvalidSessionException::new)
+        .getCurrentExperience();
   }
 
-  /**
-   * Retrieves the singleton instance of the UserSession class. If no session has been created, this
-   * method will return null. To initialize a session, use the createSession method.
-   *
-   * @return the singleton instance of UserSession if a session exists; otherwise, returns null.
-   */
-  public static UserSession getInstance() {
-    if (instance == null) {
-      throw new IllegalStateException("No user session exists");
-    }
-    return instance;
+  public static int getCurrentLevel() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getCurrentLevel();
   }
 
-  /**
-   * Retrieves the currently active user associated with the UserSession.
-   *
-   * @return the User object representing the current user, or null if no user is set.
-   */
-  public Optional<User> getCurrentUser() {
-    return Optional.of(currentUser);
+  public static int getCompletedTaskCount() {
+    return instance
+        .getCurrentUser()
+        .orElseThrow(InvalidSessionException::new)
+        .getCompletedTaskCount();
   }
 
-  /**
-   * Sets the currently active user for the session. This method updates the `currentUser` field in
-   * the `UserSession` class with the provided `User` object. The active user represents the user
-   * currently associated with the session.
-   *
-   * @param currentUser the User object to set as the currently active user in the session
-   */
-  public void setCurrentUser(User currentUser) {
+  public static int getExperienceThreshold() {
+    return instance
+        .getCurrentUser()
+        .orElseThrow(InvalidSessionException::new)
+        .getExperienceThreshold();
+  }
+
+  private Optional<User> getCurrentUser() {
+    return Optional.ofNullable(currentUser);
+  }
+
+  private void setCurrentUser(User currentUser) {
     this.currentUser = currentUser;
   }
 }

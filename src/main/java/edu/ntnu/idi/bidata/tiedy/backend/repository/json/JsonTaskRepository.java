@@ -5,15 +5,15 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 /**
  * JSON powered implementation of the TaskRepository, Inherit all basic operations from the {@link
  * JsonRepository} class.
  *
  * @author Nick Heggø
- * @version 2025.04.04
+ * @version 2025.04.11
  * @see JsonRepository
  */
 public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepository {
@@ -38,23 +38,23 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
-  public List<Task> findByAssignedUser(UUID userId) {
-    return getAll().stream().filter(task -> task.getAssignedUsers().contains(userId)).toList();
+  public Stream<Task> findByAssignedUser(UUID userId) {
+    return getAll().filter(task -> task.getAssignedUsers().contains(userId));
   }
 
   @Override
-  public List<Task> findByStatus(Status status) {
-    return getAll().stream().filter(task -> task.getStatus() == status).toList();
+  public Stream<Task> findByStatus(Status status) {
+    return getAll().filter(task -> task.getStatus() == status);
   }
 
   @Override
-  public List<Task> findByPriority(Priority priority) {
-    return getAll().stream().filter(task -> task.getPriority() == priority).toList();
+  public Stream<Task> findByPriority(Priority priority) {
+    return getAll().filter(task -> task.getPriority() == priority);
   }
 
   @Override
-  public List<Task> findByDeadLineBefore(LocalDate date) {
-    return getAll().stream().filter(task -> task.getDeadline().isBefore(date)).toList();
+  public Stream<Task> findByDeadLineBefore(LocalDate date) {
+    return getAll().filter(task -> task.getDeadline().isBefore(date));
   }
 
   @Override

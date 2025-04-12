@@ -1,118 +1,47 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class LevelSystemTest {
-  LevelSystem levelSystem = new LevelSystem(1, 40, 100);
 
-  @Test
-  void testGetLevel() {
-    assertEquals(1, levelSystem.getLevel());
-  }
+  private LevelSystem levelSystem;
 
-  @Test
-  void testGetLevelWrong() {
-    assertNotEquals(0, levelSystem.getLevel());
-  }
-
-  @Test
-  void testGetExperience() {
-    assertEquals(40, levelSystem.getExperience());
-  }
-
-  @Test
-  void testGetExperienceWrong() {
-    assertNotEquals(0, levelSystem.getExperience());
-  }
-
-  @Test
-  void getExperienceToNextLevel() {
-    assertEquals(100, levelSystem.getExperienceToNextLevel());
-  }
-
-  @Test
-  void getExperienceToNextLevelWrong() {
-    assertNotEquals(0, levelSystem.getExperienceToNextLevel());
-  }
-
-  @Test
-  void testIsReadyForLevelUp() {
-    assertFalse(levelSystem.isReadyForLevelUp());
-  }
-
-  @Test
-  void testSetLevel() {
-    levelSystem.setLevel(4);
-    assertEquals(4, levelSystem.getLevel());
-  }
-
-  @Test
-  void testSetLevelWrong() {
-    levelSystem.setLevel(4);
-    assertNotEquals(1, levelSystem.getLevel());
-  }
-
-  @Test
-  void testSetExperience() {
-    levelSystem.setExperience(50);
-    assertEquals(50, levelSystem.getExperience());
-  }
-
-  @Test
-  void testSetExperienceWrong() {
-    levelSystem.setExperience(50);
-    assertNotEquals(40, levelSystem.getExperience());
-  }
-
-  @Test
-  void testSetExperienceToNextLevel() {
-    levelSystem.setExperienceToNextLevel(200);
-    assertEquals(200, levelSystem.getExperienceToNextLevel());
-  }
-
-  @Test
-  void testSetExperienceToNextLevelWrong() {
-    levelSystem.setExperienceToNextLevel(200);
-    assertNotEquals(100, levelSystem.getExperienceToNextLevel());
+  @BeforeEach
+  void setup() {
+    levelSystem = new LevelSystem();
   }
 
   @Test
   void testLevelUp() {
-    levelSystem.setExperience(100);
-    levelSystem.levelUp(10);
-    assertEquals(2, levelSystem.getLevel());
+    assertThat(levelSystem.getCurrentLevel()).isZero();
+    assertThat(levelSystem.getCurrentExperience()).isZero();
+
+    for (int i = 0; i < 10; i++) { // complete 10 tasks
+      levelSystem.completeTask();
+    }
+
+    assertThat(levelSystem.getCompletedTaskCount()).isEqualTo(10);
+    assertThat(levelSystem.getCurrentLevel()).isGreaterThan(2);
+    assertThat(levelSystem.getTotalExperience()).isGreaterThan(90);
   }
 
   @Test
-  void TestLevelUpWrong() {
-    levelSystem.setExperience(100);
-    levelSystem.levelUp(10);
-    assertNotEquals(1, levelSystem.getLevel());
-  }
+  void testLevelingAlgorithm() {
+    int currentExperienceThreshold = levelSystem.getExperienceThreshold();
+    for (int i = 0; i < 20; i++) { // test for 20 levels
+      while (!levelSystem.completeTask()) { // until level up
+        levelSystem.completeTask();
+      }
+      int nextExperienceThreshold = levelSystem.getExperienceThreshold();
 
-  @Test
-  void testResetExperience() {
-    levelSystem.resetExperience();
-    assertEquals(0, levelSystem.getExperience());
-  }
+      assertThat(nextExperienceThreshold)
+          .withFailMessage("Level up should get more difficult")
+          .isGreaterThan(currentExperienceThreshold);
 
-  @Test
-  void testCalculateExperienceToNextLevel() {
-    levelSystem.calculateExperienceToNextLevel(50);
-    assertEquals(150, levelSystem.getExperienceToNextLevel());
-  }
-
-  @Test
-  void testIncreaseLevelByOne() {
-    levelSystem.increaseLevelByOne();
-    assertEquals(2, levelSystem.getLevel());
-  }
-
-  @Test
-  void testIsReadyForLevelUpAtBoundary() {
-    levelSystem.setExperience(100);
-    assertTrue(levelSystem.isReadyForLevelUp());
+      currentExperienceThreshold = nextExperienceThreshold;
+    }
   }
 }

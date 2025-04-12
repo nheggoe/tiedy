@@ -2,7 +2,6 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
@@ -27,9 +26,9 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.12
  */
-public class MainController {
+public class MainController implements DataController {
 
   @FXML private FlowPane taskViewPane;
 
@@ -47,23 +46,25 @@ public class MainController {
    * category, logs the number of loaded tasks, and dynamically populates the task display area with
    * the corresponding task panes.
    */
-  @FXML
+  @Override
   public void initialize() {
     taskViewPane.setHgap(10);
     taskViewPane.setVgap(10);
 
-    User user =
-        UserSession.getInstance()
-            .getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user logged in"));
-
-    // Initialize tasks with all tasks for the current user
-    updateTaskViewPane(TiedyApp.getDataAccessFacade().findByAssignedUser(user.getId()));
+    register();
+    updateData();
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {
       menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
     }
+  }
+
+  @Override
+  public void updateData() {
+    updateTaskViewPane(
+        TiedyApp.getDataAccessFacade()
+            .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
   }
 
   private void updateTaskViewPane(Collection<Task> tasks) {
@@ -84,7 +85,7 @@ public class MainController {
     Text rankText = new Text(10, 30, task.getTitle());
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-    String statusText = task.getStatus().toString();
+    String statusText = task.getStatus().getDisplayName();
     Text statusIndicator = new Text(10, 65, statusText);
     statusIndicator.setFont(Font.font("Arial", 10));
 
@@ -102,15 +103,13 @@ public class MainController {
     deleteButton.setLayoutY(10);
     deleteButton.setVisible(false);
     deleteButton.setOnAction(
-        event -> {
+        unused -> {
           Alert confirmationAlert =
               AlertFactory.generateConfirmationAlert(
                   "Delete task", "Are you sure you want to delete this task?");
 
           if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            TiedyApp.getDataAccessFacade().deleteTask(task.getId());
-            updateTaskViewPane(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
+            deleteTask(task);
           }
         });
 
@@ -122,25 +121,7 @@ public class MainController {
     completeButton.setVisible(false);
 
     if (task.getStatus() != Status.CLOSED) {
-      completeButton.setOnAction(
-          event -> {
-            task.setStatus(Status.CLOSED);
-
-            try {
-              TiedyApp.getDataAccessFacade().updateTask(task);
-
-              updateTaskViewPane(
-                  TiedyApp.getDataAccessFacade()
-                      .findByAssignedUser(UserSession.getCurrentUserId()));
-
-              AlertFactory.generateInfoAlert(
-                      "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
-                  .showAndWait();
-            } catch (Exception e) {
-              AlertFactory.generateWarningAlert("Error updating task: " + e.getMessage())
-                  .showAndWait();
-            }
-          });
+      completeButton.setOnAction(unused -> completeTask(task));
     } else {
       taskBg.setFill(Color.LIGHTGRAY);
       completeButton.setStyle(
@@ -149,7 +130,7 @@ public class MainController {
 
     // Show/hide buttons on hover
     cardPane.setOnMouseEntered(
-        event -> {
+        unused -> {
           deleteButton.setVisible(true);
           if (task.getStatus() != Status.CLOSED) {
             completeButton.setVisible(true);
@@ -157,36 +138,64 @@ public class MainController {
         });
 
     cardPane.setOnMouseExited(
-        event -> {
+        unused -> {
           deleteButton.setVisible(false);
           completeButton.setVisible(false);
         });
 
     cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
     cardPane.setPadding(new Insets(5));
-    cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
+    cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
     return cardPane;
+  }
+
+  private void completeTask(Task task) {
+    Status status = task.getStatus();
+    task.setStatus(Status.CLOSED);
+
+    // if the task is successfully updated
+    if (TiedyApp.getDataAccessFacade().updateTask(task) != null) {
+      AlertFactory.generateInfoAlert(
+              "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
+          .showAndWait();
+      if (UserSession.completeTask()) {
+        AlertFactory.generateInfoAlert(
+                "Level UP!",
+                "Congratulations! You have leveled up. Your current level is now "
+                    + UserSession.getCurrentLevel()
+                    + ".")
+            .showAndWait();
+      }
+    } else {
+      AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();
+      task.setStatus(status);
+      TiedyApp.getDataAccessFacade().updateTask(task);
+    }
+
+    TiedyApp.getDataChangeNotifier().notifyObservers();
+  }
+
+  private void deleteTask(Task task) {
+    if (TiedyApp.getDataAccessFacade().removeTask(task.getId())) {
+      TiedyApp.getDataChangeNotifier().notifyObservers();
+    } else {
+      AlertFactory.generateWarningAlert("Failed to delete task").showAndWait();
+    }
   }
 
   /**
    * Opens the task dialog to edit an existing task.
    *
-   * @param task The task to edit
+   * @param taskToEdit The task to edit
    */
-  private void showEditTaskDialog(Task task) {
-    DialogFactory.editTaskDialog(
-        task,
-        // the callback function to be called when the passed task is updated
+  private void showEditTaskDialog(Task taskToEdit) {
+    DialogFactory.launchEditTaskDialog(
+        taskToEdit,
         updatedTask -> {
-          try {
-            // Update the task in the repository
-            TiedyApp.getDataAccessFacade().updateTask(updatedTask);
-
-            updateTaskViewPane(
-                TiedyApp.getDataAccessFacade().findByAssignedUser(UserSession.getCurrentUserId()));
-
-          } catch (IllegalArgumentException e) {
-            AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+          if (TiedyApp.getDataAccessFacade().updateTask(updatedTask) != null) {
+            TiedyApp.getDataChangeNotifier().notifyObservers();
+          } else {
+            AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
           }
         });
   }

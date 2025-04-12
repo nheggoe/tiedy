@@ -1,41 +1,44 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 
 /**
  * The ProfileController class controls the PROFILE scene. This scene is used to view information
  * about the current profile.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.03.25
+ * @version 2025.04.09
  */
-public class ProfileController {
+public class ProfileController implements DataController {
 
-  @FXML private Label nameLabel;
-  @FXML private Label tasksLabel;
+  @FXML private Label usernameLabel;
+  @FXML private Label taskCountLabel;
+  @FXML private Label currentLevelLabel;
+  @FXML private ProgressBar expBar;
+  @FXML private Label currentExpLabel;
 
   /**
    * The initialize method is called when the PROFILE scene is loaded. It initializes the display
    * labels in the scene with information.
    */
-  @FXML
+  @Override
   public void initialize() {
-    displayName();
-    displayCompletedTasks();
+    register();
+    updateData();
   }
 
-  /**
-   * The displayName method gets the name of the user that is currently logged in. It then sets it
-   * to the corresponding label.
-   */
-  public void displayName() {
-    nameLabel.setText(UserSession.getInstance().getCurrentUser().get().getUsername());
+  @Override
+  public void updateData() {
+    updateUsernameLabel();
+    updateTaskCountLabel();
+    updateCurrentLevelLabel();
+    updateCurrentExpLabel();
+    updateExpBar();
   }
 
   /**
@@ -47,19 +50,32 @@ public class ProfileController {
     TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
   }
 
-  /** The displayTasks method gets and displays the number of tasks this user has completed. */
-  @FXML
-  public void displayCompletedTasks() {
-    User user =
-        UserSession.getInstance()
-            .getCurrentUser()
-            .orElseThrow(() -> new IllegalStateException("No user is logged in"));
+  /**
+   * The displayName method gets the name of the user that is currently logged in. It then sets it
+   * to the corresponding label.
+   */
+  private void updateUsernameLabel() {
+    usernameLabel.setText(UserSession.getCurrentUsername());
+  }
 
-    tasksLabel.setText(
-        String.valueOf(
-            TiedyApp.getDataAccessFacade().findByStatus(Status.CLOSED).stream()
-                .filter(task -> task.getAssignedUsers().contains(user.getId()))
-                .count()));
+  /** The displayTasks method gets and displays the number of tasks this user has completed. */
+  private void updateTaskCountLabel() {
+    taskCountLabel.setText(String.valueOf(UserSession.getCompletedTaskCount()));
+  }
+
+  private void updateCurrentLevelLabel() {
+    currentLevelLabel.setText(String.valueOf(UserSession.getCurrentLevel()));
+  }
+
+  private void updateCurrentExpLabel() {
+    currentExpLabel.setText(
+        "%d XP / %d XP"
+            .formatted(UserSession.getCurrentExperience(), UserSession.getExperienceThreshold()));
+  }
+
+  private void updateExpBar() {
+    expBar.setProgress(
+        (double) UserSession.getCurrentExperience() / UserSession.getExperienceThreshold());
   }
 
   /**
@@ -68,7 +84,7 @@ public class ProfileController {
    */
   @FXML
   public void onLogoutButtonPress() {
-    UserSession.getInstance().setCurrentUser(null);
+    UserSession.destroySession();
     TiedyApp.getSceneManager().switchScene(SceneName.LOGIN);
   }
 }

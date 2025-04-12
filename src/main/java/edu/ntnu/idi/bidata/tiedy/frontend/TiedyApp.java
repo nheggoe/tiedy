@@ -3,7 +3,9 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
+import edu.ntnu.idi.bidata.tiedy.frontend.session.InvalidSessionException;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
 import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -24,9 +26,11 @@ import javafx.stage.Stage;
  */
 public class TiedyApp extends Application {
 
-  private static final DataAccessFacade dataAccessFacade = DataAccessFacade.getInstance();
   private static final Logger LOGGER = Logger.getLogger(TiedyApp.class.getName());
-  private static SceneManager sceneManager;
+
+  private static final DataAccessFacade dataAccessFacade = DataAccessFacade.getInstance();
+  private static final DataChangeNotifier dataChangeNotifier = DataChangeNotifier.getInstance();
+  private static final SceneManager sceneManager = SceneManager.getInstance();
 
   /**
    * The main entry point for the JavaFX application. This method launches the JavaFX runtime and
@@ -35,7 +39,12 @@ public class TiedyApp extends Application {
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    launch(args);
+    try {
+      launch(args);
+    } catch (InvalidSessionException e) {
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      sceneManager.switchScene(SceneName.LOGIN);
+    }
   }
 
   /**
@@ -52,8 +61,16 @@ public class TiedyApp extends Application {
     return dataAccessFacade;
   }
 
+  public static DataChangeNotifier getDataChangeNotifier() {
+    return dataChangeNotifier;
+  }
+
   @Override
   public void start(Stage primaryStage) {
+    init(primaryStage);
+  }
+
+  public void init(Stage primaryStage) {
     if (Taskbar.isTaskbarSupported()) {
       var taskbar = Taskbar.getTaskbar();
 
@@ -71,8 +88,8 @@ public class TiedyApp extends Application {
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
     primaryStage.setMinWidth(700);
     primaryStage.setMinHeight(500);
-    primaryStage.setOnCloseRequest(event -> onClose());
-    sceneManager = new SceneManager(primaryStage);
+    primaryStage.setOnCloseRequest(unused -> onClose());
+    sceneManager.setPrimaryStage(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
   }
 

@@ -4,13 +4,14 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import org.jspecify.annotations.NonNull;
 
 /**
  * Represents a group of users, specifically family members. Provides functionality to manage the
  * family members within the group.
  *
  * @author Nick Heggø
- * @version 2025.03.28
+ * @version 2025.04.12
  */
 public class Group {
 
@@ -39,6 +40,20 @@ public class Group {
     setName(name);
     setDescription(description);
     addMember(userId, true);
+  }
+
+  /**
+   * Creates a new Group instance by copying the data from an existing Group object.
+   *
+   * @param other the Group instance to copy; must not be null and should contain valid values for
+   *     all fields
+   */
+  public Group(@NonNull Group other) {
+    this.id = other.id;
+    this.createdAt = other.createdAt;
+    this.members = new HashMap<>(other.members);
+    this.name = other.name;
+    this.description = other.description;
   }
 
   // ------------------------   Overrides ------------------------

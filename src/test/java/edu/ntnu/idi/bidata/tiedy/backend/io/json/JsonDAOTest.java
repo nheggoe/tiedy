@@ -10,7 +10,7 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class JsonServiceTest {
+class JsonDAOTest {
 
   @BeforeEach
   void cleanUpTestFiles() {
@@ -24,7 +24,7 @@ class JsonServiceTest {
 
   @Test
   void testLoadJsonFromEmptySource() {
-    var testUserService = new JsonService<>(User.class, true);
+    var testUserService = new JsonDAO<>(User.class, true);
     assertTrue(
         testUserService.loadJsonAsStream().toList().isEmpty(),
         "Stream should be empty for no JSON data");
@@ -32,7 +32,7 @@ class JsonServiceTest {
 
   @Test
   void testLoadJsonWithSpecificData() {
-    var testUserService = new JsonService<>(User.class, true);
+    var testUserService = new JsonDAO<>(User.class, true);
 
     var user1 = new User("JohnDoe", "securePassword123");
     var user2 = new User("JaneDoe", "securePassword456");

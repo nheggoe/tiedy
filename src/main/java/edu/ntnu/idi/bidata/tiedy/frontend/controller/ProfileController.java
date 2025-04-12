@@ -19,8 +19,8 @@ public class ProfileController implements DataController {
   @FXML private Label usernameLabel;
   @FXML private Label taskCountLabel;
   @FXML private Label currentLevelLabel;
-  @FXML private Label currentExpLabel;
   @FXML private ProgressBar expBar;
+  @FXML private Label currentExpLabel;
 
   /**
    * The initialize method is called when the PROFILE scene is loaded. It initializes the display

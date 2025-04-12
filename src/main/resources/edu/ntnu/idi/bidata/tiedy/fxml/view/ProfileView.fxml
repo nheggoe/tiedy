@@ -46,7 +46,7 @@
                     <children>
                         <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../images/lables/TasksDoneLabel.png"/>
+                                <Image url="@../../images/lables/LevelLabel.png"/>
                             </image>
                         </ImageView>
                         <Region prefHeight="38.0" prefWidth="12.0" style="-fx-background-color: transparent;"/>
@@ -63,7 +63,7 @@
                 </HBox>
                 <HBox alignment="CENTER" layoutX="14.0" layoutY="181.0" style="-fx-background-color: #5596F4;">
                     <children>
-                        <Label fx:id="currentExpLabel1" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0"
+                        <Label fx:id="currentExpLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0"
                                prefWidth="124.0" styleClass="label-display" text="CurrentXP"/>
                         <Region prefHeight="38.0" prefWidth="15.0" style="-fx-background-color: transparent;"/>
                     </children>

@@ -160,10 +160,11 @@ public class MainController implements DataController {
           .showAndWait();
       if (UserSession.completeTask()) {
         AlertFactory.generateInfoAlert(
-            "Level UP!",
-            "Congratulations! You have leveled up. Your current level is now "
-                + UserSession.getCurrentLevel()
-                + ".");
+                "Level UP!",
+                "Congratulations! You have leveled up. Your current level is now "
+                    + UserSession.getCurrentLevel()
+                    + ".")
+            .showAndWait();
       }
     } else {
       AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();

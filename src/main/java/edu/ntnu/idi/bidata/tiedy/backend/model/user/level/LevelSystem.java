@@ -5,7 +5,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
  * level and experience, and to calculate the amount needed for the next level.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.04.11
+ * @version 2025.04.12
  */
 public class LevelSystem {
 
@@ -24,6 +24,14 @@ public class LevelSystem {
     this.totalExperience = 0;
     this.completedTasks = 0;
     this.experienceThreshold = 10;
+  }
+
+  public LevelSystem(LevelSystem other) {
+    this.currentLevel = other.currentLevel;
+    this.currentExperience = other.currentExperience;
+    this.totalExperience = other.totalExperience;
+    this.completedTasks = other.completedTasks;
+    this.experienceThreshold = other.experienceThreshold;
   }
 
   /**

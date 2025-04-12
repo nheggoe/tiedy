@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * necessary public interface.
  *
  * @author Nick Heggø
- * @version 2025.04.11
+ * @version 2025.04.12
  */
 public class DataAccessFacade implements Runnable {
 
@@ -82,7 +82,7 @@ public class DataAccessFacade implements Runnable {
    *     list is returned
    */
   public List<Group> findGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId).toList();
+    return groupRepository.findAllByUserId(userId).map(Group::new).toList();
   }
 
   /**
@@ -93,7 +93,7 @@ public class DataAccessFacade implements Runnable {
    *     the user is not an admin in any group
    */
   public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId).toList();
+    return groupRepository.findByAdmin(userId).map(Group::new).toList();
   }
 
   /**
@@ -212,7 +212,7 @@ public class DataAccessFacade implements Runnable {
    *     an empty list
    */
   public List<Task> getTaskByAssignedUser(UUID userId) {
-    return taskRepository.findByAssignedUser(userId).toList();
+    return taskRepository.findByAssignedUser(userId).map(Task::new).toList();
   }
 
   /**
@@ -228,6 +228,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
+        .map(Task::new)
         .toList();
   }
 
@@ -264,6 +265,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() == status)
+        .map(Task::new)
         .toList();
   }
 
@@ -280,6 +282,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getPriority() == priority)
+        .map(Task::new)
         .toList();
   }
 }

@@ -9,11 +9,9 @@ import java.util.UUID;
  * The object that represents the customers of the application.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.04.11
+ * @version 2025.04.12
  */
 public class User {
-
-  private static final String DEFAULT_LIST_NAME = "Reminders";
 
   private final UUID id;
   private final LocalDateTime createdAt;
@@ -43,6 +41,14 @@ public class User {
     setHashedPassword(plainTextPassword);
   }
 
+  public User(User other) {
+    this.id = other.id;
+    this.createdAt = other.createdAt;
+    this.levelSystem = new LevelSystem(other.levelSystem);
+    this.username = other.username;
+    this.hashedPassword = other.hashedPassword;
+  }
+
   // ------------------------  Overrides  ------------------------
 
   @Override
@@ -68,7 +74,7 @@ public class User {
 
   // ------------------------   Public Interface  ------------------------
 
-  public boolean comleteTask() {
+  public boolean completeTask() {
     return levelSystem.completeTask();
   }
 

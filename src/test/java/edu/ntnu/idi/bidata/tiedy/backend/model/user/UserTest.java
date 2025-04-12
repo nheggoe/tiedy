@@ -1,10 +1,26 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
 class UserTest {
+
+  @Test
+  void testCopyConstructor() {
+    User user = new User("user123", "StrongPassword");
+    User copy = new User(user);
+    user.setUsername("newUsername");
+
+    assertThat(user.getUsername())
+        .withFailMessage("Mutation of copy should not affect the original")
+        .isNotEqualTo(copy.getUsername());
+
+    assertThat(user)
+        .withFailMessage("equals() should return true when comparing copy with original")
+        .isEqualTo(copy);
+  }
 
   @Test
   void testUserWeakPassword() {

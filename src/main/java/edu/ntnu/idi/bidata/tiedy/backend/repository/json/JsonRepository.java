@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
-import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonDAO;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  */
 public abstract class JsonRepository<T> implements DataRepository<T> {
 
-  protected final JsonService<T> jsonService;
+  protected final JsonDAO<T> jsonDAO;
   private final Map<UUID, T> entities;
   protected final Function<T, UUID> idExtractor;
 
@@ -34,7 +34,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
    * @param idExtractor a function that extracts the UUID from an entity
    */
   protected JsonRepository(Class<T> entityClass, Function<T, UUID> idExtractor) {
-    this.jsonService = new JsonService<>(entityClass);
+    this.jsonDAO = new JsonDAO<>(entityClass);
     this.entities = new HashMap<>();
     this.idExtractor = idExtractor;
     refresh();
@@ -42,7 +42,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
 
   @Override
   public Stream<T> loadAll() {
-    return jsonService.loadJsonAsStream();
+    return jsonDAO.loadJsonAsStream();
   }
 
   @Override
@@ -75,7 +75,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
 
   @Override
   public void saveChanges() {
-    jsonService.writeCollection(new HashSet<>(entities.values()));
+    jsonDAO.writeCollection(new HashSet<>(entities.values()));
   }
 
   @Override

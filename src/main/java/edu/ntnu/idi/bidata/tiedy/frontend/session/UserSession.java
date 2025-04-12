@@ -69,6 +69,10 @@ public class UserSession {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getUsername();
   }
 
+  public static void completeTask() {
+    instance.getCurrentUser().orElseThrow(InvalidSessionException::new).completeTask();
+  }
+
   public static int getCurrentExperience() {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getExp();
   }

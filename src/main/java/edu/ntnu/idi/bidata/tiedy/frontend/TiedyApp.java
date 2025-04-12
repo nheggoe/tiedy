@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend;
 import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
+import edu.ntnu.idi.bidata.tiedy.frontend.session.InvalidSessionException;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
 import java.awt.*;
@@ -38,7 +39,12 @@ public class TiedyApp extends Application {
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    launch(args);
+    try {
+      launch(args);
+    } catch (InvalidSessionException e) {
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      sceneManager.switchScene(SceneName.LOGIN);
+    }
   }
 
   /**
@@ -82,7 +88,7 @@ public class TiedyApp extends Application {
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
     primaryStage.setMinWidth(700);
     primaryStage.setMinHeight(500);
-    primaryStage.setOnCloseRequest(event -> onClose());
+    primaryStage.setOnCloseRequest(unused -> onClose());
     sceneManager.setPrimaryStage(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
   }

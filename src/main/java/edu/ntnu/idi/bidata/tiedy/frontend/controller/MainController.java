@@ -103,7 +103,7 @@ public class MainController implements DataController {
     deleteButton.setLayoutY(10);
     deleteButton.setVisible(false);
     deleteButton.setOnAction(
-        event -> {
+        unused -> {
           Alert confirmationAlert =
               AlertFactory.generateConfirmationAlert(
                   "Delete task", "Are you sure you want to delete this task?");
@@ -121,10 +121,7 @@ public class MainController implements DataController {
     completeButton.setVisible(false);
 
     if (task.getStatus() != Status.CLOSED) {
-      completeButton.setOnAction(
-          event -> {
-            completeTask(task);
-          });
+      completeButton.setOnAction(unused -> completeTask(task));
     } else {
       taskBg.setFill(Color.LIGHTGRAY);
       completeButton.setStyle(
@@ -133,7 +130,7 @@ public class MainController implements DataController {
 
     // Show/hide buttons on hover
     cardPane.setOnMouseEntered(
-        event -> {
+        unused -> {
           deleteButton.setVisible(true);
           if (task.getStatus() != Status.CLOSED) {
             completeButton.setVisible(true);
@@ -141,14 +138,14 @@ public class MainController implements DataController {
         });
 
     cardPane.setOnMouseExited(
-        event -> {
+        unused -> {
           deleteButton.setVisible(false);
           completeButton.setVisible(false);
         });
 
     cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
     cardPane.setPadding(new Insets(5));
-    cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
+    cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
     return cardPane;
   }
 
@@ -156,25 +153,27 @@ public class MainController implements DataController {
     Status status = task.getStatus();
     task.setStatus(Status.CLOSED);
 
+    // if the task is successfully updated
     if (TiedyApp.getDataAccessFacade().updateTask(task) != null) {
-      TiedyApp.getDataChangeNotifier().notifyObservers();
-
       AlertFactory.generateInfoAlert(
               "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
           .showAndWait();
+      UserSession.completeTask();
     } else {
       AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();
       task.setStatus(status);
       TiedyApp.getDataAccessFacade().updateTask(task);
-      TiedyApp.getDataChangeNotifier().notifyObservers();
     }
+
+    TiedyApp.getDataChangeNotifier().notifyObservers();
   }
 
   private void deleteTask(Task task) {
-    TiedyApp.getDataAccessFacade().removeTask(task.getId());
-    TiedyApp.getDataChangeNotifier().notifyObservers();
-    AlertFactory.generateInfoAlert("Task deleted", "Task has been deleted successfully")
-        .showAndWait();
+    if (TiedyApp.getDataAccessFacade().removeTask(task.getId())) {
+      TiedyApp.getDataChangeNotifier().notifyObservers();
+    } else {
+      AlertFactory.generateWarningAlert("Failed to delete task").showAndWait();
+    }
   }
 
   /**

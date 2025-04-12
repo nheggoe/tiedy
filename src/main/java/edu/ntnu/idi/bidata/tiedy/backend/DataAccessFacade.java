@@ -232,6 +232,24 @@ public class DataAccessFacade implements Runnable {
         .toList();
   }
 
+  public List<Task> getAllNoneClosedTaskByUserIdAndStatus(UUID userId, Status status) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .filter(task -> task.getStatus() == status)
+        .map(Task::new)
+        .toList();
+  }
+
+  public List<Task> getAllNoneClosedTaskByUserIdAndPriority(UUID userId, Priority priority) {
+    return taskRepository
+        .findByAssignedUser(userId)
+        .filter(task -> task.getStatus() != Status.CLOSED)
+        .filter(task -> task.getPriority() == priority)
+        .map(Task::new)
+        .toList();
+  }
+
   /**
    * Assigns a task to a user.
    *

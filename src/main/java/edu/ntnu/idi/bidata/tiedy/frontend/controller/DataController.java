@@ -16,12 +16,6 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
  */
 public interface DataController extends Controller {
 
-  @Override
-  default void initialize() {
-    register();
-    updateData();
-  }
-
   /**
    * Updates the data managed by the controller. This method is expected to trigger a refresh of the
    * current user interface or state with the latest data available in the backend or the data

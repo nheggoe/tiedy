@@ -21,6 +21,12 @@ public class StatisticController implements DataController {
   @FXML private PieChart pieChartRight;
 
   @Override
+  public void initialize() {
+    register();
+    updateData();
+  }
+
+  @Override
   public void updateData() {
     updatePieChartLeft();
     updatePieChartRight();
@@ -34,7 +40,7 @@ public class StatisticController implements DataController {
             status -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())
+                      .getAllNoneClosedTaskByUserIdAndStatus(UserSession.getCurrentUserId(), status)
                       .size();
               if (count > 0) {
                 pieChartRight.getData().add(new PieChart.Data(status.toString(), count));
@@ -55,7 +61,8 @@ public class StatisticController implements DataController {
             priority -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())
+                      .getAllNoneClosedTaskByUserIdAndPriority(
+                          UserSession.getCurrentUserId(), priority)
                       .size();
               if (count > 0) {
                 pieChartLeft.getData().add(new PieChart.Data(priority.toString(), count));

@@ -54,7 +54,6 @@ public class MenuBarController implements Controller {
   @FXML
   public void onStatisticsButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
-
     taskFilterMenu.setDisable(true);
   }
 

@@ -13,7 +13,7 @@ public class LevelSystem {
   private int currentLevel;
   private int currentExperience;
   private int totalExperience;
-  private int completedTasks;
+  private int completedTaskCount;
 
   // Algorithm
   private int experienceThreshold;
@@ -22,7 +22,7 @@ public class LevelSystem {
     this.currentLevel = 0;
     this.currentExperience = 0;
     this.totalExperience = 0;
-    this.completedTasks = 0;
+    this.completedTaskCount = 0;
     this.experienceThreshold = 10;
   }
 
@@ -30,7 +30,7 @@ public class LevelSystem {
     this.currentLevel = other.currentLevel;
     this.currentExperience = other.currentExperience;
     this.totalExperience = other.totalExperience;
-    this.completedTasks = other.completedTasks;
+    this.completedTaskCount = other.completedTaskCount;
     this.experienceThreshold = other.experienceThreshold;
   }
 
@@ -44,7 +44,7 @@ public class LevelSystem {
   public boolean completeTask() {
     currentExperience += 10;
     totalExperience += 10;
-    completedTasks++;
+    completedTaskCount++;
     return handleLevelUp();
   }
 
@@ -66,8 +66,8 @@ public class LevelSystem {
     return currentExperience;
   }
 
-  public int getCompletedTasks() {
-    return completedTasks;
+  public int getCompletedTaskCount() {
+    return completedTaskCount;
   }
 
   public int getExperienceThreshold() {

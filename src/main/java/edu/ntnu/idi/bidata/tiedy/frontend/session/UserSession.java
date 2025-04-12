@@ -69,23 +69,33 @@ public class UserSession {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getUsername();
   }
 
-  public static void completeTask() {
-    instance.getCurrentUser().orElseThrow(InvalidSessionException::new).completeTask();
+  public static boolean completeTask() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).completeTask();
   }
 
   public static int getCurrentExperience() {
-    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getExp();
+    return instance
+        .getCurrentUser()
+        .orElseThrow(InvalidSessionException::new)
+        .getCurrentExperience();
   }
 
   public static int getCurrentLevel() {
-    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getLevel();
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getCurrentLevel();
   }
 
-  public static int getCompletedTasks() {
+  public static int getCompletedTaskCount() {
     return instance
         .getCurrentUser()
         .orElseThrow(InvalidSessionException::new)
         .getCompletedTaskCount();
+  }
+
+  public static int getExperienceThreshold() {
+    return instance
+        .getCurrentUser()
+        .orElseThrow(InvalidSessionException::new)
+        .getExperienceThreshold();
   }
 
   private Optional<User> getCurrentUser() {

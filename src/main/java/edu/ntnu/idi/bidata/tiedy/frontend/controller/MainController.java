@@ -158,7 +158,13 @@ public class MainController implements DataController {
       AlertFactory.generateInfoAlert(
               "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
           .showAndWait();
-      UserSession.completeTask();
+      if (UserSession.completeTask()) {
+        AlertFactory.generateInfoAlert(
+            "Level UP!",
+            "Congratulations! You have leveled up. Your current level is now "
+                + UserSession.getCurrentLevel()
+                + ".");
+      }
     } else {
       AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();
       task.setStatus(status);

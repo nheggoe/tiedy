@@ -78,20 +78,20 @@ public class User {
     return levelSystem.completeTask();
   }
 
-  public int getLevel() {
+  public int getCurrentLevel() {
     return levelSystem.getCurrentLevel();
   }
 
-  public int getExp() {
-    return levelSystem.getCurrentLevel();
+  public int getCurrentExperience() {
+    return levelSystem.getCurrentExperience();
   }
 
-  public int getExpToNextLevel() {
+  public int getExperienceThreshold() {
     return levelSystem.getExperienceThreshold();
   }
 
   public int getCompletedTaskCount() {
-    return levelSystem.getCompletedTasks();
+    return levelSystem.getCompletedTaskCount();
   }
 
   // ------------------------  Getters and Setters  ------------------------

@@ -23,7 +23,7 @@ class LevelSystemTest {
       levelSystem.completeTask();
     }
 
-    assertThat(levelSystem.getCompletedTasks()).isEqualTo(10);
+    assertThat(levelSystem.getCompletedTaskCount()).isEqualTo(10);
     assertThat(levelSystem.getCurrentLevel()).isGreaterThan(2);
     assertThat(levelSystem.getTotalExperience()).isGreaterThan(90);
   }

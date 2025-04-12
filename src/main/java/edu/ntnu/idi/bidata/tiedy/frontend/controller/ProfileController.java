@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
@@ -49,11 +48,7 @@ public class ProfileController implements Controller {
   /** The displayTasks method gets and displays the number of tasks this user has completed. */
   @FXML
   public void displayCompletedTasks() {
-    tasksLabel.setText(
-        String.valueOf(
-            TiedyApp.getDataAccessFacade()
-                .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.CLOSED)
-                .size()));
+    tasksLabel.setText(String.valueOf(UserSession.getCompletedTasks()));
   }
 
   /**

@@ -1,20 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.util.MapUtil;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.level.LevelSystem;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 /**
  * The object that represents the customers of the application.
  *
  * @author Odin Arvhage and Nick Heggø
- * @version 2025.03.28
+ * @version 2025.04.11
  */
 public class User {
 
@@ -22,7 +17,7 @@ public class User {
 
   private final UUID id;
   private final LocalDateTime createdAt;
-  private final Map<String, Set<UUID>> taskMap; // K: listName, V: Set<Task ID>
+  private final LevelSystem levelSystem;
 
   private String username;
   private String hashedPassword;
@@ -30,7 +25,7 @@ public class User {
   private User() {
     this.id = UUID.randomUUID();
     this.createdAt = LocalDateTime.now();
-    this.taskMap = new HashMap<>();
+    this.levelSystem = new LevelSystem();
   }
 
   /**
@@ -52,8 +47,8 @@ public class User {
 
   @Override
   public String toString() {
-    return "User{id=%s, createdAt=%s, taskLists=%s, username='%s', password='%s'}"
-        .formatted(id, createdAt, taskMap, username, hashedPassword);
+    return "User{id=%s, createdAt=%s, username='%s', password='%s'}"
+        .formatted(id, createdAt, username, hashedPassword);
   }
 
   @Override
@@ -73,28 +68,24 @@ public class User {
 
   // ------------------------   Public Interface  ------------------------
 
-  /**
-   * Retrieves the default set of tasks associated with the user. If no default task set exists, a
-   * new, empty set is created and added to the task map under the default list name.
-   *
-   * @return an immutable copy of the default set of task UUIDs
-   */
-  public Set<UUID> getDefaultTaskSet() {
-    return Set.copyOf(
-        taskMap.computeIfAbsent(MapUtil.generateMapKey(DEFAULT_LIST_NAME), k -> new HashSet<>()));
+  public boolean comleteTask() {
+    return levelSystem.completeTask();
   }
 
-  /**
-   * Adds a task to the default set of tasks associated with the user. If the default task set does
-   * not exist, it creates a new set and associates it under the default list name before adding the
-   * task's unique identifier.
-   *
-   * @param task the task to be added to the default set; must not be null
-   */
-  public void addTaskDefaultSet(Task task) {
-    taskMap
-        .computeIfAbsent(MapUtil.generateMapKey(DEFAULT_LIST_NAME), k -> new HashSet<>())
-        .add(task.getId());
+  public int getLevel() {
+    return levelSystem.getCurrentLevel();
+  }
+
+  public int getExp() {
+    return levelSystem.getCurrentLevel();
+  }
+
+  public int getExpToNextLevel() {
+    return levelSystem.getExperienceThreshold();
+  }
+
+  public int getCompletedTaskCount() {
+    return levelSystem.getCompletedTasks();
   }
 
   // ------------------------  Getters and Setters  ------------------------
@@ -105,10 +96,6 @@ public class User {
 
   public LocalDateTime getCreatedAt() {
     return createdAt;
-  }
-
-  public Map<String, Set<UUID>> getTaskMap() {
-    return taskMap;
   }
 
   public String getUsername() {

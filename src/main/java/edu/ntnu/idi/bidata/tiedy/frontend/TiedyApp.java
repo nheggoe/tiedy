@@ -54,6 +54,10 @@ public class TiedyApp extends Application {
 
   @Override
   public void start(Stage primaryStage) {
+    init(primaryStage);
+  }
+
+  public void init(Stage primaryStage) {
     if (Taskbar.isTaskbarSupported()) {
       var taskbar = Taskbar.getTaskbar();
 

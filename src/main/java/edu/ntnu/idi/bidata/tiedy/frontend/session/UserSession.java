@@ -46,33 +46,42 @@ public class UserSession {
   /**
    * Retrieves the unique identifier (UUID) of the currently logged-in user.
    *
-   * <p>This method checks if a user session exists and whether a user is currently logged in. If no
-   * session exists or no user is logged in, an IllegalStateException will be thrown.
+   * <p>This method checks if a user session is active. If there is no active user session or no
+   * user is logged in, it throws an {@link InvalidSessionException}.
    *
    * @return the UUID of the currently logged-in user
-   * @throws IllegalStateException if no user session exists or no user is logged in
+   * @throws InvalidSessionException if no active session exists or no user is logged in
    */
   public static UUID getCurrentUserId() {
-    return instance
-        .getCurrentUser()
-        .orElseThrow(() -> new IllegalStateException("No user logged in"))
-        .getId();
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getId();
   }
 
   /**
    * Retrieves the username of the currently logged-in user.
    *
-   * <p>This method checks if a user session exists and if a user is currently logged in. If there
-   * is no active user session or no user is logged in, an {@link IllegalStateException} is thrown.
+   * <p>This method fetches the username of the user associated with the active session. If no
+   * session exists or no user is logged in, an {@link InvalidSessionException} will be thrown.
    *
    * @return the username of the currently logged-in user
-   * @throws IllegalStateException if no user session exists or no user is logged in
+   * @throws InvalidSessionException if no active session exists or no user is logged in
    */
   public static String getCurrentUsername() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getUsername();
+  }
+
+  public static int getCurrentExperience() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getExp();
+  }
+
+  public static int getCurrentLevel() {
+    return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getLevel();
+  }
+
+  public static int getCompletedTasks() {
     return instance
         .getCurrentUser()
-        .orElseThrow(() -> new IllegalStateException("No user logged in"))
-        .getUsername();
+        .orElseThrow(InvalidSessionException::new)
+        .getCompletedTaskCount();
   }
 
   private Optional<User> getCurrentUser() {

@@ -62,7 +62,8 @@ public class RegisterController implements Controller {
       backToLogin();
 
     } catch (IllegalArgumentException e) {
-      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      // AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+      AlertFactory.generateErrorAlert(e).showAndWait();
     }
   }
 

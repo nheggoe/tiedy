@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.12
  */
 public class MainController implements DataController {
 
@@ -153,14 +153,21 @@ public class MainController implements DataController {
   }
 
   private void completeTask(Task task) {
+    Status status = task.getStatus();
     task.setStatus(Status.CLOSED);
 
-    TiedyApp.getDataAccessFacade().updateTask(task);
-    TiedyApp.getDataChangeNotifier().notifyObservers();
+    if (TiedyApp.getDataAccessFacade().updateTask(task) != null) {
+      TiedyApp.getDataChangeNotifier().notifyObservers();
 
-    AlertFactory.generateInfoAlert(
-            "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
-        .showAndWait();
+      AlertFactory.generateInfoAlert(
+              "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
+          .showAndWait();
+    } else {
+      AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();
+      task.setStatus(status);
+      TiedyApp.getDataAccessFacade().updateTask(task);
+      TiedyApp.getDataChangeNotifier().notifyObservers();
+    }
   }
 
   private void deleteTask(Task task) {
@@ -173,23 +180,16 @@ public class MainController implements DataController {
   /**
    * Opens the task dialog to edit an existing task.
    *
-   * @param task The task to edit
+   * @param taskToEdit The task to edit
    */
-  private void showEditTaskDialog(Task task) {
-    DialogFactory.editTaskDialog(
-        task,
-        // the callback function to be called when the passed task is updated
+  private void showEditTaskDialog(Task taskToEdit) {
+    DialogFactory.launchEditTaskDialog(
+        taskToEdit,
         updatedTask -> {
-          try {
-            // Update the task in the repository
-            TiedyApp.getDataAccessFacade().updateTask(updatedTask);
-
-            updateTaskViewPane(
-                TiedyApp.getDataAccessFacade()
-                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
-
-          } catch (IllegalArgumentException e) {
-            AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+          if (TiedyApp.getDataAccessFacade().updateTask(updatedTask) != null) {
+            TiedyApp.getDataChangeNotifier().notifyObservers();
+          } else {
+            AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
           }
         });
   }

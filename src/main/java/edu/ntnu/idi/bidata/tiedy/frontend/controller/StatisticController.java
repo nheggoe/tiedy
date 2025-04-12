@@ -13,7 +13,7 @@ import javafx.scene.chart.PieChart;
  * fetches the data and updates the graph to make it dynamic.
  *
  * @author Nick Heggø
- * @version 2025.04.11
+ * @version 2025.04.12
  */
 public class StatisticController implements DataController {
 
@@ -21,19 +21,11 @@ public class StatisticController implements DataController {
   @FXML private PieChart pieChartRight;
 
   @Override
-  @FXML
-  public void initialize() {
-    updatePieChartLeft();
-    updatePieChartRight();
-  }
-
-  @Override
   public void updateData() {
     updatePieChartLeft();
     updatePieChartRight();
   }
 
-  @FXML
   public void updatePieChartRight() {
     pieChartRight.getData().clear();
 
@@ -42,10 +34,7 @@ public class StatisticController implements DataController {
             status -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getTasksByUserAndStatus(UserSession.getCurrentUserId(), status)
-                      .stream()
-                      .filter(task -> task.getStatus() != Status.CLOSED)
-                      .toList()
+                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())
                       .size();
               if (count > 0) {
                 pieChartRight.getData().add(new PieChart.Data(status.toString(), count));
@@ -66,10 +55,7 @@ public class StatisticController implements DataController {
             priority -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getTasksByUserAndPriority(UserSession.getCurrentUserId(), priority)
-                      .stream()
-                      .filter(task -> task.getStatus() != Status.CLOSED)
-                      .toList()
+                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())
                       .size();
               if (count > 0) {
                 pieChartLeft.getData().add(new PieChart.Data(priority.toString(), count));

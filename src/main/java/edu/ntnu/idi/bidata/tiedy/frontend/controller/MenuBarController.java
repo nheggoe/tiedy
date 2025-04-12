@@ -19,7 +19,7 @@ import javafx.scene.control.MenuItem;
  * the user's selection.
  *
  * @author Nick Heggø
- * @version 2025.04.11
+ * @version 2025.04.12
  */
 public class MenuBarController implements Controller {
 
@@ -60,30 +60,19 @@ public class MenuBarController implements Controller {
 
   @FXML
   public void onNewTaskButtonPress() {
-    DialogFactory.createTaskDialog(
-        "New Task",
-        new Task(),
-        // start of callback function
-        task -> {
-          try {
-            if (TiedyApp.getDataAccessFacade().addTask(task) != null) {
+    DialogFactory.launchTaskCreationDialog(
+        createdTask -> {
+          if (TiedyApp.getDataAccessFacade().addTask(createdTask) != null) {
 
-              TiedyApp.getDataAccessFacade()
-                  .assignToUser(task.getId(), UserSession.getCurrentUserId());
+            TiedyApp.getDataAccessFacade()
+                .assignToUser(createdTask.getId(), UserSession.getCurrentUserId());
 
-              // Update the task view if we have a callback
-              if (updateTaskViewPaneCallback != null) {
-                updateTaskViewPaneCallback.accept(
-                    TiedyApp.getDataAccessFacade()
-                        .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
-              }
+            TiedyApp.getDataChangeNotifier().notifyObservers();
 
-              AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
-            } else {
-              AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
-            }
-          } catch (IllegalArgumentException e) {
-            AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+            AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
+
+          } else {
+            AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
           }
         });
   }
@@ -109,7 +98,7 @@ public class MenuBarController implements Controller {
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
-                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId())));
+                    .getTaskByAssignedUser(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->

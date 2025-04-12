@@ -9,80 +9,71 @@ import java.util.function.Consumer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
+import org.jspecify.annotations.NonNull;
 
 /**
- * A utility class for creating and configuring JavaFX dialogs. Provides factory methods for common
- * dialog types used throughout the application.
+ * Utility class for
  *
  * @author Nick Heggø
- * @version 2025.04.09
+ * @version 2025.04.12
  */
 public class DialogFactory {
 
   private DialogFactory() {}
 
   /**
-   * Creates a dialog for editing an existing task.
+   * Creates and show a dialog for creating a new task, calls the Consumer function to deal with the
+   * newly created {@link Task} object on the OK dialog button press.
    *
-   * @param dialogTitle The dialog title
-   * @param existingTask The task to edit
-   * @param onSuccess Consumer that will be called with the updated task on success
-   * @return Optional containing the updated task if successful, or empty if cancelled
+   * @param taskCallback the consumer function to deal with the newly returned {@link Task} object
    */
-  public static Optional<Task> createTaskDialog(
-      String dialogTitle, Task existingTask, Consumer<Task> onSuccess) {
+  public static void launchTaskCreationDialog(Consumer<Task> taskCallback) {
+    generateTaskDialog("New Task", new Task(), taskCallback);
+  }
+
+  /**
+   * Creates and show a dialog for editing a task, calls the Consumer function on the OK dialog
+   * button press, else do nothing.
+   *
+   * @param taskToEdit The task to edit
+   * @param taskCallback Consumer that will be called with the updated task on the OK dialog button
+   *     press
+   */
+  public static void launchEditTaskDialog(Task taskToEdit, Consumer<Task> taskCallback) {
+    generateTaskDialog("Edit Task", taskToEdit, taskCallback);
+  }
+
+  private static void generateTaskDialog(
+      @NonNull String dialogTitle,
+      @NonNull Task existingTask,
+      @NonNull Consumer<Task> taskCallback) {
     try {
-      // Load the dialog
       FXMLLoader loader =
           new FXMLLoader(
               TiedyApp.class.getResource("/edu/ntnu/idi/bidata/tiedy/fxml/dialog/TaskDialog.fxml"));
 
+      // setup dialog
       Dialog<ButtonType> dialog = new Dialog<>();
+      dialog.setTitle(dialogTitle);
       dialog.setDialogPane(loader.load());
 
-      dialog.setTitle(
-          Optional.ofNullable(dialogTitle)
-              .orElseGet(() -> ((existingTask.getTitle() == null) ? "Create Task" : "Edit Task")));
-
-      // Get controller reference
+      // setup controller
       TaskDialogController controller = loader.getController();
+      controller.setTask(existingTask);
 
-      // Set task for editing if provided
-      if (existingTask != null) {
-        controller.setTask(existingTask);
-      }
-
-      // Show dialog and handle result
+      // callback on the OK button
       Optional<ButtonType> result = dialog.showAndWait();
-
-      if (result.isPresent() && (result.get() == ButtonType.OK)) {
+      if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
         controller.validateInput();
-        Task task = controller.getTask();
-
-        if (onSuccess != null) {
-          onSuccess.accept(task);
-        }
-
-        return Optional.of(task);
+        taskCallback.accept(controller.getTask());
       }
+
+      // else nothing
 
     } catch (IllegalArgumentException e) {
       AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     } catch (IOException e) {
       AlertFactory.generateErrorAlert("Error loading dialog: " + e.getMessage()).showAndWait();
     }
-
-    return Optional.empty();
-  }
-
-  /**
-   * Creates a dialog for editing a task.
-   *
-   * @param taskToEdit The task to edit
-   * @param onSuccess Consumer that will be called with the updated task on success
-   * @return Optional containing the updated task if successful, or empty if cancelled
-   */
-  public static Optional<Task> editTaskDialog(Task taskToEdit, Consumer<Task> onSuccess) {
-    return createTaskDialog("Edit Task", taskToEdit, onSuccess);
   }
 }

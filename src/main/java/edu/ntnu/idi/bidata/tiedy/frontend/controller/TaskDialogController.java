@@ -77,7 +77,11 @@ public class TaskDialogController implements Controller {
     return task;
   }
 
-  /** Validates the input fields in the dialog. */
+  /**
+   * Validates if all the necessary information is provided
+   *
+   * @throws IllegalArgumentException if not all necessary information is provided
+   */
   public void validateInput() {
     taskBuilder
         .title(taskNameField.getText())

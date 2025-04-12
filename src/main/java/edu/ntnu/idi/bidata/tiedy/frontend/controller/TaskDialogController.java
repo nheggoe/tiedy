@@ -47,7 +47,6 @@ public class TaskDialogController implements Controller {
 
     // --------  start hidden advanced options  --------
     advancedOptionsPane.setExpanded(false);
-    // default value
     priorityComboBox.setValue(Priority.NONE);
     dueDatePicker.setValue(LocalDate.now().plusDays(1));
   }

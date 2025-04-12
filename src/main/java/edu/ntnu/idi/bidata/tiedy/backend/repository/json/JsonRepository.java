@@ -2,11 +2,11 @@ package edu.ntnu.idi.bidata.tiedy.backend.repository.json;
 
 import edu.ntnu.idi.bidata.tiedy.backend.io.json.JsonDAO;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -23,8 +23,8 @@ import java.util.stream.Stream;
  */
 public abstract class JsonRepository<T> implements DataRepository<T> {
 
-  protected final JsonDAO<T> jsonDAO;
-  private final Map<UUID, T> entities;
+  private final JsonDAO<T> jsonDAO;
+  private final ConcurrentMap<UUID, T> entities;
   protected final Function<T, UUID> idExtractor;
 
   /**
@@ -35,7 +35,7 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
    */
   protected JsonRepository(Class<T> entityClass, Function<T, UUID> idExtractor) {
     this.jsonDAO = new JsonDAO<>(entityClass);
-    this.entities = new HashMap<>();
+    this.entities = new ConcurrentHashMap<>();
     this.idExtractor = idExtractor;
     refresh();
   }

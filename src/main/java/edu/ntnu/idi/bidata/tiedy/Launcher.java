@@ -30,7 +30,10 @@ import java.util.concurrent.TimeUnit;
 public class Launcher {
 
   /**
-   * On start, it will Launch the JavaFX main stage.
+   * The entry point of the application.
+   *
+   * <p>This method initializes a scheduled executor service to periodically save application data,
+   * starts the main application, and ensures data persistence before the application shuts down.
    *
    * @param args the command-line arguments passed to the application
    */

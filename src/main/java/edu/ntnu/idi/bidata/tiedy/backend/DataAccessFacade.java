@@ -72,6 +72,20 @@ public class DataAccessFacade implements Runnable {
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
+  // ------------------------  Defensive Copying  ------------------------
+
+  private Task createDetachedCopy(Task original) {
+    return new Task(original);
+  }
+
+  private Group createDetachedCopy(Group original) {
+    return new Group(original);
+  }
+
+  private User createDetachedCopy(User original) {
+    return new User(original);
+  }
+
   // ------------------------  Group Repository Methods  ------------------------
 
   /**
@@ -82,7 +96,7 @@ public class DataAccessFacade implements Runnable {
    *     list is returned
    */
   public List<Group> findGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId).map(Group::new).toList();
+    return groupRepository.findAllByUserId(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -93,7 +107,7 @@ public class DataAccessFacade implements Runnable {
    *     the user is not an admin in any group
    */
   public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId).map(Group::new).toList();
+    return groupRepository.findByAdmin(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -212,7 +226,7 @@ public class DataAccessFacade implements Runnable {
    *     an empty list
    */
   public List<Task> getTaskByAssignedUser(UUID userId) {
-    return taskRepository.findByAssignedUser(userId).map(Task::new).toList();
+    return taskRepository.findByAssignedUser(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -228,7 +242,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -237,7 +251,7 @@ public class DataAccessFacade implements Runnable {
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getStatus() == status)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -246,7 +260,7 @@ public class DataAccessFacade implements Runnable {
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getPriority() == priority)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -283,7 +297,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() == status)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -300,7 +314,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getPriority() == priority)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 }

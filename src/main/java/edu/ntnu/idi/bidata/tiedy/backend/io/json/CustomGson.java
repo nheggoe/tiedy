@@ -38,7 +38,7 @@ public class CustomGson {
    *
    * @return a shared instance of {@link Gson} with config applied
    */
-  public static Gson getInstance() {
+  public static synchronized Gson getInstance() {
     if (gson == null) {
       gson =
           new GsonBuilder()

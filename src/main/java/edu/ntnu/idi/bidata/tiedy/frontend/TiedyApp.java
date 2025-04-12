@@ -4,6 +4,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneManager;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
 import java.awt.*;
 import java.util.Optional;
 import java.util.logging.Logger;
@@ -24,9 +25,11 @@ import javafx.stage.Stage;
  */
 public class TiedyApp extends Application {
 
-  private static final DataAccessFacade dataAccessFacade = DataAccessFacade.getInstance();
   private static final Logger LOGGER = Logger.getLogger(TiedyApp.class.getName());
-  private static SceneManager sceneManager;
+
+  private static final DataAccessFacade dataAccessFacade = DataAccessFacade.getInstance();
+  private static final DataChangeNotifier dataChangeNotifier = DataChangeNotifier.getInstance();
+  private static final SceneManager sceneManager = SceneManager.getInstance();
 
   /**
    * The main entry point for the JavaFX application. This method launches the JavaFX runtime and
@@ -50,6 +53,10 @@ public class TiedyApp extends Application {
 
   public static DataAccessFacade getDataAccessFacade() {
     return dataAccessFacade;
+  }
+
+  public static DataChangeNotifier getDataChangeNotifier() {
+    return dataChangeNotifier;
   }
 
   @Override
@@ -76,7 +83,7 @@ public class TiedyApp extends Application {
     primaryStage.setMinWidth(700);
     primaryStage.setMinHeight(500);
     primaryStage.setOnCloseRequest(event -> onClose());
-    sceneManager = new SceneManager(primaryStage);
+    sceneManager.setPrimaryStage(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
   }
 

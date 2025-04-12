@@ -7,9 +7,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.scene.control.MenuButton;
@@ -25,9 +23,7 @@ import javafx.scene.control.MenuItem;
  */
 public class MenuBarController implements Controller {
 
-  private final List<Observer> observers = new ArrayList<>();
-
-  @FXML private MenuButton taskFilterMenu; // currently no use
+  @FXML private MenuButton taskFilterMenu;
   @FXML private MenuItem allTaskFilter;
   @FXML private MenuItem openTaskFilter;
   @FXML private MenuItem inProgressTaskFilter;
@@ -37,14 +33,7 @@ public class MenuBarController implements Controller {
   private Consumer<Collection<Task>> updateTaskViewPaneCallback;
 
   @Override
-  public void initialize() {
-    observers.add(
-        () -> {
-          if (TiedyApp.getSceneManager().getController() instanceof DataController controller) {
-            controller.updateData();
-          }
-        });
-  }
+  public void initialize() {}
 
   /**
    * Sets up a callback that will be triggered when filter menu items are selected.
@@ -89,7 +78,6 @@ public class MenuBarController implements Controller {
                         .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
               }
 
-              observers.forEach(Observer::update);
               AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
             } else {
               AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
@@ -146,9 +134,5 @@ public class MenuBarController implements Controller {
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserAndStatus(UserSession.getCurrentUserId(), Status.POSTPONED)));
-  }
-
-  public interface Observer {
-    void update();
   }
 }

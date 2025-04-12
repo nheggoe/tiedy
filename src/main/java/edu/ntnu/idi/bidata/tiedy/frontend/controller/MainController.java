@@ -46,15 +46,13 @@ public class MainController implements DataController {
    * category, logs the number of loaded tasks, and dynamically populates the task display area with
    * the corresponding task panes.
    */
-  @FXML
+  @Override
   public void initialize() {
     taskViewPane.setHgap(10);
     taskViewPane.setVgap(10);
 
-    // Initialize tasks with all tasks for the current user
-    updateTaskViewPane(
-        TiedyApp.getDataAccessFacade()
-            .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+    register();
+    updateData();
 
     // Set up the menu bar to call updateFlowPane when filters are selected
     if (menuBarController != null) {
@@ -111,10 +109,7 @@ public class MainController implements DataController {
                   "Delete task", "Are you sure you want to delete this task?");
 
           if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            TiedyApp.getDataAccessFacade().removeTask(task.getId());
-            updateTaskViewPane(
-                TiedyApp.getDataAccessFacade()
-                    .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+            deleteTask(task);
           }
         });
 
@@ -128,22 +123,7 @@ public class MainController implements DataController {
     if (task.getStatus() != Status.CLOSED) {
       completeButton.setOnAction(
           event -> {
-            task.setStatus(Status.CLOSED);
-
-            try {
-              TiedyApp.getDataAccessFacade().updateTask(task);
-
-              updateTaskViewPane(
-                  TiedyApp.getDataAccessFacade()
-                      .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
-
-              AlertFactory.generateInfoAlert(
-                      "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
-                  .showAndWait();
-            } catch (Exception e) {
-              AlertFactory.generateWarningAlert("Error updating task: " + e.getMessage())
-                  .showAndWait();
-            }
+            completeTask(task);
           });
     } else {
       taskBg.setFill(Color.LIGHTGRAY);
@@ -170,6 +150,24 @@ public class MainController implements DataController {
     cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(event -> showEditTaskDialog(task));
     return cardPane;
+  }
+
+  private void completeTask(Task task) {
+    task.setStatus(Status.CLOSED);
+
+    TiedyApp.getDataAccessFacade().updateTask(task);
+    TiedyApp.getDataChangeNotifier().notifyObservers();
+
+    AlertFactory.generateInfoAlert(
+            "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
+        .showAndWait();
+  }
+
+  private void deleteTask(Task task) {
+    TiedyApp.getDataAccessFacade().removeTask(task.getId());
+    TiedyApp.getDataChangeNotifier().notifyObservers();
+    AlertFactory.generateInfoAlert("Task deleted", "Task has been deleted successfully")
+        .showAndWait();
   }
 
   /**

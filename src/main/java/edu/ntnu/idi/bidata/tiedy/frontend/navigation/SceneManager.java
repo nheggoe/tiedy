@@ -18,17 +18,21 @@ import javafx.stage.Stage;
  */
 public class SceneManager {
 
-  private final Stage primaryStage;
+  private static SceneManager instance;
+
+  private Stage primaryStage;
   private Controller currentController;
 
-  /**
-   * Constructs a SceneManager instance with a specified primary stage. This stage is used to manage
-   * and display scenes in a JavaFX application.
-   *
-   * @param primaryStage the primary stage of the JavaFX application that the scenes will be managed
-   *     on
-   */
-  public SceneManager(Stage primaryStage) {
+  private SceneManager() {}
+
+  public static synchronized SceneManager getInstance() {
+    if (instance == null) {
+      instance = new SceneManager();
+    }
+    return instance;
+  }
+
+  public void setPrimaryStage(Stage primaryStage) {
     this.primaryStage = primaryStage;
   }
 

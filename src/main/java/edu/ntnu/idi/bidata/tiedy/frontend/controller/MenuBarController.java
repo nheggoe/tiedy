@@ -19,7 +19,7 @@ import javafx.scene.control.MenuItem;
  * the user's selection.
  *
  * @author Nick Heggø
- * @version 2025.04.12
+ * @version 2025.04.13
  */
 public class MenuBarController {
 
@@ -42,18 +42,35 @@ public class MenuBarController {
     setupFilterListeners();
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the MAIN scene, as defined in the
+   * {@link SceneName} enum.
+   */
   @FXML
   public void onHomeButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
     taskFilterMenu.setDisable(false);
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the STATISTIC scene, as defined in
+   * the {@link SceneName} enum.
+   */
   @FXML
   public void onStatisticsButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
     taskFilterMenu.setDisable(true);
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method launches a dialog to create a new {@link Task}.
+   */
   @FXML
   public void onNewTaskButtonPress() {
     DialogFactory.launchTaskCreationDialog(
@@ -73,12 +90,12 @@ public class MenuBarController {
         });
   }
 
-  @FXML
-  public void onGroupButtonPress() {
-    TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
-    taskFilterMenu.setDisable(true);
-  }
-
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the PROFILE scene, as defined in the
+   * {@link SceneName} enum.
+   */
   @FXML
   public void onProfileButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);

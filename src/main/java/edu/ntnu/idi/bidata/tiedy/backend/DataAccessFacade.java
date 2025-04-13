@@ -225,7 +225,7 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects assigned to the specified user; if no tasks are found, returns
    *     an empty list
    */
-  public List<Task> getTaskByAssignedUser(UUID userId) {
+  public List<Task> getTasksByUserId(UUID userId) {
     return taskRepository.findByAssignedUser(userId).map(this::createDetachedCopy).toList();
   }
 
@@ -238,7 +238,7 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects that are assigned to the specified user and are not in the
    *     CLOSED status; an empty list is returned if no such tasks are found
    */
-  public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
+  public List<Task> getActiveTasksByUserId(UUID userId) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
@@ -246,7 +246,7 @@ public class DataAccessFacade implements Runnable {
         .toList();
   }
 
-  public List<Task> getAllNoneClosedTaskByUserIdAndStatus(UUID userId, Status status) {
+  public List<Task> getActiveTasksByUserIdAndStatus(UUID userId, Status status) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
@@ -255,7 +255,7 @@ public class DataAccessFacade implements Runnable {
         .toList();
   }
 
-  public List<Task> getAllNoneClosedTaskByUserIdAndPriority(UUID userId, Priority priority) {
+  public List<Task> getActiveTasksByUserIdAndPriority(UUID userId, Priority priority) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
@@ -270,8 +270,8 @@ public class DataAccessFacade implements Runnable {
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
    */
-  public void assignToUser(UUID taskId, UUID userId) {
-    taskRepository.assignToUser(taskId, userId);
+  public boolean assignTaskToUser(UUID taskId, UUID userId) {
+    return taskRepository.assignToUser(taskId, userId);
   }
 
   /**
@@ -281,7 +281,7 @@ public class DataAccessFacade implements Runnable {
    * @param userId the unique identifier of the user from whom the task is to be unassigned
    * @return true if the task was successfully unassigned from the user, false otherwise
    */
-  public boolean unassignFromUser(UUID taskId, UUID userId) {
+  public boolean unassignTaskFromUser(UUID taskId, UUID userId) {
     return taskRepository.unassignFromUser(taskId, userId);
   }
 

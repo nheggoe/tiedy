@@ -40,7 +40,7 @@ public class StatisticController implements DataController {
             status -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getAllNoneClosedTaskByUserIdAndStatus(UserSession.getCurrentUserId(), status)
+                      .getActiveTasksByUserIdAndStatus(UserSession.getCurrentUserId(), status)
                       .size();
               if (count > 0) {
                 pieChartRight.getData().add(new PieChart.Data(status.toString(), count));
@@ -61,8 +61,7 @@ public class StatisticController implements DataController {
             priority -> {
               int count =
                   TiedyApp.getDataAccessFacade()
-                      .getAllNoneClosedTaskByUserIdAndPriority(
-                          UserSession.getCurrentUserId(), priority)
+                      .getActiveTasksByUserIdAndPriority(UserSession.getCurrentUserId(), priority)
                       .size();
               if (count > 0) {
                 pieChartLeft.getData().add(new PieChart.Data(priority.toString(), count));

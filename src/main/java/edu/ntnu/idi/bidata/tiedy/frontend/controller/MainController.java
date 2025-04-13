@@ -63,8 +63,7 @@ public class MainController implements DataController {
   @Override
   public void updateData() {
     updateTaskViewPane(
-        TiedyApp.getDataAccessFacade()
-            .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+        TiedyApp.getDataAccessFacade().getActiveTasksByUserId(UserSession.getCurrentUserId()));
   }
 
   private void updateTaskViewPane(Collection<Task> tasks) {

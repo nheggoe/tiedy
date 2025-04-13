@@ -61,7 +61,7 @@ public class MenuBarController {
           if (TiedyApp.getDataAccessFacade().addTask(createdTask) != null) {
 
             TiedyApp.getDataAccessFacade()
-                .assignToUser(createdTask.getId(), UserSession.getCurrentUserId());
+                .assignTaskToUser(createdTask.getId(), UserSession.getCurrentUserId());
 
             TiedyApp.getDataChangeNotifier().notifyObservers();
 
@@ -93,8 +93,7 @@ public class MenuBarController {
     allTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade()
-                    .getTaskByAssignedUser(UserSession.getCurrentUserId())));
+                TiedyApp.getDataAccessFacade().getTasksByUserId(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->

@@ -187,6 +187,15 @@ public class DataAccessFacade implements Runnable {
     return userRepository.authenticate(username, plainTextPassword);
   }
 
+  /**
+   * Retrieves all users from the repository.
+   *
+   * @return a list of all User objects in the system
+   */
+  public List<User> getAllUsers() {
+    return userRepository.getAll().map(this::createDetachedCopy).toList();
+  }
+
   // ------------------------  Task Repository Methods  ------------------------
 
   /**

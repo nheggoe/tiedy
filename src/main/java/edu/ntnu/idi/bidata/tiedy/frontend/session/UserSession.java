@@ -69,10 +69,25 @@ public class UserSession {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getUsername();
   }
 
+  /**
+   * This method retrieves the current user from the active session and attempts to mark a task as
+   * completed. If no active session exists, an {@link InvalidSessionException} is thrown.
+   * Completion of the task may also trigger level progression for the user, depending on their
+   * current experience and level system settings.
+   *
+   * @return {@code true} if the task completion resulted in leveling up, {@code false} otherwise
+   * @throws InvalidSessionException if no active session exists or no user is currently logged in
+   */
   public static boolean completeTask() {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).completeTask();
   }
 
+  /**
+   * Retrieves the current experience points of the user associated with the active session.
+   *
+   * @return the current experience points of the logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
   public static int getCurrentExperience() {
     return instance
         .getCurrentUser()
@@ -80,10 +95,29 @@ public class UserSession {
         .getCurrentExperience();
   }
 
+  /**
+   * Retrieves the current level of the user associated with the active session.
+   *
+   * <p>This method fetches the level of the logged-in user from the session. If no session is
+   * active, it throws an {@link InvalidSessionException}.
+   *
+   * @return the current level of the logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
   public static int getCurrentLevel() {
     return instance.getCurrentUser().orElseThrow(InvalidSessionException::new).getCurrentLevel();
   }
 
+  /**
+   * Retrieves the number of tasks completed by the currently logged-in user.
+   *
+   * <p>This method fetches the completed task count by accessing the active user session. If no
+   * active session exists or no user is logged in, an {@link InvalidSessionException} will be
+   * thrown.
+   *
+   * @return the count of tasks completed by the currently logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
   public static int getCompletedTaskCount() {
     return instance
         .getCurrentUser()
@@ -91,6 +125,14 @@ public class UserSession {
         .getCompletedTaskCount();
   }
 
+  /**
+   * Retrieves the experience threshold required for the currently logged-in user to reach the next
+   * level. This method fetches the threshold from the user's level system. If no active session
+   * exists or no user is logged in, an {@link InvalidSessionException} will be thrown.
+   *
+   * @return the experience threshold for the logged-in user
+   * @throws InvalidSessionException if no active session exists or no user is logged in
+   */
   public static int getExperienceThreshold() {
     return instance
         .getCurrentUser()

@@ -12,7 +12,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Controller for the TaskDialog component that provides a user interface for creating and editing
@@ -32,11 +31,7 @@ public class TaskDialogController {
   @FXML private ComboBox<Priority> priorityComboBox;
   @FXML private ComboBox<Status> statusComboBox;
 
-  @NonNull private Task task;
-
-  public TaskDialogController() {
-    task = new Task();
-  }
+  private Task task;
 
   /** Initializes the dialog components. */
   @FXML

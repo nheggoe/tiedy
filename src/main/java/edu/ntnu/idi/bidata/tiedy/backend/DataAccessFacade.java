@@ -163,6 +163,15 @@ public class DataAccessFacade implements Runnable {
         .toList();
   }
 
+  /**
+   * Retrieves a list of active tasks assigned to a specific user that match a given status. Only
+   * tasks that are not in the CLOSED status and match the specified status are included.
+   *
+   * @param userId the unique identifier (UUID) of the user whose tasks are to be retrieved
+   * @param status the status of the tasks to be filtered (e.g., PENDING, COMPLETED)
+   * @return a list of Task objects that are assigned to the specified user, are not in the CLOSED
+   *     status, and have the specified status. Returns an empty list if no tasks meet the criteria.
+   */
   public List<Task> getActiveTasksByUserIdAndStatus(UUID userId, Status status) {
     return taskRepository
         .findByAssignedUser(userId)
@@ -172,6 +181,18 @@ public class DataAccessFacade implements Runnable {
         .toList();
   }
 
+  /**
+   * Retrieves a list of active tasks assigned to a specific user that match a given priority.
+   * Active tasks are tasks that are not in the CLOSED status.
+   *
+   * @param userId the unique identifier (UUID) of the user whose tasks are to be retrieved; must
+   *     not be null
+   * @param priority the priority of the tasks to be filtered (e.g., HIGH, MEDIUM, LOW); must not be
+   *     null
+   * @return a list of Task objects that are assigned to the specified user, are not in the CLOSED
+   *     status, and have the specified priority; returns an empty list if no tasks meet the
+   *     criteria
+   */
   public List<Task> getActiveTasksByUserIdAndPriority(UUID userId, Priority priority) {
     return taskRepository
         .findByAssignedUser(userId)
@@ -186,6 +207,7 @@ public class DataAccessFacade implements Runnable {
    *
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
+   * @return true if the task is successfully assigned to the user, false otherwise
    */
   public boolean assignTaskToUser(UUID taskId, UUID userId) {
     return taskRepository.assignToUser(taskId, userId);

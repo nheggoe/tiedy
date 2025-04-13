@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * A repository for managing {@link Group} entities stored in a JSON-based persistence layer. This
  * class extends the base functionality provided by {@link JsonRepository} and implements the
- * domain-specific operations defined in the {@link GroupRepository} interface. It uses singleton
+ * domain-specific operations defined in the {@link GroupRepository} interface. It uses a singleton
  * design pattern to ensure only one instance of the repository is created and used.
  *
  * @author Nick Heggø

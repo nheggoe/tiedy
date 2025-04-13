@@ -1,15 +1,12 @@
 package edu.ntnu.idi.bidata.tiedy.backend;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
-import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
-import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonGroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
 import java.time.LocalDateTime;
@@ -31,12 +28,10 @@ public class DataAccessFacade implements Runnable {
 
   private static DataAccessFacade instance;
 
-  private final GroupRepository groupRepository;
   private final UserRepository userRepository;
   private final TaskRepository taskRepository;
 
   private DataAccessFacade() {
-    groupRepository = JsonGroupRepository.getInstance();
     userRepository = JsonUserRepository.getInstance();
     taskRepository = JsonTaskRepository.getInstance();
   }
@@ -68,7 +63,7 @@ public class DataAccessFacade implements Runnable {
    */
   @Override
   public void run() {
-    List.of(groupRepository, userRepository, taskRepository).forEach(DataRepository::saveChanges);
+    List.of(userRepository, taskRepository).forEach(DataRepository::saveChanges);
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
@@ -76,74 +71,6 @@ public class DataAccessFacade implements Runnable {
 
   private Task createDetachedCopy(Task original) {
     return new Task(original);
-  }
-
-  private Group createDetachedCopy(Group original) {
-    return new Group(original);
-  }
-
-  private User createDetachedCopy(User original) {
-    return new User(original);
-  }
-
-  // ------------------------  Group Repository Methods  ------------------------
-
-  /**
-   * Finds all groups that a specific user is a member of by their unique identifier.
-   *
-   * @param userId the UUID of the user whose groups are to be retrieved
-   * @return a list of Group objects that the user is a member of; if no groups are found, an empty
-   *     list is returned
-   */
-  public List<Group> getGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId).map(this::createDetachedCopy).toList();
-  }
-
-  /**
-   * Retrieves a list of groups where the specified user is an admin.
-   *
-   * @param userId the unique identifier (UUID) of the user
-   * @return a list of Group objects where the user has admin privileges; returns an empty list if
-   *     the user is not an admin in any group
-   */
-  public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId).map(this::createDetachedCopy).toList();
-  }
-
-  /**
-   * Adds a user to a group with the specified membership and admin status.
-   *
-   * @param groupId the unique identifier of the group
-   * @param userId the unique identifier of the user to be added
-   * @param isAdmin a boolean indicating whether the user should be granted admin privileges
-   * @return true if the user was successfully added to the group, false otherwise
-   */
-  public boolean addMember(UUID groupId, UUID userId, boolean isAdmin) {
-    return groupRepository.addMember(groupId, userId, isAdmin);
-  }
-
-  /**
-   * Removes a user from a specified group.
-   *
-   * @param groupId the unique identifier of the group
-   * @param userId the unique identifier of the user to be removed from the group
-   * @return true if the user was successfully removed, false otherwise
-   */
-  public boolean removeMember(UUID groupId, UUID userId) {
-    return groupRepository.removeMember(groupId, userId);
-  }
-
-  /**
-   * Updates the admin status of a user in a specific group.
-   *
-   * @param groupId the unique identifier of the group
-   * @param userId the unique identifier of the user whose admin status is to be updated
-   * @param isAdmin the new admin status for the user (true to grant admin privileges, false to
-   *     revoke)
-   * @return true if the admin status was successfully updated, false otherwise
-   */
-  public boolean updateMemberAdminStatus(UUID groupId, UUID userId, boolean isAdmin) {
-    return groupRepository.updateMemberAdminStatus(groupId, userId, isAdmin);
   }
 
   // ------------------------  User Repository Methods  ------------------------
@@ -165,16 +92,6 @@ public class DataAccessFacade implements Runnable {
   }
 
   /**
-   * Retrieves a User by their username.
-   *
-   * @param username the username to search for; must not be null or blank
-   * @return an Optional containing the User if found; otherwise, an empty Optional
-   */
-  public Optional<User> findByUsername(String username) {
-    return userRepository.findByUsername(username);
-  }
-
-  /**
    * Authenticates a user using the provided username and plaintext password.
    *
    * @param username the username of the user attempting to authenticate; must not be null or blank
@@ -185,15 +102,6 @@ public class DataAccessFacade implements Runnable {
    */
   public Optional<User> authenticate(String username, String plainTextPassword) {
     return userRepository.authenticate(username, plainTextPassword);
-  }
-
-  /**
-   * Retrieves all users from the repository.
-   *
-   * @return a list of all User objects in the system
-   */
-  public List<User> getAllUsers() {
-    return userRepository.getAll().map(this::createDetachedCopy).toList();
   }
 
   // ------------------------  Task Repository Methods  ------------------------
@@ -284,17 +192,6 @@ public class DataAccessFacade implements Runnable {
   }
 
   /**
-   * Unassigns a task from a user.
-   *
-   * @param taskId the unique identifier of the task to be unassigned
-   * @param userId the unique identifier of the user from whom the task is to be unassigned
-   * @return true if the task was successfully unassigned from the user, false otherwise
-   */
-  public boolean unassignTaskFromUser(UUID taskId, UUID userId) {
-    return taskRepository.unassignFromUser(taskId, userId);
-  }
-
-  /**
    * Retrieves a list of tasks that are assigned to a specific user and match a given status.
    *
    * @param userId the unique identifier (UUID) of the user whose tasks are to be retrieved
@@ -306,23 +203,6 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() == status)
-        .map(this::createDetachedCopy)
-        .toList();
-  }
-
-  /**
-   * Retrieves a list of tasks assigned to a specific user and filtered by the specified priority
-   * level.
-   *
-   * @param userId the unique identifier of the user whose tasks are to be retrieved
-   * @param priority the priority level to filter tasks (e.g., HIGH, MEDIUM, LOW)
-   * @return a list of Task objects assigned to the specified user that match the given priority; an
-   *     empty list if no tasks meet the criteria
-   */
-  public List<Task> getTasksByUserAndPriority(UUID userId, Priority priority) {
-    return taskRepository
-        .findByAssignedUser(userId)
-        .filter(task -> task.getPriority() == priority)
         .map(this::createDetachedCopy)
         .toList();
   }

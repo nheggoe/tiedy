@@ -28,7 +28,7 @@ public class DataChangeNotifier {
 
   /**
    * Adds a {@link DataController} observer to the list of observers if it is not already present.
-   * Observers registered with this method will be notified of data updates by the system.
+   * The system will notify observers registered with this method of data updates.
    *
    * @param observer the {@link DataController} instance to be added as an observer
    */

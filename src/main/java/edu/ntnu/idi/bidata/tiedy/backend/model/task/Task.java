@@ -29,7 +29,7 @@ public class Task {
 
   /**
    * Default constructor for the Task class. Initializes a new Task instance with a unique
-   * identifier, the current timestamp for creation, and default values for its fields.
+   * identifier, the current timestamp for creation and default values for its fields.
    *
    * <p>The id is generated using a universally unique identifier (UUID). The creation timestamp is
    * assigned using the current system time. The assignedUsers set is initialized to an empty set.

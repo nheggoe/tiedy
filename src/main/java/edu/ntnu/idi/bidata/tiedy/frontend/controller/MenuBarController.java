@@ -77,12 +77,15 @@ public class MenuBarController {
         createdTask -> {
           if (TiedyApp.getDataAccessFacade().addTask(createdTask) != null) {
 
-            TiedyApp.getDataAccessFacade()
-                .assignTaskToUser(createdTask.getId(), UserSession.getCurrentUserId());
+            if (TiedyApp.getDataAccessFacade()
+                .assignTaskToUser(createdTask.getId(), UserSession.getCurrentUserId())) {
 
-            TiedyApp.getDataChangeNotifier().notifyObservers();
+              TiedyApp.getDataChangeNotifier().notifyObservers();
+              AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
 
-            AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
+            } else {
+              AlertFactory.generateWarningAlert("Failed to assign task to user").showAndWait();
+            }
 
           } else {
             AlertFactory.generateWarningAlert("Failed to create task").showAndWait();

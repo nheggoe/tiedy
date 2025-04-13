@@ -37,7 +37,7 @@ public class LevelSystem {
   /**
    * Marks a task as completed by incrementing the user's experience, total experience, and the
    * number of completed tasks. This method also evaluates if the user meets the criteria for
-   * leveling up, and processes the leveling up if applicable.
+   * leveling up and processes the leveling up if applicable.
    *
    * @return true if the user levels up as a result of completing the task, false otherwise.
    */

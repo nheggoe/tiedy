@@ -21,7 +21,7 @@ import javafx.scene.control.MenuItem;
  * @author Nick Heggø
  * @version 2025.04.12
  */
-public class MenuBarController implements Controller {
+public class MenuBarController {
 
   @FXML private MenuButton taskFilterMenu;
   @FXML private MenuItem allTaskFilter;
@@ -31,9 +31,6 @@ public class MenuBarController implements Controller {
   @FXML private MenuItem closedTaskFilter;
 
   private Consumer<Collection<Task>> updateTaskViewPaneCallback;
-
-  @Override
-  public void initialize() {}
 
   /**
    * Sets up a callback that will be triggered when filter menu items are selected.

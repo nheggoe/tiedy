@@ -26,7 +26,7 @@ public class ProfileController implements DataController {
    * The initialize method is called when the PROFILE scene is loaded. It initializes the display
    * labels in the scene with information.
    */
-  @Override
+  @FXML
   public void initialize() {
     register();
     updateData();

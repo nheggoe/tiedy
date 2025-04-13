@@ -24,7 +24,7 @@ import javafx.scene.control.TextField;
  * @author Nick Heggø
  * @version 2025.03.28
  */
-public class LoginController implements Controller {
+public class LoginController {
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -45,9 +45,6 @@ public class LoginController implements Controller {
       AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
-
-  @Override
-  public void initialize() {}
 
   /**
    * Navigates the user to the register page.

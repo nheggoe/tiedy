@@ -20,7 +20,7 @@ public class StatisticController implements DataController {
   @FXML private PieChart pieChartLeft;
   @FXML private PieChart pieChartRight;
 
-  @Override
+  @FXML
   public void initialize() {
     register();
     updateData();

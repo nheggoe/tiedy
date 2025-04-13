@@ -5,7 +5,6 @@ import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -17,16 +16,11 @@ import javafx.scene.control.TextField;
  * @author Nick Heggø
  * @version 2025.03.28
  */
-public class RegisterController implements Controller {
-
-  private static final Logger LOGGER = Logger.getLogger(RegisterController.class.getName());
+public class RegisterController {
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
   @FXML private PasswordField passwordRepeatField;
-
-  @Override
-  public void initialize() {}
 
   /**
    * Handles the user registration process. This method validates the input provided by the user,
@@ -62,8 +56,7 @@ public class RegisterController implements Controller {
       backToLogin();
 
     } catch (IllegalArgumentException e) {
-      // AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
-      AlertFactory.generateErrorAlert(e).showAndWait();
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 

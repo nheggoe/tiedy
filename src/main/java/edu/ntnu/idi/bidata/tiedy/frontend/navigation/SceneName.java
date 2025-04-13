@@ -19,7 +19,6 @@ import java.nio.file.Path;
  * @version 2025.04.07
  */
 public enum SceneName {
-  GROUP("GroupView"),
   LOGIN("LoginView"),
   MAIN("MainView"),
   PROFILE("ProfileView"),

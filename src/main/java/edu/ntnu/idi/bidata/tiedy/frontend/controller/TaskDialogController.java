@@ -36,14 +36,14 @@ public class TaskDialogController {
   /** Initializes the dialog components. */
   @FXML
   public void initialize() {
-    priorityComboBox.setItems(FXCollections.observableArrayList(Priority.values()));
     statusComboBox.setItems(FXCollections.observableArrayList(Status.values()));
     statusComboBox.setValue(Status.OPEN);
 
     // --------  start hidden advanced options  --------
     advancedOptionsPane.setExpanded(false);
-    priorityComboBox.setValue(Priority.NONE);
     dueDatePicker.setValue(LocalDate.now().plusDays(1));
+    priorityComboBox.setItems(FXCollections.observableArrayList(Priority.values()));
+    priorityComboBox.setValue(Priority.NONE);
   }
 
   /**
@@ -63,6 +63,13 @@ public class TaskDialogController {
     statusComboBox.setValue(task.getStatus());
   }
 
+  /**
+   * Retrieves the current task with updated values from the input fields. This method updates the
+   * task's title, description, deadline, priority, and status based on the current values from the
+   * corresponding UI components before returning it.
+   *
+   * @return the updated Task object with the latest values from the input fields
+   */
   public Task getTask() {
     task.setTitle(taskNameField.getText());
     task.setDescription(descriptionTextArea.getText());
@@ -73,7 +80,7 @@ public class TaskDialogController {
   }
 
   /**
-   * Validates if all the necessary information is provided
+   * Validates if all the necessary information is provided.
    *
    * @throws IllegalArgumentException if not all necessary information is provided
    */

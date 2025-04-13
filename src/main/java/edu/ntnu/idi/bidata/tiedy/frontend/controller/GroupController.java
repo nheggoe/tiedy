@@ -3,7 +3,10 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
+import java.io.IOException;
+import java.nio.file.Path;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import org.jspecify.annotations.NonNull;
@@ -37,20 +40,20 @@ public class GroupController implements DataController {
   }
 
   private Tab createTab(@NonNull Group group) {
-    Tab tab = new Tab(group.getName());
-    tab.setStyle("-fx-background-color: #5596F4;");
-    tab.setText(group.getName());
-    tab.getTabPane().setStyle("-fx-background-color: #5596F4;");
-    tab.setClosable(false);
-    // tab.setTooltip(new Tooltip(group.getName()));
-    // HBox hBox = new HBox();
-    // TableView<User> userTableView = new TableView<>();
-    return tab;
+    return new Tab(group.getName(), null);
   }
 
   private Tab createNewGroupTab() {
-    Tab tab = new Tab("New Group");
-    tab.setClosable(false);
-    return tab;
+    try {
+      return new Tab(
+          "New Group",
+          FXMLLoader.load(
+              Path.of(
+                      "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/component/CreateGroup.fxml")
+                  .toUri()
+                  .toURL()));
+    } catch (IOException e) {
+      throw new IllegalStateException("Could not load CreateGroup.fxml", e);
+    }
   }
 }

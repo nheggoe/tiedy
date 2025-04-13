@@ -1,5 +1,7 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
 
+import org.jspecify.annotations.NonNull;
+
 /**
  * The LevelSystem class represent a user's level and experience. It contains methods to get and set
  * level and experience, and to calculate the amount needed for the next level.
@@ -18,6 +20,11 @@ public class LevelSystem {
   // Algorithm
   private int experienceThreshold;
 
+  /**
+   * Constructs a new `LevelSystem` instance with default values. Initializes the user's level,
+   * experience, total experience, completed task count, and the experience threshold required for
+   * leveling up.
+   */
   public LevelSystem() {
     this.currentLevel = 0;
     this.currentExperience = 0;
@@ -26,7 +33,14 @@ public class LevelSystem {
     this.experienceThreshold = 10;
   }
 
-  public LevelSystem(LevelSystem other) {
+  /**
+   * Constructs a new LevelSystem instance by copying the state of another LevelSystem instance.
+   * Copies the current level, current experience, total experience, completed task count, and the
+   * experience threshold from the provided LevelSystem object.
+   *
+   * @param other the LevelSystem instance to copy; must not be null
+   */
+  public LevelSystem(@NonNull LevelSystem other) {
     this.currentLevel = other.currentLevel;
     this.currentExperience = other.currentExperience;
     this.totalExperience = other.totalExperience;

@@ -47,13 +47,13 @@ public class JsonUserRepository extends JsonRepository<User> implements UserRepo
   }
 
   @Override
-  public Optional<User> findByUsername(String username) {
+  public Optional<User> getUserByUsername(String username) {
     return getAll().filter(user -> Objects.equals(user.getUsername(), username)).findFirst();
   }
 
   @Override
   public Optional<User> authenticate(String username, String plainTextPassword) {
-    return findByUsername(username)
+    return getUserByUsername(username)
         .filter(
             user -> PasswordUtil.isPasswordCorrect(plainTextPassword, user.getHashedPassword()));
   }

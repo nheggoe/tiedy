@@ -84,7 +84,7 @@ public class DataAccessFacade implements Runnable {
    *     username already exists
    */
   public User registerUser(User user) {
-    if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+    if (userRepository.getUserByUsername(user.getUsername()).isPresent()) {
       return null;
     }
 
@@ -143,7 +143,7 @@ public class DataAccessFacade implements Runnable {
    *     an empty list
    */
   public List<Task> getTasksByUserId(UUID userId) {
-    return taskRepository.findByAssignedUser(userId).map(this::createDetachedCopy).toList();
+    return taskRepository.getTasksByUserId(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -157,7 +157,7 @@ public class DataAccessFacade implements Runnable {
    */
   public List<Task> getActiveTasksByUserId(UUID userId) {
     return taskRepository
-        .findByAssignedUser(userId)
+        .getTasksByUserId(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .map(this::createDetachedCopy)
         .toList();
@@ -174,7 +174,7 @@ public class DataAccessFacade implements Runnable {
    */
   public List<Task> getActiveTasksByUserIdAndStatus(UUID userId, Status status) {
     return taskRepository
-        .findByAssignedUser(userId)
+        .getTasksByUserId(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getStatus() == status)
         .map(this::createDetachedCopy)
@@ -195,7 +195,7 @@ public class DataAccessFacade implements Runnable {
    */
   public List<Task> getActiveTasksByUserIdAndPriority(UUID userId, Priority priority) {
     return taskRepository
-        .findByAssignedUser(userId)
+        .getTasksByUserId(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getPriority() == priority)
         .map(this::createDetachedCopy)
@@ -210,7 +210,7 @@ public class DataAccessFacade implements Runnable {
    * @return true if the task is successfully assigned to the user, false otherwise
    */
   public boolean assignTaskToUser(UUID taskId, UUID userId) {
-    return taskRepository.assignToUser(taskId, userId);
+    return taskRepository.assignTaskToUser(taskId, userId);
   }
 
   /**
@@ -223,7 +223,7 @@ public class DataAccessFacade implements Runnable {
    */
   public List<Task> getTasksByUserAndStatus(UUID userId, Status status) {
     return taskRepository
-        .findByAssignedUser(userId)
+        .getTasksByUserId(userId)
         .filter(task -> task.getStatus() == status)
         .map(this::createDetachedCopy)
         .toList();

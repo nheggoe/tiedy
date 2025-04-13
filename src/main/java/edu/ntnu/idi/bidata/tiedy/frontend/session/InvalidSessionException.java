@@ -14,6 +14,12 @@ package edu.ntnu.idi.bidata.tiedy.frontend.session;
  * @version 2025.04.13
  */
 public class InvalidSessionException extends RuntimeException {
+  /**
+   * Constructs a new InvalidSessionException with a default error message.
+   *
+   * <p>This exception indicates the absence of an active user session. It is typically thrown when
+   * actions that require a valid user session are attempted without a logged-in user.
+   */
   public InvalidSessionException() {
     super("No active session found. You need to log in first.");
   }

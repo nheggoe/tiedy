@@ -19,7 +19,7 @@ public interface GroupRepository extends DataRepository<Group> {
    * @param userId the UUID of the user
    * @return a stream of groups that the user is a member of
    */
-  Stream<Group> findAllByUserId(UUID userId);
+  Stream<Group> getGroupsByUserId(UUID userId);
 
   /**
    * Retrieves a list of groups where the specified user is an admin.
@@ -27,7 +27,7 @@ public interface GroupRepository extends DataRepository<Group> {
    * @param userId the UUID of the user whose admin groups are to be found
    * @return a stream of Group objects where the user is an admin
    */
-  Stream<Group> findByAdmin(UUID userId);
+  Stream<Group> getGropsByUserIdWhereUserIsAdmin(UUID userId);
 
   /**
    * Adds a user to a group with the specified membership and admin status.
@@ -37,7 +37,7 @@ public interface GroupRepository extends DataRepository<Group> {
    * @param isAdmin a boolean indicating whether the user should be granted admin privileges
    * @return true if the user was successfully added to the group, false otherwise
    */
-  boolean addMember(UUID groupId, UUID userId, boolean isAdmin);
+  boolean addMemberToGroup(UUID groupId, UUID userId, boolean isAdmin);
 
   /**
    * Removes a user from a specified group.
@@ -46,7 +46,7 @@ public interface GroupRepository extends DataRepository<Group> {
    * @param userId the unique identifier of the user to be removed
    * @return true if the user was successfully removed from the group, false otherwise
    */
-  boolean removeMember(UUID groupId, UUID userId);
+  boolean removeMemberFromGroup(UUID groupId, UUID userId);
 
   /**
    * Updates a user's admin status in a group.

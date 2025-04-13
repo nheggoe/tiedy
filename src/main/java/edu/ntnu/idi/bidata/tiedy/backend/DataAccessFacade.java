@@ -95,7 +95,7 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Group objects that the user is a member of; if no groups are found, an empty
    *     list is returned
    */
-  public List<Group> findGroupsByUserId(UUID userId) {
+  public List<Group> getGroupsByUserId(UUID userId) {
     return groupRepository.findAllByUserId(userId).map(this::createDetachedCopy).toList();
   }
 

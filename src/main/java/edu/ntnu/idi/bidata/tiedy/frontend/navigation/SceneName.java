@@ -16,17 +16,17 @@ import java.nio.file.Path;
  * different stages or views of the application.
  *
  * @author Nick Heggø
- * @version 2025.03.13
+ * @version 2025.04.07
  */
 public enum SceneName {
-  LOGIN("Login"),
-  MAIN("Main"),
-  REGISTER("Register"),
-  TASK("Task"),
-  PROFILE("Profile");
+  LOGIN("LoginView"),
+  MAIN("MainView"),
+  PROFILE("ProfileView"),
+  REGISTER("RegisterView"),
+  STATISTIC("StatisticView");
 
   private static final String FXML_PATH =
-      "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/%s.fxml";
+      "src/main/resources/edu/ntnu/idi/bidata/tiedy/fxml/view/%s.fxml";
 
   private final URL path;
 
@@ -43,7 +43,7 @@ public enum SceneName {
    *
    * @return the URL path to
    */
-  public URL getPath() {
+  public URL getSceneURL() {
     return path;
   }
 }

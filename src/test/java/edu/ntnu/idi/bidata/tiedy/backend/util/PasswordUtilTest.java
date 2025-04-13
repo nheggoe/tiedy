@@ -2,7 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.util;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import org.junit.jupiter.api.Test;
 
 class PasswordUtilTest {
@@ -30,11 +30,11 @@ class PasswordUtilTest {
   }
 
   @Test
-  void testHashPasswordAndCheckPasswordMatches() {
+  void testHashPasswordAndIsPasswordCorrectMatches() {
     String plainTextPassword = "securePassword123";
 
     String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
-    boolean passwordMatches = PasswordUtil.checkPassword(plainTextPassword, hashedPassword);
+    boolean passwordMatches = PasswordUtil.isPasswordCorrect(plainTextPassword, hashedPassword);
 
     assertTrue(
         passwordMatches,
@@ -42,32 +42,32 @@ class PasswordUtilTest {
   }
 
   @Test
-  void testCheckPasswordFailsForIncorrectPassword() {
+  void testIsPasswordFailsForIncorrectPasswordCorrect() {
     String correctPassword = "securePassword123";
     String incorrectPassword = "wrongPassword";
     String hashedPassword = PasswordUtil.hashPassword(correctPassword);
 
-    boolean passwordMatches = PasswordUtil.checkPassword(incorrectPassword, hashedPassword);
+    boolean passwordMatches = PasswordUtil.isPasswordCorrect(incorrectPassword, hashedPassword);
 
     assertFalse(
         passwordMatches, "The checkPassword method should return false for an incorrect password.");
   }
 
   @Test
-  void testCheckPasswordFailsForNullInputs() {
+  void testIsPasswordCorrectFailsForNullInputs() {
     String plainTextPassword = "securePassword123";
     String hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
 
     assertFalse(
-        PasswordUtil.checkPassword(null, hashedPassword),
+        PasswordUtil.isPasswordCorrect(null, hashedPassword),
         "The checkPassword method should return false if the plain text password is null.");
 
     assertFalse(
-        PasswordUtil.checkPassword(plainTextPassword, null),
+        PasswordUtil.isPasswordCorrect(plainTextPassword, null),
         "The checkPassword method should return false if the hashed password is null.");
 
     assertFalse(
-        PasswordUtil.checkPassword(null, null),
+        PasswordUtil.isPasswordCorrect(null, null),
         "The checkPassword method should return false if both inputs are null.");
   }
 
@@ -75,6 +75,6 @@ class PasswordUtilTest {
   void testUserRegisterProcess() {
     String plainTextPassword = "strongPassword";
     User testUser = new User("testUser123", plainTextPassword);
-    assertTrue(PasswordUtil.checkPassword(plainTextPassword, testUser.getPassword()));
+    assertTrue(PasswordUtil.isPasswordCorrect(plainTextPassword, testUser.getHashedPassword()));
   }
 }

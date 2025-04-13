@@ -1,20 +1,18 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.task.Status;
-import edu.ntnu.idi.bidata.tiedy.backend.task.Task;
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
+import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
+import java.util.Collection;
+import java.util.Comparator;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -29,22 +27,14 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.04.12
  */
-public class MainController {
+public class MainController implements DataController {
 
-  private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+  @FXML private FlowPane taskViewPane;
 
-  @FXML private FlowPane flowPane;
-  @FXML private Label info;
-  @FXML private Button newTaskButton;
-
-  @FXML private MenuButton taskFilter;
-  @FXML private MenuItem allTasks;
-  @FXML private MenuItem openTasks;
-  @FXML private MenuItem inProgressTasks;
-  @FXML private MenuItem postponedTasks;
-  @FXML private MenuItem closedTasks;
+  // Reference to the included MenuBar's controller
+  @FXML private MenuBarController menuBarController;
 
   /**
    * Initializes the main scene by checking the current user session and updating the view
@@ -59,91 +49,30 @@ public class MainController {
    */
   @FXML
   public void initialize() {
-    var optionalUser = UserSession.getInstance().getCurrentUser();
-    if (optionalUser.isEmpty()) {
-      newTaskButton.setDisable(true);
-      taskFilter.setDisable(true);
-      info.setText("No user logged in");
-    } else {
-      User user = optionalUser.get();
-      flowPane.getChildren().clear();
-      List<Task> tasks = user.getTaskLists("reminders");
-      LOGGER.log(
-          Level.INFO, () -> "Found " + tasks.size() + " tasks for user " + user.getUsername());
-      tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
+    taskViewPane.setHgap(10);
+    taskViewPane.setVgap(10);
+
+    register();
+    updateData();
+
+    // Set up the menu bar to call updateFlowPane when filters are selected
+    if (menuBarController != null) {
+      menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
     }
-
-    User user = UserSession.getInstance().getCurrentUser().get();
-    allTasks.setOnAction(
-        e -> {
-          var tasks = user.getTaskLists("reminders");
-          updateFlowPane(tasks);
-        });
-    openTasks.setOnAction(
-        e -> {
-          var tasks =
-              user.getTaskLists("reminders").stream()
-                  .filter(t -> t.getStatus() == Status.OPEN)
-                  .toList();
-          updateFlowPane(tasks);
-        });
-    inProgressTasks.setOnAction(
-        e -> {
-          var tasks =
-              user.getTaskLists("reminders").stream()
-                  .filter(t -> t.getStatus() == Status.IN_PROGRESS)
-                  .toList();
-          updateFlowPane(tasks);
-        });
-    closedTasks.setOnAction(
-        e -> {
-          var tasks =
-              user.getTaskLists("reminders").stream()
-                  .filter(t -> t.getStatus() == Status.CLOSED)
-                  .toList();
-          updateFlowPane(tasks);
-        });
-    postponedTasks.setOnAction(
-        e -> {
-          var tasks =
-              user.getTaskLists("reminders").stream()
-                  .filter(t -> t.getStatus() == Status.POSTPONED)
-                  .toList();
-          updateFlowPane(tasks);
-        });
   }
 
-  private void updateFlowPane(List<Task> tasks) {
-    flowPane.getChildren().clear();
-    tasks.stream().map(this::createTaskPane).forEach(flowPane.getChildren()::add);
+  @Override
+  public void updateData() {
+    updateTaskViewPane(
+        TiedyApp.getDataAccessFacade().getActiveTasksByUserId(UserSession.getCurrentUserId()));
   }
 
-  /**
-   * Handles the event triggered by pressing the profile button in the main scene.
-   *
-   * <p>This method switches the current scene of the application to the profile scene. It uses the
-   * SceneManager to load the PROFILE scene from its associated FXML file, updating the
-   * application's UI to display the profile interface.
-   *
-   * <p>This method is typically invoked when a user attempts to navigate to the profile view.
-   */
-  @FXML
-  public void onProfileButtonPress() {
-    TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
-  }
-
-  /**
-   * Navigates the application to the task creation scene.
-   *
-   * <p>This method is triggered as a response to user events (e.g., clicking the "Add Task" button)
-   * and uses the SceneManager to switch the current scene to the Task scene.
-   *
-   * <p>It ensures that the application's UI updates to display the task creation interface,
-   * allowing users to add a new task.
-   */
-  @FXML
-  public void addTask() {
-    TiedyApp.getSceneManager().switchScene(SceneName.TASK);
+  private void updateTaskViewPane(Collection<Task> tasks) {
+    taskViewPane.getChildren().clear();
+    tasks.stream()
+        .sorted(Comparator.comparing(Task::getPriority))
+        .map(this::createTaskPane)
+        .forEach(taskViewPane.getChildren()::add);
   }
 
   private Pane createTaskPane(Task task) {
@@ -159,8 +88,118 @@ public class MainController {
     Text rankText = new Text(10, 30, task.getTitle());
     rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
 
-    cardPane.getChildren().addAll(taskBg, rankText);
-    cardPane.setOnMouseClicked(event -> JavaFxFactory.generateTaskDialog(task).showAndWait());
+    String statusText = task.getStatus().getDisplayName();
+    Text statusIndicator = new Text(10, 65, statusText);
+    statusIndicator.setFont(Font.font("Arial", 10));
+
+    switch (task.getStatus()) {
+      case CLOSED -> statusIndicator.setFill(Color.GREEN);
+      case IN_PROGRESS -> statusIndicator.setFill(Color.BLUE);
+      case POSTPONED -> statusIndicator.setFill(Color.ORANGE);
+      default -> statusIndicator.setFill(Color.BLACK);
+    }
+
+    Button deleteButton = new Button("X");
+    deleteButton.setStyle(
+        "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
+    deleteButton.setLayoutX(90);
+    deleteButton.setLayoutY(10);
+    deleteButton.setVisible(false);
+    deleteButton.setOnAction(
+        unused -> {
+          Alert confirmationAlert =
+              AlertFactory.generateConfirmationAlert(
+                  "Delete task", "Are you sure you want to delete this task?");
+
+          if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            deleteTask(task);
+          }
+        });
+
+    Button completeButton = new Button("✓");
+    completeButton.setStyle(
+        "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
+    completeButton.setLayoutX(60);
+    completeButton.setLayoutY(10);
+    completeButton.setVisible(false);
+
+    if (task.getStatus() != Status.CLOSED) {
+      completeButton.setOnAction(unused -> completeTask(task));
+    } else {
+      taskBg.setFill(Color.LIGHTGRAY);
+      completeButton.setStyle(
+          "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
+    }
+
+    // Show/hide buttons on hover
+    cardPane.setOnMouseEntered(
+        unused -> {
+          deleteButton.setVisible(true);
+          if (task.getStatus() != Status.CLOSED) {
+            completeButton.setVisible(true);
+          }
+        });
+
+    cardPane.setOnMouseExited(
+        unused -> {
+          deleteButton.setVisible(false);
+          completeButton.setVisible(false);
+        });
+
+    cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
+    cardPane.setPadding(new Insets(5));
+    cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
     return cardPane;
+  }
+
+  private void completeTask(Task task) {
+    Status status = task.getStatus();
+    task.setStatus(Status.CLOSED);
+
+    // if the task is successfully updated
+    if (TiedyApp.getDataAccessFacade().updateTask(task) != null) {
+      AlertFactory.generateInfoAlert(
+              "Task Completed", "Task '" + task.getTitle() + "' has been marked as closed.")
+          .showAndWait();
+      if (UserSession.completeTask()) {
+        AlertFactory.generateInfoAlert(
+                "Level UP!",
+                "Congratulations! You have leveled up. Your current level is now "
+                    + UserSession.getCurrentLevel()
+                    + ".")
+            .showAndWait();
+      }
+    } else {
+      AlertFactory.generateWarningAlert("Failed to mark task as closed").showAndWait();
+      task.setStatus(status);
+      TiedyApp.getDataAccessFacade().updateTask(task);
+    }
+
+    TiedyApp.getDataChangeNotifier().notifyObservers();
+  }
+
+  private void deleteTask(Task task) {
+    if (TiedyApp.getDataAccessFacade().removeTask(task.getId())) {
+      TiedyApp.getDataChangeNotifier().notifyObservers();
+    } else {
+      AlertFactory.generateWarningAlert("Failed to delete task").showAndWait();
+    }
+  }
+
+  /**
+   * Opens the task dialog to edit an existing task.
+   *
+   * @param taskToEdit The task to edit
+   */
+  private void showEditTaskDialog(Task taskToEdit) {
+    DialogFactory.launchEditTaskDialog(
+        taskToEdit,
+        updatedTask -> {
+          if (TiedyApp.getDataAccessFacade().updateTask(updatedTask) != null) {
+            TiedyApp.getDataChangeNotifier().notifyObservers();
+          } else {
+            AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
+          }
+        });
   }
 }

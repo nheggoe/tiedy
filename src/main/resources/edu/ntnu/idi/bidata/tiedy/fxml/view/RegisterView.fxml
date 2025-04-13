@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@../../css/style.css"
+            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
+    <children>
+        <AnchorPane styleClass="container" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="142.0"
+                    AnchorPane.topAnchor="107.0" AnchorPane.bottomAnchor="87.0">
+            <children>
+            <ImageView fitHeight="32.0" fitWidth="128.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../../images/lables/UsernameLabel.png"/>
+               </image>
+            </ImageView>
+                <TextField id="usernameField" fx:id="usernameField" layoutX="154.0" layoutY="15.0"
+                           promptText="Username" styleClass="text-field"/>
+                <PasswordField id="passwordField" fx:id="passwordField" layoutX="154.0" layoutY="71.0"
+                               promptText="Password" styleClass="text-field"/>
+                <PasswordField id="passwordField" fx:id="passwordRepeatField" layoutX="154.0" layoutY="124.0"
+                               promptText="Confirm password" styleClass="text-field"/>
+                <Button id="loginButton" defaultButton="true" layoutX="130.0" layoutY="165.0" mnemonicParsing="false"
+                        onAction="#registerUser" prefHeight="33.0" prefWidth="76.0" styleClass="standard-button">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                         <Image url="@../../images/buttons/SignupButton_32px.png"/>
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../../images/lables/ConfirmPasswordLabel.png"/>
+               </image>
+            </ImageView>
+            <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../../images/lables/PasswordLabel.png"/>
+               </image>
+            </ImageView>
+            </children>
+        </AnchorPane>
+        <Button AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" mnemonicParsing="false"
+                onAction="#backToLogin" prefHeight="33.0" prefWidth="60.0" styleClass="back-button">
+         <font>
+            <Font name="System Bold" size="16.0" />
+         </font>
+         <graphic>
+            <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                   <Image url="@../../images/buttons/BackButton_32px.png"/>
+               </image>
+            </ImageView>
+         </graphic></Button>
+    </children>
+</AnchorPane>

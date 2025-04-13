@@ -1,20 +1,13 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
-import edu.ntnu.idi.bidata.tiedy.backend.util.json.JsonService;
+import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
+import edu.ntnu.idi.bidata.tiedy.backend.util.StringChecker;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.navigation.SceneName;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.JavaFxFactory;
-import edu.ntnu.idi.bidata.tiedy.frontend.util.StringChecker;
-import java.io.IOException;
-import java.util.Optional;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.stream.Stream;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
@@ -29,12 +22,9 @@ import javafx.scene.control.TextField;
  * password fields.
  *
  * @author Nick Heggø
- * @version 2025.03.19
+ * @version 2025.03.28
  */
 public class LoginController {
-  private static final Logger LOGGER = Logger.getLogger(LoginController.class.getName());
-
-  private final JsonService userService = new JsonService(User.class);
 
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
@@ -47,29 +37,12 @@ public class LoginController {
   @FXML
   public void loginUser() {
     try {
-      String username = usernameField.getText();
-      StringChecker.assertValidString(username, "username");
-      assertValidUserName(username);
-      String password = passwordField.getText();
-      if (password == null || password.isBlank()) {
-        throw new IllegalArgumentException("Password cannot be empty");
-      }
-      Stream<User> users = userService.loadJsonAsStream();
-      validateCredential(users, username, password);
-    } catch (IllegalArgumentException e) {
-      JavaFxFactory.generateWarningAlert(e.getMessage()).showAndWait();
-    } catch (IOException e) {
-      LOGGER.log(Level.SEVERE, "Cannot load users", e);
-      Alert alert = new Alert(Alert.AlertType.ERROR);
-      alert.setTitle("Error");
-      alert.setContentText("Error while loading users");
-      alert.show();
-    }
-  }
+      String username = usernameField.getText().strip();
+      String plainTextPassword = passwordField.getText().strip();
 
-  private static void assertValidUserName(String username) {
-    if (username == null || username.isBlank()) {
-      throw new IllegalArgumentException("Username cannot be empty");
+      validateCredential(username, plainTextPassword);
+    } catch (IllegalArgumentException e) {
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
   }
 
@@ -88,37 +61,40 @@ public class LoginController {
     TiedyApp.getSceneManager().switchScene(SceneName.REGISTER);
   }
 
-  private void validateCredential(Stream<User> users, String username, String password) {
-    Optional<User> foundUser =
-        users.filter(user -> user.getUsername().equals(username)).findFirst();
-    if (foundUser.isEmpty()) {
-      Alert alert = new Alert(Alert.AlertType.INFORMATION);
-      alert.setTitle("User not found");
-      alert.setContentText("User not found, please try again");
-      alert.showAndWait();
-    } else {
-      foundUser.ifPresent(
-          user -> {
-            boolean isCorrectPassword =
-                PasswordUtil.checkPassword(passwordField.getText(), user.getPassword());
-            LOGGER.info("Checking password for user " + user.getUsername());
-            LOGGER.info("Provided password: " + password);
-            LOGGER.info("Stored password: " + user.getPassword());
-            LOGGER.info("Password check result: " + isCorrectPassword);
-            if (isCorrectPassword) {
-              UserSession.createSession(user);
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
-              alert.setTitle("Login successful");
-              alert.setContentText("Login successful");
-              alert.showAndWait();
-              TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
-            } else {
-              Alert alert = new Alert(Alert.AlertType.INFORMATION);
-              alert.setTitle("Incorrect password");
-              alert.setContentText("Incorrect password, please try again");
-              alert.showAndWait();
-            }
-          });
+  private void validateCredential(String username, String plainTextPassword) {
+    try {
+      StringChecker.assertStringNotNullOrEmpty(username, "username");
+      StringChecker.assertStringNotNullOrEmpty(plainTextPassword, "password");
+
+      User foundUser =
+          DataAccessFacade.getInstance()
+              .authenticate(username, plainTextPassword)
+              .orElseThrow(() -> new IllegalStateException("Invalid username or password"));
+
+      UserSession.createSession(foundUser);
+
+      AlertFactory.generateInfoAlert(
+              "Login successful", "You are now logged in as %s".formatted(username))
+          .showAndWait();
+
+      TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
+
+    } catch (IllegalArgumentException e) {
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+    } catch (IllegalStateException e) {
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
     }
+  }
+
+  /**
+   * Handles the exit functionality of the application.
+   *
+   * <p>This method triggers the {@link TiedyApp#onClose()} method, which manages the safe
+   * termination of the application. The termination process includes displaying a confirmation
+   * dialog to the user and properly exiting the JavaFX application environment if confirmed.
+   */
+  @FXML
+  public void exit() {
+    TiedyApp.onClose();
   }
 }

@@ -7,7 +7,7 @@ import org.mindrot.jbcrypt.BCrypt;
  * methods to hash plain-text passwords and verify their validity against hashed passwords securely.
  *
  * @author Nick Heggø
- * @version 2025.02.28
+ * @version 2025.03.25
  */
 public class PasswordUtil {
 
@@ -16,14 +16,17 @@ public class PasswordUtil {
   private PasswordUtil() {}
 
   /**
-   * Hashes a plain-text password using the BCrypt algorithm.
+   * Hashes a plain-text password using the BCrypt algorithm. The method ensures secure hashing by
+   * incorporating a generated salt and other built-in BCrypt properties to produce a hashed
+   * password suitable for secure storage.
    *
-   * @param plainTextPassword the plain-text password to be hashed
-   * @return the hashed representation of the password
+   * @param plainTextPassword the plain-text password to be hashed; must not be null, blank, or fail
+   *     format validation
+   * @return the hashed representation of the provided plain-text password
+   * @throws IllegalArgumentException if the password is null, blank, or not in the valid format
    */
   public static String hashPassword(String plainTextPassword) {
     String salt = BCrypt.gensalt(LOG_ROUNDS);
-
     return BCrypt.hashpw(plainTextPassword, salt);
   }
 
@@ -35,14 +38,13 @@ public class PasswordUtil {
    * @return true if the plain text password matches the hashed password, false otherwise, or if
    *     inputs are null
    */
-  public static boolean checkPassword(String plainTextPassword, String hashedPassword) {
-    if (plainTextPassword == null || hashedPassword == null) {
+  public static boolean isPasswordCorrect(String plainTextPassword, String hashedPassword) {
+    if ((plainTextPassword == null) || (hashedPassword == null)) {
       return false;
     }
-
     try {
       return BCrypt.checkpw(plainTextPassword, hashedPassword);
-    } catch (IllegalArgumentException e) {
+    } catch (IllegalArgumentException ignored) {
       return false;
     }
   }

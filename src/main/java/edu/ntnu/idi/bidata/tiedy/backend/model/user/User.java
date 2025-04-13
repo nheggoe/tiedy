@@ -4,6 +4,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.user.level.LevelSystem;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
 import java.util.UUID;
+import java.util.regex.Pattern;
 
 /**
  * The object that represents the customers of the application.
@@ -119,6 +120,11 @@ public class User {
     if (username == null || username.isBlank()) {
       throw new IllegalArgumentException("Username cannot be blank!");
     }
+    Pattern pattern = Pattern.compile("^[a-zA-Z0-9_-]{3,20}$");
+    if (!pattern.matcher(username).matches()) {
+      throw new IllegalArgumentException(
+          "Username must be alphanumeric and between 3 and 20 characters!");
+    }
     this.username = username.strip();
   }
 
@@ -136,6 +142,14 @@ public class User {
    * @throws IllegalArgumentException if the provided password is null, blank, or invalid
    */
   public void setHashedPassword(String plainTextPassword) {
+    if (plainTextPassword == null || plainTextPassword.isBlank()) {
+      throw new IllegalArgumentException("Password cannot be blank or weak!");
+    }
+    Pattern pattern = Pattern.compile("^[a-zA-Z0-9_-]{8,20}$");
+    if (!pattern.matcher(plainTextPassword).matches()) {
+      throw new IllegalArgumentException(
+          "Password must be alphanumeric and between 8 and 20 characters!");
+    }
     this.hashedPassword = PasswordUtil.hashPassword(plainTextPassword);
   }
 }

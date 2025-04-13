@@ -45,12 +45,12 @@ public class JsonDAO<T> {
    *     type for serialization
    * @throws IllegalArgumentException if the targetClass parameter is null
    */
-  public JsonDAO(Class<T> targetClas, boolean isTest) {
-    if (JsonType.getType(targetClas) == null) {
-      throw new UnsupportedOperationException("Unsupported target class type: " + targetClas);
+  public JsonDAO(Class<T> targetClass, boolean isTest) {
+    if (JsonType.getType(targetClass) == null) {
+      throw new UnsupportedOperationException("Unsupported target class type: " + targetClass);
     }
-    jsonReader = new JsonReader<>(targetClas, isTest);
-    jsonWriter = new JsonWriter<>(targetClas, isTest);
+    jsonReader = new JsonReader<>(targetClass, isTest);
+    jsonWriter = new JsonWriter<>(targetClass, isTest);
   }
 
   /**

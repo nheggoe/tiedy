@@ -1,21 +1,44 @@
 * {
-    -fx-border-color: #6495ed;
-    -fx-background-color: #fff8dc;
-    -fx-border-radius: 6;
-    -fx-background-radius: 6;
     -fx-font-family: "Arial";
     -fx-font-size: 14;
     -fx-font-weight: bold;
-    -fx-text-fill: #6495ed;
     -fx-text-alignment: center;
-    -fx-border-width: 0;
     -fx-padding: 4;
 }
 
 .root {
-    -fx-background-color: #fff8dc;
-    -fx-alignment: center;
-    -fx-padding: 20;
+    /* Custom Variable */
+    -tiedy-primary-color: #6495ed;
+    -tiedy-secondary-color: #423732;
+    -tiedy-third-color: #fff8dc;
+    /* Built in */
+    -fx-background-color: -tiedy-third-color;
+}
+
+.border-pane {
+    -fx-background-color: -tiedy-primary-color;
+}
+
+.label, .text-field, .password-field, .text-area, .context-menu {
+    -fx-text-fill: -tiedy-primary-color;
+    -fx-text-alignment: center;
+    -fx-background-color: -tiedy-third-color;
+    -fx-border-radius: 10;
+}
+
+.button, .menu-button, .menu-item {
+    -fx-background-color: -tiedy-third-color;
+    -fx-border-radius: 6;
+}
+
+.menu-item:focused, . {
+    -fx-background-color: -tiedy-primary-color;
+    -fx-text-fill: -tiedy-secondary-color;
+}
+
+.separator:horizontal .line {
+    -fx-border-color: #cccccc;
+    -fx-border-width: 0.5px;
 }
 
 .container {
@@ -156,7 +179,13 @@
 }
 
 .progress-bar {
+    -fx-background-color: -tiedy-primary-color;
     -fx-accent: #6495ed;
+    -fx-control-inner-background: #fff8dc;
+}
+
+.progress-indicator {
+    -fx-background-color: -tiedy-third-color;
 }
 
 .progress-bar > .track {
@@ -165,12 +194,9 @@
 }
 
 .progress-bar > .bar {
-    -fx-background-color: #6495ed;
+    -fx-background-color: -tiedy-secondary-color;
     -fx-background-insets: 0;
     -fx-background-radius: 2;
     -fx-padding: 0;
 }
 
-.tab, .tab-label, .tab-container, .tab-header-area, .tab-header-background {
-    -fx-background-color: #6495ed;
-}

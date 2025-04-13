@@ -19,9 +19,9 @@ import javafx.scene.control.MenuItem;
  * the user's selection.
  *
  * @author Nick Heggø
- * @version 2025.04.12
+ * @version 2025.04.13
  */
-public class MenuBarController implements Controller {
+public class MenuBarController {
 
   @FXML private MenuButton taskFilterMenu;
   @FXML private MenuItem allTaskFilter;
@@ -31,9 +31,6 @@ public class MenuBarController implements Controller {
   @FXML private MenuItem closedTaskFilter;
 
   private Consumer<Collection<Task>> updateTaskViewPaneCallback;
-
-  @Override
-  public void initialize() {}
 
   /**
    * Sets up a callback that will be triggered when filter menu items are selected.
@@ -45,18 +42,35 @@ public class MenuBarController implements Controller {
     setupFilterListeners();
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the MAIN scene, as defined in the
+   * {@link SceneName} enum.
+   */
   @FXML
   public void onHomeButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.MAIN);
     taskFilterMenu.setDisable(false);
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the STATISTIC scene, as defined in
+   * the {@link SceneName} enum.
+   */
   @FXML
   public void onStatisticsButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.STATISTIC);
     taskFilterMenu.setDisable(true);
   }
 
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method launches a dialog to create a new {@link Task}.
+   */
   @FXML
   public void onNewTaskButtonPress() {
     DialogFactory.launchTaskCreationDialog(
@@ -64,7 +78,7 @@ public class MenuBarController implements Controller {
           if (TiedyApp.getDataAccessFacade().addTask(createdTask) != null) {
 
             TiedyApp.getDataAccessFacade()
-                .assignToUser(createdTask.getId(), UserSession.getCurrentUserId());
+                .assignTaskToUser(createdTask.getId(), UserSession.getCurrentUserId());
 
             TiedyApp.getDataChangeNotifier().notifyObservers();
 
@@ -76,12 +90,12 @@ public class MenuBarController implements Controller {
         });
   }
 
-  @FXML
-  public void onGroupButtonPress() {
-    TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
-    taskFilterMenu.setDisable(true);
-  }
-
+  /**
+   * Handles the action triggered when the home button is pressed in the menubar.
+   *
+   * <p>This method switches the application's current scene to the PROFILE scene, as defined in the
+   * {@link SceneName} enum.
+   */
   @FXML
   public void onProfileButtonPress() {
     TiedyApp.getSceneManager().switchScene(SceneName.PROFILE);
@@ -96,8 +110,7 @@ public class MenuBarController implements Controller {
     allTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
-                TiedyApp.getDataAccessFacade()
-                    .getTaskByAssignedUser(UserSession.getCurrentUserId())));
+                TiedyApp.getDataAccessFacade().getTasksByUserId(UserSession.getCurrentUserId())));
 
     openTaskFilter.setOnAction(
         unused ->

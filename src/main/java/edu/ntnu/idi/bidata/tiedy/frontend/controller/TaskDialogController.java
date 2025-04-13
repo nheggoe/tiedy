@@ -21,7 +21,7 @@ import org.jspecify.annotations.NonNull;
  * @author Nick Heggø
  * @version 2025.04.09
  */
-public class TaskDialogController implements Controller {
+public class TaskDialogController {
 
   private final TaskBuilder taskBuilder = new TaskBuilder();
 
@@ -39,7 +39,7 @@ public class TaskDialogController implements Controller {
   }
 
   /** Initializes the dialog components. */
-  @Override
+  @FXML
   public void initialize() {
     priorityComboBox.setItems(FXCollections.observableArrayList(Priority.values()));
     statusComboBox.setItems(FXCollections.observableArrayList(Status.values()));

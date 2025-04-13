@@ -72,6 +72,20 @@ public class DataAccessFacade implements Runnable {
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
+  // ------------------------  Defensive Copying  ------------------------
+
+  private Task createDetachedCopy(Task original) {
+    return new Task(original);
+  }
+
+  private Group createDetachedCopy(Group original) {
+    return new Group(original);
+  }
+
+  private User createDetachedCopy(User original) {
+    return new User(original);
+  }
+
   // ------------------------  Group Repository Methods  ------------------------
 
   /**
@@ -81,8 +95,8 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Group objects that the user is a member of; if no groups are found, an empty
    *     list is returned
    */
-  public List<Group> findGroupsByUserId(UUID userId) {
-    return groupRepository.findAllByUserId(userId).map(Group::new).toList();
+  public List<Group> getGroupsByUserId(UUID userId) {
+    return groupRepository.findAllByUserId(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -93,7 +107,7 @@ public class DataAccessFacade implements Runnable {
    *     the user is not an admin in any group
    */
   public List<Group> findByAdmin(UUID userId) {
-    return groupRepository.findByAdmin(userId).map(Group::new).toList();
+    return groupRepository.findByAdmin(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -173,6 +187,15 @@ public class DataAccessFacade implements Runnable {
     return userRepository.authenticate(username, plainTextPassword);
   }
 
+  /**
+   * Retrieves all users from the repository.
+   *
+   * @return a list of all User objects in the system
+   */
+  public List<User> getAllUsers() {
+    return userRepository.getAll().map(this::createDetachedCopy).toList();
+  }
+
   // ------------------------  Task Repository Methods  ------------------------
 
   /**
@@ -211,8 +234,8 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects assigned to the specified user; if no tasks are found, returns
    *     an empty list
    */
-  public List<Task> getTaskByAssignedUser(UUID userId) {
-    return taskRepository.findByAssignedUser(userId).map(Task::new).toList();
+  public List<Task> getTasksByUserId(UUID userId) {
+    return taskRepository.findByAssignedUser(userId).map(this::createDetachedCopy).toList();
   }
 
   /**
@@ -224,29 +247,29 @@ public class DataAccessFacade implements Runnable {
    * @return a list of Task objects that are assigned to the specified user and are not in the
    *     CLOSED status; an empty list is returned if no such tasks are found
    */
-  public List<Task> getAllNoneClosedTaskByUserId(UUID userId) {
+  public List<Task> getActiveTasksByUserId(UUID userId) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
-  public List<Task> getAllNoneClosedTaskByUserIdAndStatus(UUID userId, Status status) {
+  public List<Task> getActiveTasksByUserIdAndStatus(UUID userId, Status status) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getStatus() == status)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
-  public List<Task> getAllNoneClosedTaskByUserIdAndPriority(UUID userId, Priority priority) {
+  public List<Task> getActiveTasksByUserIdAndPriority(UUID userId, Priority priority) {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() != Status.CLOSED)
         .filter(task -> task.getPriority() == priority)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -256,8 +279,8 @@ public class DataAccessFacade implements Runnable {
    * @param taskId the unique identifier of the task to be assigned
    * @param userId the unique identifier of the user to whom the task is to be assigned
    */
-  public void assignToUser(UUID taskId, UUID userId) {
-    taskRepository.assignToUser(taskId, userId);
+  public boolean assignTaskToUser(UUID taskId, UUID userId) {
+    return taskRepository.assignToUser(taskId, userId);
   }
 
   /**
@@ -267,7 +290,7 @@ public class DataAccessFacade implements Runnable {
    * @param userId the unique identifier of the user from whom the task is to be unassigned
    * @return true if the task was successfully unassigned from the user, false otherwise
    */
-  public boolean unassignFromUser(UUID taskId, UUID userId) {
+  public boolean unassignTaskFromUser(UUID taskId, UUID userId) {
     return taskRepository.unassignFromUser(taskId, userId);
   }
 
@@ -283,7 +306,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getStatus() == status)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 
@@ -300,7 +323,7 @@ public class DataAccessFacade implements Runnable {
     return taskRepository
         .findByAssignedUser(userId)
         .filter(task -> task.getPriority() == priority)
-        .map(Task::new)
+        .map(this::createDetachedCopy)
         .toList();
   }
 }

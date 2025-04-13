@@ -42,7 +42,7 @@ public class LevelSystem {
    * @return true if the user levels up as a result of completing the task, false otherwise.
    */
   public boolean completeTask() {
-    currentExperience += 10;
+    currentExperience += 5;
     totalExperience += 10;
     completedTaskCount++;
     return handleLevelUp();

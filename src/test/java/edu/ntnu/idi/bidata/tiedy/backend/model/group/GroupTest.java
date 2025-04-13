@@ -12,7 +12,7 @@ class GroupTest {
 
   @Test
   void testCopyConstructor() {
-    User user1 = new User("John Doe", "safePassword");
+    User user1 = new User("John_Doe", "safePassword");
     Group group = new Group("Test Group", "This is a test group", user1.getId());
     group.setName("Original name");
 
@@ -27,7 +27,7 @@ class GroupTest {
         .withFailMessage("equals() should return true when comparing original and copy")
         .isEqualTo(copyGroup);
 
-    User user2 = new User("David S", "safePassword");
+    User user2 = new User("David_S", "safePassword");
     copyGroup.addMember(user2.getId(), false);
 
     assertThat(group.getMembers())
@@ -37,7 +37,7 @@ class GroupTest {
 
   @Test
   void testGetName() {
-    User user = new User("John Doe", "safePassword");
+    User user = new User("John_Doe", "safePassword");
     Group group = new Group("Test Group", "This is a test group", user.getId());
 
     assertEquals("Test Group", group.getName());
@@ -45,10 +45,10 @@ class GroupTest {
 
   @Test
   void testAddMember() {
-    User user = new User("John Doe", "safePassword");
+    User user = new User("John_Doe", "safePassword");
     Group group = new Group("Test Group", "This is a test group", user.getId());
 
-    User newUser = new User("Jane Doe", "securePassword");
+    User newUser = new User("Jane_Doe", "securePassword");
     group.addMember(newUser.getId(), false);
 
     assertTrue(group.getMembers().containsKey(newUser.getId()));
@@ -57,10 +57,10 @@ class GroupTest {
 
   @Test
   void testAddMemberWithAdminStatus() {
-    User user = new User("John Doe", "safePassword");
+    User user = new User("John_Doe", "safePassword");
     Group group = new Group("Test Group", "This is a test group", user.getId());
 
-    User newAdmin = new User("Admin User", "strongPassword");
+    User newAdmin = new User("Admin_User", "strongPassword");
     group.addMember(newAdmin.getId(), true);
 
     Map<UUID, Boolean> members = group.getMembers();

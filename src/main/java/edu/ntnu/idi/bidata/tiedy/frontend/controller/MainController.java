@@ -46,7 +46,7 @@ public class MainController implements DataController {
    * category, logs the number of loaded tasks, and dynamically populates the task display area with
    * the corresponding task panes.
    */
-  @Override
+  @FXML
   public void initialize() {
     taskViewPane.setHgap(10);
     taskViewPane.setVgap(10);
@@ -63,8 +63,7 @@ public class MainController implements DataController {
   @Override
   public void updateData() {
     updateTaskViewPane(
-        TiedyApp.getDataAccessFacade()
-            .getAllNoneClosedTaskByUserId(UserSession.getCurrentUserId()));
+        TiedyApp.getDataAccessFacade().getActiveTasksByUserId(UserSession.getCurrentUserId()));
   }
 
   private void updateTaskViewPane(Collection<Task> tasks) {

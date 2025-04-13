@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.navigation;
 
-import edu.ntnu.idi.bidata.tiedy.frontend.controller.Controller;
 import java.io.IOException;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -21,7 +20,6 @@ public class SceneManager {
   private static SceneManager instance;
 
   private Stage primaryStage;
-  private Controller currentController;
 
   private SceneManager() {}
 
@@ -57,16 +55,11 @@ public class SceneManager {
       FXMLLoader loader = new FXMLLoader(sceneName.getSceneURL());
 
       Scene newScene = new Scene(loader.load(), width, height);
-      currentController = loader.getController();
 
       primaryStage.setScene(newScene);
       primaryStage.show();
     } catch (IOException e) {
       throw new IllegalStateException("Cannot load FXML file: " + sceneName.getSceneURL(), e);
     }
-  }
-
-  public Controller getController() {
-    return currentController;
   }
 }

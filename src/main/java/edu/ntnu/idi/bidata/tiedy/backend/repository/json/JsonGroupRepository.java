@@ -8,7 +8,7 @@ import java.util.stream.Stream;
 /**
  * A repository for managing {@link Group} entities stored in a JSON-based persistence layer. This
  * class extends the base functionality provided by {@link JsonRepository} and implements the
- * domain-specific operations defined in the {@link GroupRepository} interface. It uses singleton
+ * domain-specific operations defined in the {@link GroupRepository} interface. It uses a singleton
  * design pattern to ensure only one instance of the repository is created and used.
  *
  * @author Nick Heggø
@@ -40,18 +40,18 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   }
 
   @Override
-  public Stream<Group> findAllByUserId(UUID userId) {
+  public Stream<Group> getGroupsByUserId(UUID userId) {
     return getAll().filter(group -> group.getMembers().containsKey(userId));
   }
 
   @Override
-  public Stream<Group> findByAdmin(UUID userId) {
-    return findAllByUserId(userId)
+  public Stream<Group> getGropsByUserIdWhereUserIsAdmin(UUID userId) {
+    return getGroupsByUserId(userId)
         .filter(group -> group.getMembers().get(userId)); // returns true if isAdmin
   }
 
   @Override
-  public boolean addMember(UUID groupId, UUID userId, boolean isAdmin) {
+  public boolean addMemberToGroup(UUID groupId, UUID userId, boolean isAdmin) {
     Group foundGroup =
         getAll().filter(group -> group.getId().equals(groupId)).findFirst().orElse(null);
 
@@ -63,7 +63,7 @@ public class JsonGroupRepository extends JsonRepository<Group> implements GroupR
   }
 
   @Override
-  public boolean removeMember(UUID groupId, UUID userId) {
+  public boolean removeMemberFromGroup(UUID groupId, UUID userId) {
     Group group = getById(groupId).orElse(null);
     if (group == null) {
       return false;

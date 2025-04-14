@@ -19,6 +19,15 @@ public class DataChangeNotifier {
 
   private DataChangeNotifier() {}
 
+  /**
+   * Provides a singleton instance of the DataChangeNotifier class.
+   *
+   * <p>This method ensures that only one instance of DataChangeNotifier is created and shared
+   * across the application. The singleton pattern is implemented using synchronized access to
+   * ensure thread safety during instance initialization.
+   *
+   * @return the singleton instance of DataChangeNotifier
+   */
   public static synchronized DataChangeNotifier getInstance() {
     if (instance == null) {
       instance = new DataChangeNotifier();
@@ -28,7 +37,7 @@ public class DataChangeNotifier {
 
   /**
    * Adds a {@link DataController} observer to the list of observers if it is not already present.
-   * Observers registered with this method will be notified of data updates by the system.
+   * The system will notify observers registered with this method of data updates.
    *
    * @param observer the {@link DataController} instance to be added as an observer
    */

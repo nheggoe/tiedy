@@ -38,27 +38,27 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
-  public Stream<Task> findByAssignedUser(UUID userId) {
+  public Stream<Task> getTasksByUserId(UUID userId) {
     return getAll().filter(task -> task.getAssignedUsers().contains(userId));
   }
 
   @Override
-  public Stream<Task> findByStatus(Status status) {
+  public Stream<Task> getTasksByStatus(Status status) {
     return getAll().filter(task -> task.getStatus() == status);
   }
 
   @Override
-  public Stream<Task> findByPriority(Priority priority) {
+  public Stream<Task> getTasksByPriority(Priority priority) {
     return getAll().filter(task -> task.getPriority() == priority);
   }
 
   @Override
-  public Stream<Task> findByDeadLineBefore(LocalDate date) {
+  public Stream<Task> getTasksBeforeDate(LocalDate date) {
     return getAll().filter(task -> task.getDeadline().isBefore(date));
   }
 
   @Override
-  public boolean assignToUser(UUID taskId, UUID userId) {
+  public boolean assignTaskToUser(UUID taskId, UUID userId) {
     Task task = getById(taskId).orElse(null);
     if (task == null) {
       return false;
@@ -67,7 +67,7 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
-  public boolean unassignFromUser(UUID taskId, UUID userId) {
+  public boolean unassignTaskFromUser(UUID taskId, UUID userId) {
     Task task = getById(taskId).orElse(null);
     if (task == null) {
       return false;

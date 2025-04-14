@@ -86,6 +86,13 @@ public class LoginController {
     }
   }
 
+  /**
+   * Handles the exit functionality of the application.
+   *
+   * <p>This method triggers the {@link TiedyApp#onClose()} method, which manages the safe
+   * termination of the application. The termination process includes displaying a confirmation
+   * dialog to the user and properly exiting the JavaFX application environment if confirmed.
+   */
   @FXML
   public void exit() {
     TiedyApp.onClose();

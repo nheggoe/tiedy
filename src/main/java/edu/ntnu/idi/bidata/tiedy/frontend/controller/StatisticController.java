@@ -4,6 +4,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
 import java.util.Arrays;
 import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
@@ -20,6 +21,22 @@ public class StatisticController implements DataController {
   @FXML private PieChart pieChartLeft;
   @FXML private PieChart pieChartRight;
 
+  /**
+   * Initializes the {@link StatisticController} by registering it as an observer for data updates
+   * and refreshing the UI components with the latest data.
+   *
+   * <p>This method is invoked automatically by the JavaFX framework after the controller is
+   * instantiated and its annotated fields, such as FXML elements, are loaded.
+   *
+   * <p>Responsibilities of this method include: - Registering the controller with the {@link
+   * DataChangeNotifier} singleton to ensure it receives notifications of data changes. - Triggering
+   * an initial data update to populate the {@link PieChart} components with the current state of
+   * the underlying data source.
+   *
+   * <p>By performing these actions during initialization, the controller ensures that the user
+   * interface is synchronized with the latest available data and is ready for interaction once it
+   * is displayed.
+   */
   @FXML
   public void initialize() {
     register();
@@ -32,7 +49,7 @@ public class StatisticController implements DataController {
     updatePieChartRight();
   }
 
-  public void updatePieChartRight() {
+  private void updatePieChartRight() {
     pieChartRight.getData().clear();
 
     Arrays.stream(Status.values())
@@ -53,7 +70,7 @@ public class StatisticController implements DataController {
     applyColorsToChart(pieChartRight, statusColors);
   }
 
-  public void updatePieChartLeft() {
+  private void updatePieChartLeft() {
     pieChartLeft.getData().clear();
 
     Arrays.stream(Priority.values())

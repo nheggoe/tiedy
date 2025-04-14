@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.backend.util;
 
-import java.util.regex.Pattern;
 import org.mindrot.jbcrypt.BCrypt;
 
 /**
@@ -27,7 +26,6 @@ public class PasswordUtil {
    * @throws IllegalArgumentException if the password is null, blank, or not in the valid format
    */
   public static String hashPassword(String plainTextPassword) {
-    validatePasswordFormat(plainTextPassword);
     String salt = BCrypt.gensalt(LOG_ROUNDS);
     return BCrypt.hashpw(plainTextPassword, salt);
   }
@@ -48,27 +46,6 @@ public class PasswordUtil {
       return BCrypt.checkpw(plainTextPassword, hashedPassword);
     } catch (IllegalArgumentException ignored) {
       return false;
-    }
-  }
-
-  /**
-   * Validates the format of a given plain-text password. Ensures that the password adheres to
-   * specific criteria: it must be 8 to 24 characters long and contain only alphanumeric characters
-   * (letters and digits). The method throws an {@code IllegalArgumentException} if the provided
-   * password is null, blank, or does not meet the required format.
-   *
-   * @param plainTextPassword the plain-text password to be validated
-   * @throws IllegalArgumentException if the password is null, blank, or does not meet format
-   *     criteria
-   */
-  private static void validatePasswordFormat(String plainTextPassword) {
-    if ((plainTextPassword == null) || plainTextPassword.isBlank()) {
-      throw new IllegalArgumentException("Password cannot be blank!");
-    }
-    Pattern validFormat = Pattern.compile("^[a-zA-Z\\d]{8,24}$");
-    if (!validFormat.matcher(plainTextPassword).matches()) {
-      throw new IllegalArgumentException(
-          "Password must be 8-24 characters long and consist of only letters and digits.");
     }
   }
 }

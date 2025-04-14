@@ -1,11 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.HBox;
 
 /**
  * A utility class designed for generating JavaFX alert dialogs of various types, such as
@@ -32,18 +27,6 @@ public class AlertFactory {
     alert.setTitle(title);
     alert.setContentText(message);
     return alert;
-  }
-
-  /**
-   * Generates a JavaFX information alert with a predefined title ("Info") and the provided content
-   * message. This method is intended to simplify the creation of information alert dialogs in
-   * JavaFX applications.
-   *
-   * @param message the content message to be displayed in the alert dialog
-   * @return an Alert object of type INFORMATION with the specified content message
-   */
-  public static Alert generateInfoAlert(String message) {
-    return generateInfoAlert("Info", message);
   }
 
   /**
@@ -103,19 +86,6 @@ public class AlertFactory {
     return generateErrorAlert("Error", message);
   }
 
-  public static Alert generateErrorAlert(Throwable throwable) {
-    Alert alert = new Alert(Alert.AlertType.ERROR);
-    alert.setTitle(throwable.getMessage());
-    StringWriter sw = new StringWriter();
-    PrintWriter pw = new PrintWriter(sw);
-    throwable.printStackTrace(pw);
-
-    TextArea textArea = new TextArea(sw.toString());
-    textArea.setEditable(false);
-    alert.getDialogPane().setExpandableContent(new HBox(new ScrollPane(textArea)));
-    return alert;
-  }
-
   /**
    * Creates and returns a JavaFX confirmation alert with the specified title and message. This
    * method is designed to simplify the creation of confirmation alert dialogs in JavaFX
@@ -130,17 +100,5 @@ public class AlertFactory {
     alert.setTitle(title);
     alert.setContentText(message);
     return alert;
-  }
-
-  /**
-   * Creates and returns a JavaFX confirmation alert with a predefined title ("Confirmation") and
-   * the specified message. This method is designed to simplify the creation of confirmation alert
-   * dialogs in JavaFX applications.
-   *
-   * @param message the content message to be displayed in the confirmation alert
-   * @return an Alert object of type CONFIRMATION with a predefined title and the specified message
-   */
-  public static Alert generateConfirmationAlert(String message) {
-    return generateConfirmationAlert("Confirmation", message);
   }
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 import java.util.logging.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -58,31 +57,29 @@ public class TiedyApp extends Application {
     return sceneManager;
   }
 
+  /**
+   * Retrieves the singleton instance of the DataAccessFacade, which serves as the primary access
+   * point for data management operations within the application.
+   *
+   * @return the singleton instance of DataAccessFacade
+   */
   public static DataAccessFacade getDataAccessFacade() {
     return dataAccessFacade;
   }
 
+  /**
+   * Retrieves the singleton instance of the {@link DataChangeNotifier}, which is responsible for
+   * managing and notifying registered observers about data updates.
+   *
+   * @return the singleton instance of DataChangeNotifier
+   */
   public static DataChangeNotifier getDataChangeNotifier() {
     return dataChangeNotifier;
   }
 
   @Override
   public void start(Stage primaryStage) {
-    init(primaryStage);
-  }
-
-  public void init(Stage primaryStage) {
-    if (Taskbar.isTaskbarSupported()) {
-      var taskbar = Taskbar.getTaskbar();
-
-      if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
-        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
-        var dockIcon =
-            defaultToolkit.getImage(
-                getClass().getResource("/edu/ntnu/idi/bidata/tiedy/images/icon_512@2x.png"));
-        taskbar.setIconImage(dockIcon);
-      }
-    }
+    setTaskBarIcon();
     primaryStage.setTitle("Tiedy");
     primaryStage
         .getIcons()
@@ -94,24 +91,35 @@ public class TiedyApp extends Application {
     sceneManager.switchScene(SceneName.LOGIN);
   }
 
-  public static void onClose() {
-    AlertFactory.generateConfirmationAlert(
-        "Exit", "Are you sure you want to exit the application?");
-    try {
-      Alert exitConfirmation =
-          AlertFactory.generateConfirmationAlert(
-              "Exit", "Are you sure you want to exit the application?");
-      Optional<ButtonType> result = exitConfirmation.showAndWait();
-      if (result.isPresent() && result.get() == ButtonType.OK) {
-        LOGGER.info("Thank you for using Tiedy!");
-        LOGGER.info("Exiting program...");
-        Platform.exit();
-      } else {
-        exitConfirmation.close();
-      }
+  /** macOS platform specific code. */
+  private void setTaskBarIcon() {
+    if (Taskbar.isTaskbarSupported()) {
+      var taskbar = Taskbar.getTaskbar();
 
-    } catch (IllegalStateException e) {
-      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
+      if (taskbar.isSupported(Taskbar.Feature.ICON_IMAGE)) {
+        final Toolkit defaultToolkit = Toolkit.getDefaultToolkit();
+        var dockIcon =
+            defaultToolkit.getImage(
+                getClass().getResource("/edu/ntnu/idi/bidata/tiedy/images/icon_512@2x.png"));
+        taskbar.setIconImage(dockIcon);
+      }
+    }
+  }
+
+  /**
+   * Prompt the user to confirm whether the user wants to exit the application.
+   *
+   * <p>Calls {@code Platform.exit()} when the OK button is pressed
+   */
+  public static void onClose() {
+    Optional<ButtonType> result =
+        AlertFactory.generateConfirmationAlert(
+                "Exit", "Are you sure you want to exit the application?")
+            .showAndWait();
+    if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
+      LOGGER.info("Thank you for using Tiedy!");
+      LOGGER.info("Exiting program...");
+      Platform.exit();
     }
   }
 }

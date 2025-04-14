@@ -12,10 +12,17 @@ import javafx.scene.control.Dialog;
 import org.jspecify.annotations.NonNull;
 
 /**
- * Utility class for
+ * A utility class for creating and managing task-related dialogs. (subject to change)
+ *
+ * <p>The provided methods facilitate creating, showing, and handling user interactions with dialogs
+ * for tasks. These dialogs allow creation and editing of task information such as title,
+ * description, deadline, status, and priority.
+ *
+ * <p>This class serves as a factory for generating and displaying task-specific dialogs with
+ * interactive user input handling.
  *
  * @author Nick Heggø
- * @version 2025.04.12
+ * @version 2025.04.13
  */
 public class DialogFactory {
 

@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
+import org.jspecify.annotations.NonNull;
 
 /**
  * The Task class represents a task with values like id, title, description, status, who it's
@@ -29,7 +30,7 @@ public class Task {
 
   /**
    * Default constructor for the Task class. Initializes a new Task instance with a unique
-   * identifier, the current timestamp for creation, and default values for its fields.
+   * identifier, the current timestamp for creation and default values for its fields.
    *
    * <p>The id is generated using a universally unique identifier (UUID). The creation timestamp is
    * assigned using the current system time. The assignedUsers set is initialized to an empty set.
@@ -43,7 +44,14 @@ public class Task {
     this.priority = Priority.NONE;
   }
 
-  public Task(Task other) {
+  /**
+   * Constructs a new Task object by copying the properties of the given Task instance. This
+   * performs a shallow copy of the provided Task's attributes, except {@code assignedUsers}, which
+   * is created as a new HashSet instance containing the same UUIDs, ensuring immutability.
+   *
+   * @param other the Task instance to copy; must not be null
+   */
+  public Task(@NonNull Task other) {
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.assignedUsers = new HashSet<>(other.assignedUsers); // shallow copy, but UUID is immutable
@@ -100,14 +108,18 @@ public class Task {
     return id;
   }
 
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
-  }
-
   public Set<UUID> getAssignedUsers() {
     return Set.copyOf(assignedUsers);
   }
 
+  /**
+   * Assigns a user to the task by adding their unique identifier to the set of assigned users. If
+   * the user is already assigned to the task, the method will return {@code false}.
+   *
+   * @param userId the unique identifier of the user to assign to the task; must not be {@code null}
+   * @return {@code true} if the user was successfully assigned to the task, or {@code false} if the
+   *     user was already assigned
+   */
   public boolean assignUser(UUID userId) {
     if (assignedUsers.contains(userId)) {
       return false;

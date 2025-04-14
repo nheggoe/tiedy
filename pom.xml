@@ -6,7 +6,7 @@
 
     <groupId>edu.ntnu.idi.bidata</groupId>
     <artifactId>tiedy</artifactId>
-    <version>0.1.1</version>
+    <version>1.0.0</version>
 
     <properties>
         <!-- Java version -->

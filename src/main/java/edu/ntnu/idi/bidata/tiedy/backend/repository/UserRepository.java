@@ -25,7 +25,7 @@ public interface UserRepository extends DataRepository<User> {
    * @param username the username to search for
    * @return an Optional containing the user if found.
    */
-  Optional<User> findByUsername(String username);
+  Optional<User> getUserByUsername(String username);
 
   /**
    * Authenticates a user with the provided credentials.

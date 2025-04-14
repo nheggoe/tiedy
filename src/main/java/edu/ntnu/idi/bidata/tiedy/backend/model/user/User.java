@@ -5,6 +5,7 @@ import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.regex.Pattern;
+import org.jspecify.annotations.NonNull;
 
 /**
  * The object that represents the customers of the application.
@@ -42,7 +43,14 @@ public class User {
     setHashedPassword(plainTextPassword);
   }
 
-  public User(User other) {
+  /**
+   * Constructs a new User instance as a deep copy of another User instance. All fields, including
+   * the {@code levelSystem} object, are copied to ensure that the new User instance is independent
+   * of the original instance.
+   *
+   * @param other the User instance to copy; must not be null
+   */
+  public User(@NonNull User other) {
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.levelSystem = new LevelSystem(other.levelSystem);
@@ -75,6 +83,14 @@ public class User {
 
   // ------------------------   Public Interface  ------------------------
 
+  /**
+   * Marks a task as completed for the user by delegating the operation to the user's level system.
+   * This method increments the user's experience, total experience, and the number of completed
+   * tasks based on the internal logic of the level system. It also handles any potential leveling
+   * up if the criteria are met.
+   *
+   * @return true if completing the task results in the user leveling up, false otherwise
+   */
   public boolean completeTask() {
     return levelSystem.completeTask();
   }
@@ -99,10 +115,6 @@ public class User {
 
   public UUID getId() {
     return id;
-  }
-
-  public LocalDateTime getCreatedAt() {
-    return createdAt;
   }
 
   public String getUsername() {

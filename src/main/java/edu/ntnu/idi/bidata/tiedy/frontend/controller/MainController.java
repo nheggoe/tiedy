@@ -7,6 +7,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.util.Collection;
+import java.util.Comparator;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -68,7 +69,10 @@ public class MainController implements DataController {
 
   private void updateTaskViewPane(Collection<Task> tasks) {
     taskViewPane.getChildren().clear();
-    tasks.stream().map(this::createTaskPane).forEach(taskViewPane.getChildren()::add);
+    tasks.stream()
+        .sorted(Comparator.comparing(Task::getPriority))
+        .map(this::createTaskPane)
+        .forEach(taskViewPane.getChildren()::add);
   }
 
   private Pane createTaskPane(Task task) {

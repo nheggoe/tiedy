@@ -23,6 +23,13 @@ public class SceneManager {
 
   private SceneManager() {}
 
+  /**
+   * Retrieves the singleton instance of the SceneManager. This method ensures that only a single
+   * instance of SceneManager exists throughout the application, providing centralized management of
+   * scene transitions and the primary stage.
+   *
+   * @return the singleton instance of SceneManager
+   */
   public static synchronized SceneManager getInstance() {
     if (instance == null) {
       instance = new SceneManager();

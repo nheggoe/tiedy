@@ -8,6 +8,7 @@ stages:
   - compile
   - test
   - verify
+  - deploy
 
 cache:
   key: ${CI_COMMIT_REF_SLUG}-maven-cache
@@ -16,22 +17,27 @@ cache:
   policy: pull-push
 
 before_script:
-  - mkdir -p .m2/repository  # Ensure the directory exists
+  - mkdir -p .m2/repository
 
-# Global rules to apply to all jobs
+# ─── Pipeline scope ────────────────────────────────────────────────────────────
 workflow:
   rules:
-    - if: $CI_PIPELINE_SOURCE == "merge_request_event" && ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event" &&
+        ($CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" ||
+        $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main")
       when: always
-    - when: never  # Skip all other cases
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+      when: always
+    - when: never
 
+# ─── Build & test ─────────────────────────────────────────────────
 compile-job:
   stage: compile
   script:
     - mvn clean compile $MAVEN_CLI_OPTS
   artifacts:
     paths:
-      - target/  # Save compiled artifacts for later stages
+      - target/
     expire_in: 2 hours
     when: always
 
@@ -41,7 +47,22 @@ unit-test-job:
     - mvn test $MAVEN_CLI_OPTS
 
 verify-job:
-  allow_failure: false
   stage: verify
+  allow_failure: false
   script:
     - mvn verify $MAVEN_CLI_OPTS
+
+publish-docs-pages:
+  stage: deploy
+  image: maven:3-eclipse-temurin-21
+  needs: [verify-job]
+  script:
+    # Generate API docs
+    - mvn -DskipTests=true javadoc:javadoc $MAVEN_CLI_OPTS
+    # GitLab Pages serves whatever is in ./public
+    - mv target/site/apidocs public
+  pages:
+    expire_in: never
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "push" && $CI_COMMIT_BRANCH == "main"
+      when: on_success

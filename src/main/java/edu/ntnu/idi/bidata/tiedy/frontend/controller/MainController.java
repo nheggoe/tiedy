@@ -6,9 +6,13 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
+
+import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.Comparator;
+import java.time.temporal.TemporalAdjusters;
+import java.util.*;
+import java.util.logging.Logger;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -61,7 +65,7 @@ public class MainController implements DataController {
   @FXML private HBox fridayContainer;
   @FXML private HBox saturdayContainer;
   @FXML private HBox sundayContainer;
-
+  private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
   /**
    * Initializes the main scene by checking the current user session and updating the view
    * accordingly.
@@ -75,48 +79,112 @@ public class MainController implements DataController {
    */
   @FXML
   public void initialize() {
-    taskViewPane.setHgap(10);
-    taskViewPane.setVgap(10);
-
+    List<VBox> dayViews = List.of(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
+    dayViews.forEach(
+            dayView -> {
+              dayView.setSpacing(5);
+              dayView
+                      .prefWidthProperty()
+                      .bind(dayViewContainer.widthProperty().subtract(2).divide(dayViews.size()));
+              dayView.prefHeightProperty().bind(dayViewContainer.heightProperty().subtract(2));
+            });
+    List<HBox> dayImageContainers = List.of(mondayContainer, tuesdayContainer, wednesdayContainer, thursdayContainer, fridayContainer, saturdayContainer, sundayContainer);
+    dayImageContainers.forEach(dayImageContainer -> {dayImageContainer.prefWidthProperty().bind(dayViewContainer.widthProperty().subtract(2).divide(dayImageContainers.size()));});
     register();
+    setDate(LocalDate.now());
     updateData();
+    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getWeek);
+  }
 
-    // Set up the menu bar to call updateFlowPane when filters are selected
-    if (menuBarController != null) {
-      menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
+  @FXML
+  public void updateLabels() {
+    startOfWeekLabel.setText(date.getDayOfMonth() + "-" + date.getMonth().toString());
+    endOfWeekLabel.setText(
+            date.plusDays(6).getDayOfMonth() + "-" + date.plusDays(6).getMonth().toString());
+    yearTracker.setText(date.getYear() + "");
+  }
+
+  public void setDate(LocalDate date) {
+    if (this.date == null) {
+      this.date = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
     }
   }
 
   @Override
   public void updateData() {
-    updateTaskViewPane(
-        TiedyApp.getDataAccessFacade().getActiveTasksByUserId(UserSession.getCurrentUserId()));
+    renderTasksByWeek(
+            TiedyApp.getDataAccessFacade()
+                    .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
   }
 
-  private void updateTaskViewPane(Collection<Task> tasks) {
-    taskViewPane.getChildren().clear();
-    tasks.stream()
-        .sorted(Comparator.comparing(Task::getPriority))
-        .map(this::createTaskPane)
-        .forEach(taskViewPane.getChildren()::add);
+  @FXML
+  public void onNextButtonPressed() {
+    date = date.plusDays(7);
+    try {
+      renderTasksByWeek(
+              TiedyApp.getDataAccessFacade()
+                      .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
+    } catch (IllegalArgumentException illegalArgumentException) {
+      LOGGER.info(illegalArgumentException.getMessage());
+      AlertFactory.generateInfoAlert("You currently have no tasks.");
+    }
+  }
+
+  @FXML
+  public void onPrevButtonPressed() {
+    date = date.minusDays(7);
+    try {
+      renderTasksByWeek(
+              TiedyApp.getDataAccessFacade()
+                      .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
+    } catch (IllegalArgumentException illegalArgumentException) {
+      LOGGER.info(illegalArgumentException.getMessage());
+      AlertFactory.generateInfoAlert("You currently have no tasks.");
+    }
+  }
+
+  public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
+    Map<LocalDate, VBox> vboxMap = new HashMap<>();
+    vboxMap.put(date, monday);
+    vboxMap.put(date.plusDays(1), tuesday);
+    vboxMap.put(date.plusDays(2), wednesday);
+    vboxMap.put(date.plusDays(3), thursday);
+    vboxMap.put(date.plusDays(4), friday);
+    vboxMap.put(date.plusDays(5), saturday);
+    vboxMap.put(date.plusDays(6), sunday);
+    for (VBox vbox : vboxMap.values()) {
+      vbox.getChildren().clear();
+    }
+    for (Map.Entry<LocalDate, List<Task>> entry : tasksToBeDisplayed.entrySet()) {
+      LocalDate taskDate = entry.getKey();
+      VBox targetVBox = vboxMap.get(taskDate);
+      List<Task> taskList = entry.getValue();
+      for (Task task : taskList) {
+        targetVBox.getChildren().add(createTaskPane(task));
+      }
+    }
+    updateLabels();
   }
 
   private Pane createTaskPane(Task task) {
     Pane cardPane = new Pane();
-    cardPane.setPrefSize(120, 80);
+    cardPane.setPrefSize(110, 80);
 
-    Rectangle taskBg = new Rectangle(0, 0, 120, 80);
-    taskBg.setFill(Color.WHITE);
-    taskBg.setStroke(Color.BLACK);
+    Rectangle taskBg = new Rectangle(0, 0, 110, 80);
+    taskBg.setFill(Color.web("6495ed"));
     taskBg.setArcWidth(10);
     taskBg.setArcHeight(10);
 
-    Text rankText = new Text(10, 30, task.getTitle());
-    rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+    Text rankText = new Text(10, 15, task.getTitle());
+    rankText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    rankText.setFill(Color.web("fff8dc"));
+    rankText.setWrappingWidth(90);
 
     String statusText = task.getStatus().getDisplayName();
-    Text statusIndicator = new Text(10, 65, statusText);
-    statusIndicator.setFont(Font.font("Arial", 10));
+    Text statusIndicator = new Text(10, 55, statusText);
+    statusIndicator.setFont(Font.font("Arial", 8));
+    statusIndicator.setFill(Color.web("fff8dc"));
+    statusIndicator.setWrappingWidth(90);
 
     switch (task.getStatus()) {
       case CLOSED -> statusIndicator.setFill(Color.GREEN);
@@ -127,26 +195,26 @@ public class MainController implements DataController {
 
     Button deleteButton = new Button("X");
     deleteButton.setStyle(
-        "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
-    deleteButton.setLayoutX(90);
-    deleteButton.setLayoutY(10);
+            "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
+    deleteButton.setLayoutX(40);
+    deleteButton.setLayoutY(20);
     deleteButton.setVisible(false);
     deleteButton.setOnAction(
-        unused -> {
-          Alert confirmationAlert =
-              AlertFactory.generateConfirmationAlert(
-                  "Delete task", "Are you sure you want to delete this task?");
+            unused -> {
+              Alert confirmationAlert =
+                      AlertFactory.generateConfirmationAlert(
+                              "Delete task", "Are you sure you want to delete this task?");
 
-          if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-            deleteTask(task);
-          }
-        });
+              if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+                deleteTask(task);
+              }
+            });
 
     Button completeButton = new Button("✓");
     completeButton.setStyle(
-        "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
-    completeButton.setLayoutX(60);
-    completeButton.setLayoutY(10);
+            "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
+    completeButton.setLayoutX(10);
+    completeButton.setLayoutY(20);
     completeButton.setVisible(false);
 
     if (task.getStatus() != Status.CLOSED) {
@@ -154,27 +222,27 @@ public class MainController implements DataController {
     } else {
       taskBg.setFill(Color.LIGHTGRAY);
       completeButton.setStyle(
-          "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
+              "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
     }
 
     // Show/hide buttons on hover
     cardPane.setOnMouseEntered(
-        unused -> {
-          deleteButton.setVisible(true);
-          if (task.getStatus() != Status.CLOSED) {
-            completeButton.setVisible(true);
-          }
-        });
+            unused -> {
+              deleteButton.setVisible(true);
+              if (task.getStatus() != Status.CLOSED) {
+                completeButton.setVisible(true);
+              }
+            });
 
     cardPane.setOnMouseExited(
-        unused -> {
-          deleteButton.setVisible(false);
-          completeButton.setVisible(false);
-        });
+            unused -> {
+              deleteButton.setVisible(false);
+              completeButton.setVisible(false);
+            });
 
     cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
-    cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
+    cardPane.setPadding(new Insets(15));
     return cardPane;
   }
 

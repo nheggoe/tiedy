@@ -9,10 +9,10 @@ import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Logger;
 
 /**
@@ -228,4 +228,34 @@ public class DataAccessFacade implements Runnable {
         .map(this::createDetachedCopy)
         .toList();
   }
+
+  public Map<LocalDate,List<Task>> getActiveTasksByUserIdAndWeek(UUID userId, LocalDate startOfWeek) {
+    Map<LocalDate,List<Task>> mapToBeDisplayed = new HashMap<>();
+    for (Task task: getTasksByUserId(userId)) {
+      if(task.getStatus() == Status.CLOSED) {
+        continue;
+      }
+      LocalDate deadline = task.getDeadline();
+      if (deadline.isBefore(startOfWeek) || deadline.isAfter(startOfWeek.plusDays(6))) {
+        continue;
+      }
+      mapToBeDisplayed.putIfAbsent(deadline, new ArrayList<>()).add(task);
+    }
+    return mapToBeDisplayed;
+  }
+
+  public Map<LocalDate,List<Task>> getTasksByUserIdAndWeekAndStatus(UUID userId, LocalDate startOfWeek, Status status) {
+    Map<LocalDate,List<Task>> mapToBeDisplayed = new HashMap<>();
+    for (Task task: getTasksByUserId(userId)) {
+      LocalDate deadline = task.getDeadline();
+      if (deadline == null || deadline.isBefore(startOfWeek) || deadline.isAfter(startOfWeek.plusDays(6))) {
+        continue;
+      }
+      if(task.getStatus() == status) {
+        mapToBeDisplayed.putIfAbsent(deadline, new ArrayList<>()).add(task);
+      }
+    }
+    return mapToBeDisplayed;
+  }
+
 }

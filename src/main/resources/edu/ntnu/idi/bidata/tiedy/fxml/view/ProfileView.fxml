@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<BorderPane prefHeight="692.0" prefWidth="851.0" style="-fx-background-color: #F4ECCF;" styleClass="container"
+<BorderPane prefHeight="800.0" prefWidth="1000.0" style="-fx-background-color: #F4ECCF;" styleClass="container"
             stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.ProfileController">
@@ -22,7 +22,7 @@
                     <children>
                         <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../images/lables/UsernameLabel.png"/>
+                                <Image url="@../../images/labels/UsernameLabel.png"/>
                             </image>
                         </ImageView>
                         <Region prefHeight="38.0" prefWidth="19.0" style="-fx-background-color: transparent;"/>
@@ -34,7 +34,7 @@
                     <children>
                         <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../images/lables/TasksDoneLabel.png"/>
+                                <Image url="@../../images/labels/TasksDoneLabel.png"/>
                             </image>
                         </ImageView>
                         <Region prefHeight="38.0" prefWidth="15.0" style="-fx-background-color: transparent;"/>
@@ -46,7 +46,7 @@
                     <children>
                         <ImageView fitHeight="150.0" fitWidth="128.0" pickOnBounds="true" preserveRatio="true">
                             <image>
-                                <Image url="@../../images/lables/LevelLabel.png"/>
+                                <Image url="@../../images/labels/LevelLabel.png"/>
                             </image>
                         </ImageView>
                         <Region prefHeight="38.0" prefWidth="12.0" style="-fx-background-color: transparent;"/>

@@ -32,7 +32,7 @@
                   <TextField id="taskNameField" fx:id="taskNameField" layoutX="242.0" layoutY="4.0" prefHeight="33.0" prefWidth="200.0" style="-fx-background-color: #f5f5f5;" />
                   <ImageView fitHeight="32.0" fitWidth="64.0" layoutX="142.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../images/lables/NameLabel.png" />
+                        <Image url="@../../images/labels/NameLabel.png" />
                      </image>
                   </ImageView>
                </children>
@@ -57,7 +57,7 @@
                      <ImageView fitHeight="150.0" fitWidth="94.0" layoutX="128.0" layoutY="5.0" pickOnBounds="true"
                                 preserveRatio="true">
                          <image>
-                             <Image url="@../../images/lables/StatusLabel88W32H.png"/>
+                             <Image url="@../../images/labels/StatusLabel88W32H.png"/>
                          </image>
                      </ImageView>
                      <ComboBox fx:id="statusComboBox" layoutX="245.0" layoutY="6.0" prefHeight="32.0" prefWidth="202.0"
@@ -75,7 +75,7 @@
                                  <children>
                                     <ImageView fitHeight="32.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../images/lables/DateLabel.png" />
+                                          <Image url="@../../images/labels/DateLabel.png" />
                                        </image>
                                     </ImageView>
                                     <DatePicker fx:id="dueDatePicker" editable="false" style="-fx-background-color: #f5f5f5;" stylesheets="@../../css/style.css" />
@@ -85,7 +85,7 @@
                                  <children>
                                     <ImageView fitHeight="150.0" fitWidth="88.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../images/lables/PriorityLabel94W32H.png" />
+                                          <Image url="@../../images/labels/PriorityLabel94W32H.png" />
                                        </image>
                                     </ImageView>
                                     <ComboBox fx:id="priorityComboBox" prefWidth="150.0" style="-fx-background-color: #f5f5f5;" />

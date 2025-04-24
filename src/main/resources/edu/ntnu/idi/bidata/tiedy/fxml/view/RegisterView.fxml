@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@../../css/style.css"
+<AnchorPane prefHeight="800.0" prefWidth="1000.0" styleClass="root" stylesheets="@../../css/style.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.RegisterController">
     <children>
@@ -16,7 +16,7 @@
             <children>
             <ImageView fitHeight="32.0" fitWidth="128.0" layoutX="14.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                   <Image url="@../../images/lables/UsernameLabel.png"/>
+                   <Image url="@../../images/labels/UsernameLabel.png"/>
                </image>
             </ImageView>
                 <TextField id="usernameField" fx:id="usernameField" layoutX="154.0" layoutY="15.0"
@@ -39,12 +39,12 @@
                </graphic></Button>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="125.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                   <Image url="@../../images/lables/ConfirmPasswordLabel.png"/>
+                   <Image url="@../../images/labels/ConfirmPasswordLabel.png"/>
                </image>
             </ImageView>
             <ImageView fitHeight="150.0" fitWidth="128.0" layoutX="14.0" layoutY="72.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                   <Image url="@../../images/lables/PasswordLabel.png"/>
+                   <Image url="@../../images/labels/PasswordLabel.png"/>
                </image>
             </ImageView>
             </children>

@@ -239,7 +239,7 @@ public class DataAccessFacade implements Runnable {
       if (deadline.isBefore(startOfWeek) || deadline.isAfter(startOfWeek.plusDays(6))) {
         continue;
       }
-      mapToBeDisplayed.putIfAbsent(deadline, new ArrayList<>()).add(task);
+      mapToBeDisplayed.computeIfAbsent(deadline, k -> new ArrayList<>()).add(task);
     }
     return mapToBeDisplayed;
   }
@@ -252,7 +252,7 @@ public class DataAccessFacade implements Runnable {
         continue;
       }
       if(task.getStatus() == status) {
-        mapToBeDisplayed.putIfAbsent(deadline, new ArrayList<>()).add(task);
+        mapToBeDisplayed.computeIfAbsent(deadline, k -> new ArrayList<>()).add(task);
       }
     }
     return mapToBeDisplayed;

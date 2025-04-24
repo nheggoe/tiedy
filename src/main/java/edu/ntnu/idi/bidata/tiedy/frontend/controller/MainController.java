@@ -6,13 +6,12 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
-
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.logging.Logger;
-
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -40,8 +39,6 @@ import javafx.scene.text.Text;
 public class MainController implements DataController {
 
   @FXML private FlowPane taskViewPane;
-
-  // Reference to the included MenuBar's controller
   @FXML private MenuBarController menuBarController;
   @FXML private Button prevButton;
   @FXML private Button nextButton;
@@ -57,7 +54,6 @@ public class MainController implements DataController {
   @FXML private Label endOfWeekLabel;
   @FXML private Label yearTracker;
   @FXML private HBox dayViewContainer;
-  @FXML private HBox dayImageContainer;
   @FXML private HBox mondayContainer;
   @FXML private HBox tuesdayContainer;
   @FXML private HBox wednesdayContainer;
@@ -65,7 +61,9 @@ public class MainController implements DataController {
   @FXML private HBox fridayContainer;
   @FXML private HBox saturdayContainer;
   @FXML private HBox sundayContainer;
+  @FXML private Label weekNumberDisplay;
   private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
+
   /**
    * Initializes the main scene by checking the current user session and updating the view
    * accordingly.
@@ -93,7 +91,17 @@ public class MainController implements DataController {
     register();
     setDate(LocalDate.now());
     updateData();
-    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getWeek);
+    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getDate);
+  }
+
+  @FXML
+  public void onWeekButtonPressed() {
+    setDate(LocalDate.now());
+    updateData();
+  }
+
+  public int findWeekNumber() {
+    return date.get(WeekFields.of(Locale.getDefault()).weekOfYear());
   }
 
   @FXML
@@ -102,12 +110,11 @@ public class MainController implements DataController {
     endOfWeekLabel.setText(
             date.plusDays(6).getDayOfMonth() + "-" + date.plusDays(6).getMonth().toString());
     yearTracker.setText(date.getYear() + "");
+    weekNumberDisplay.setText("Week "+ findWeekNumber());
   }
 
   public void setDate(LocalDate date) {
-    if (this.date == null) {
-      this.date = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
-    }
+    this.date = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
   }
 
   @Override
@@ -115,32 +122,19 @@ public class MainController implements DataController {
     renderTasksByWeek(
             TiedyApp.getDataAccessFacade()
                     .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
+    updateLabels();
   }
 
   @FXML
   public void onNextButtonPressed() {
     date = date.plusDays(7);
-    try {
-      renderTasksByWeek(
-              TiedyApp.getDataAccessFacade()
-                      .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
-    } catch (IllegalArgumentException illegalArgumentException) {
-      LOGGER.info(illegalArgumentException.getMessage());
-      AlertFactory.generateInfoAlert("You currently have no tasks.");
-    }
+    updateData();
   }
 
   @FXML
   public void onPrevButtonPressed() {
     date = date.minusDays(7);
-    try {
-      renderTasksByWeek(
-              TiedyApp.getDataAccessFacade()
-                      .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
-    } catch (IllegalArgumentException illegalArgumentException) {
-      LOGGER.info(illegalArgumentException.getMessage());
-      AlertFactory.generateInfoAlert("You currently have no tasks.");
-    }
+    updateData();
   }
 
   public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
@@ -163,7 +157,6 @@ public class MainController implements DataController {
         targetVBox.getChildren().add(createTaskPane(task));
       }
     }
-    updateLabels();
   }
 
   private Pane createTaskPane(Task task) {
@@ -295,5 +288,9 @@ public class MainController implements DataController {
             AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
           }
         });
+  }
+
+  public LocalDate getDate() {
+    return this.date;
   }
 }

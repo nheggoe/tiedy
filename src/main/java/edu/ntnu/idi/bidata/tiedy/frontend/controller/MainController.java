@@ -11,14 +11,12 @@ import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
 import java.util.*;
-import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -33,15 +31,12 @@ import javafx.scene.text.Text;
  * application's main scene. This controller uses JavaFX components to display user tasks and
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
- * @author Nick Heggø
- * @version 2025.04.12
+ * @author Nick Heggø and Odin Arvhage
+ * @version 2025.04.24
  */
 public class MainController implements DataController {
-
-  @FXML private FlowPane taskViewPane;
+  
   @FXML private MenuBarController menuBarController;
-  @FXML private Button prevButton;
-  @FXML private Button nextButton;
   @FXML private VBox sunday;
   @FXML private VBox saturday;
   @FXML private VBox friday;
@@ -62,7 +57,6 @@ public class MainController implements DataController {
   @FXML private HBox saturdayContainer;
   @FXML private HBox sundayContainer;
   @FXML private Label weekNumberDisplay;
-  private static final Logger LOGGER = Logger.getLogger(MainController.class.getName());
 
   /**
    * Initializes the main scene by checking the current user session and updating the view
@@ -87,36 +81,55 @@ public class MainController implements DataController {
               dayView.prefHeightProperty().bind(dayViewContainer.heightProperty().subtract(2));
             });
     List<HBox> dayImageContainers = List.of(mondayContainer, tuesdayContainer, wednesdayContainer, thursdayContainer, fridayContainer, saturdayContainer, sundayContainer);
-    dayImageContainers.forEach(dayImageContainer -> {dayImageContainer.prefWidthProperty().bind(dayViewContainer.widthProperty().subtract(2).divide(dayImageContainers.size()));});
+    dayImageContainers.forEach(dayImageContainer -> dayImageContainer.prefWidthProperty().bind(dayViewContainer.widthProperty().subtract(2).divide(dayImageContainers.size())));
     register();
     setDate(LocalDate.now());
     updateData();
     menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getDate);
   }
 
+  /**
+   * Is called when the week button in the Main scene is pressed.
+   * Sets the date to the current week and then updates the data.
+   */
   @FXML
   public void onWeekButtonPressed() {
     setDate(LocalDate.now());
     updateData();
   }
 
-  public int findWeekNumber() {
+  /**
+   * Finds the week number based on the date.
+   * @return returns the week number
+   */
+  public int calculateWeekNumber() {
     return date.get(WeekFields.of(Locale.getDefault()).weekOfYear());
   }
 
+  /**
+   * Updates the text of the labels in the Main scene.
+   */
   @FXML
   public void updateLabels() {
     startOfWeekLabel.setText(date.getDayOfMonth() + "-" + date.getMonth().toString());
     endOfWeekLabel.setText(
             date.plusDays(6).getDayOfMonth() + "-" + date.plusDays(6).getMonth().toString());
     yearTracker.setText(date.getYear() + "");
-    weekNumberDisplay.setText("Week "+ findWeekNumber());
+    weekNumberDisplay.setText("Week "+ calculateWeekNumber());
   }
 
+  /**
+   * Sets the date of the MainController.
+   * Will set the date to the first monday going back in time.
+   * @param date date to be set
+   */
   public void setDate(LocalDate date) {
     this.date = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
   }
 
+  /**
+   * Updates the data of the Main scene.
+   */
   @Override
   public void updateData() {
     renderTasksByWeek(
@@ -125,18 +138,30 @@ public class MainController implements DataController {
     updateLabels();
   }
 
+  /**
+   * Is called when the next button is pressed in the Main scene.
+   * Goes a week forward and then updates all data.
+   */
   @FXML
   public void onNextButtonPressed() {
     date = date.plusDays(7);
     updateData();
   }
 
+  /**
+   * Is called when the previous button is pressed in the Main scene.
+   * Goes a week back and then updates all data.
+   */
   @FXML
   public void onPrevButtonPressed() {
     date = date.minusDays(7);
     updateData();
   }
 
+  /**
+   * Renders the given map of tasks in the week view.
+   * @param tasksToBeDisplayed map of the tasks to be rendered.
+   */
   public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
     Map<LocalDate, VBox> vboxMap = new HashMap<>();
     vboxMap.put(date, monday);
@@ -159,6 +184,11 @@ public class MainController implements DataController {
     }
   }
 
+  /**
+   * Creates a task pane to be displayed in the calendar view.
+   * @param task to be displayed
+   * @return finished task render
+   */
   private Pane createTaskPane(Task task) {
     Pane cardPane = new Pane();
     cardPane.setPrefSize(110, 80);
@@ -290,6 +320,10 @@ public class MainController implements DataController {
         });
   }
 
+  /**
+   * Gets the date of this class.
+   * @return the date
+   */
   public LocalDate getDate() {
     return this.date;
   }

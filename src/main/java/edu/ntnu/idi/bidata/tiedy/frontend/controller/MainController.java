@@ -35,28 +35,32 @@ import javafx.scene.text.Text;
  * @version 2025.04.24
  */
 public class MainController implements DataController {
-  
+
   @FXML private MenuBarController menuBarController;
-  @FXML private VBox sunday;
-  @FXML private VBox saturday;
-  @FXML private VBox friday;
-  @FXML private VBox thursday;
-  @FXML private VBox wednesday;
-  @FXML private VBox tuesday;
-  @FXML private VBox monday;
-  private LocalDate date;
+  @FXML private VBox mondayContainer;
+  @FXML private VBox tuesdayContainer;
+  @FXML private VBox wednesdayContainer;
+  @FXML private VBox thursdayContainer;
+  @FXML private VBox fridayContainer;
+  @FXML private VBox saturdayContainer;
+  @FXML private VBox sundayContainer;
+
+  @FXML private HBox dayViewContainer;
+
+  @FXML private Label mondayLabel;
+  @FXML private Label tuesdayLabel;
+  @FXML private Label wednesdayLabel;
+  @FXML private Label thursdayLabel;
+  @FXML private Label fridayLabel;
+  @FXML private Label saturdayLabel;
+  @FXML private Label sundayLabel;
+
+  @FXML private Label yearLabel;
   @FXML private Label startOfWeekLabel;
   @FXML private Label endOfWeekLabel;
-  @FXML private Label yearTracker;
-  @FXML private HBox dayViewContainer;
-  @FXML private HBox mondayContainer;
-  @FXML private HBox tuesdayContainer;
-  @FXML private HBox wednesdayContainer;
-  @FXML private HBox thursdayContainer;
-  @FXML private HBox fridayContainer;
-  @FXML private HBox saturdayContainer;
-  @FXML private HBox sundayContainer;
-  @FXML private Label weekNumberDisplay;
+  @FXML private Label weekNumberLabel;
+
+  private LocalDate startOfWeek;
 
   /**
    * Initializes the main scene by checking the current user session and updating the view
@@ -71,106 +75,127 @@ public class MainController implements DataController {
    */
   @FXML
   public void initialize() {
-    List<VBox> dayViews = List.of(monday, tuesday, wednesday, thursday, friday, saturday, sunday);
-    dayViews.forEach(
-            dayView -> {
-              dayView.setSpacing(5);
-              dayView
-                      .prefWidthProperty()
-                      .bind(dayViewContainer.widthProperty().subtract(2).divide(dayViews.size()));
-              dayView.prefHeightProperty().bind(dayViewContainer.heightProperty().subtract(2));
-            });
-    List<HBox> dayImageContainers = List.of(mondayContainer, tuesdayContainer, wednesdayContainer, thursdayContainer, fridayContainer, saturdayContainer, sundayContainer);
-    dayImageContainers.forEach(dayImageContainer -> dayImageContainer.prefWidthProperty().bind(dayViewContainer.widthProperty().subtract(2).divide(dayImageContainers.size())));
     register();
-    setDate(LocalDate.now());
     updateData();
-    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getDate);
+    setStartOfWeek(LocalDate.now());
+    var taskContainers =
+        List.of(
+            mondayContainer,
+            tuesdayContainer,
+            wednesdayContainer,
+            thursdayContainer,
+            fridayContainer,
+            saturdayContainer,
+            sundayContainer);
+
+    for (var taskContainer : taskContainers) {
+      taskContainer.setSpacing(5);
+      taskContainer
+          .prefWidthProperty()
+          .bind(dayViewContainer.widthProperty().subtract(2).divide(taskContainers.size()));
+      taskContainer.prefHeightProperty().bind(dayViewContainer.heightProperty().subtract(2));
+    }
+    var dayLabels =
+        List.of(
+            mondayLabel,
+            tuesdayLabel,
+            wednesdayLabel,
+            thursdayLabel,
+            fridayLabel,
+            saturdayLabel,
+            sundayLabel);
+
+    for (var label : dayLabels) {
+      label
+          .prefWidthProperty()
+          .bind(dayViewContainer.widthProperty().subtract(2).divide(dayLabels.size()));
+    }
+    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getStartOfWeek);
   }
 
   /**
-   * Is called when the week button in the Main scene is pressed.
-   * Sets the date to the current week and then updates the data.
+   * Is called when the week button in the Main scene is pressed. Sets the date to the current week
+   * and then updates the data.
    */
   @FXML
   public void onWeekButtonPressed() {
-    setDate(LocalDate.now());
+    setStartOfWeek(LocalDate.now());
     updateData();
   }
 
   /**
    * Finds the week number based on the date.
+   *
    * @return returns the week number
    */
   public int calculateWeekNumber() {
-    return date.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+    return startOfWeek.get(WeekFields.of(Locale.getDefault()).weekOfYear());
   }
 
-  /**
-   * Updates the text of the labels in the Main scene.
-   */
+  /** Updates the text of the labels in the Main scene. */
   @FXML
   public void updateLabels() {
-    startOfWeekLabel.setText(date.getDayOfMonth() + "-" + date.getMonth().toString());
+    startOfWeekLabel.setText(startOfWeek.getDayOfMonth() + "-" + startOfWeek.getMonth().toString());
     endOfWeekLabel.setText(
-            date.plusDays(6).getDayOfMonth() + "-" + date.plusDays(6).getMonth().toString());
-    yearTracker.setText(date.getYear() + "");
-    weekNumberDisplay.setText("Week "+ calculateWeekNumber());
+        startOfWeek.plusDays(6).getDayOfMonth()
+            + "-"
+            + startOfWeek.plusDays(6).getMonth().toString());
+    yearLabel.setText(startOfWeek.getYear() + "");
+    weekNumberLabel.setText("Week " + calculateWeekNumber());
   }
 
   /**
-   * Sets the date of the MainController.
-   * Will set the date to the first monday going back in time.
-   * @param date date to be set
+   * Sets the date of the MainController. Will set the date to the first monday going back in time.
+   *
+   * @param startOfWeek date to be set
    */
-  public void setDate(LocalDate date) {
-    this.date = date.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+  public void setStartOfWeek(LocalDate startOfWeek) {
+    this.startOfWeek = startOfWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
   }
 
-  /**
-   * Updates the data of the Main scene.
-   */
+  /** Updates the data of the Main scene. */
   @Override
   public void updateData() {
     renderTasksByWeek(
-            TiedyApp.getDataAccessFacade()
-                    .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date));
+        TiedyApp.getDataAccessFacade()
+            .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), startOfWeek));
     updateLabels();
   }
 
   /**
-   * Is called when the next button is pressed in the Main scene.
-   * Goes a week forward and then updates all data.
+   * Is called when the next button is pressed in the Main scene. Goes a week forward and then
+   * updates all data.
    */
   @FXML
   public void onNextButtonPressed() {
-    date = date.plusDays(7);
+    startOfWeek = startOfWeek.plusDays(7);
     updateData();
   }
 
   /**
-   * Is called when the previous button is pressed in the Main scene.
-   * Goes a week back and then updates all data.
+   * Is called when the previous button is pressed in the Main scene. Goes a week back and then
+   * updates all data.
    */
   @FXML
   public void onPrevButtonPressed() {
-    date = date.minusDays(7);
+    startOfWeek = startOfWeek.minusDays(7);
     updateData();
   }
 
   /**
    * Renders the given map of tasks in the week view.
+   *
    * @param tasksToBeDisplayed map of the tasks to be rendered.
    */
   public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
     Map<LocalDate, VBox> vboxMap = new HashMap<>();
-    vboxMap.put(date, monday);
-    vboxMap.put(date.plusDays(1), tuesday);
-    vboxMap.put(date.plusDays(2), wednesday);
-    vboxMap.put(date.plusDays(3), thursday);
-    vboxMap.put(date.plusDays(4), friday);
-    vboxMap.put(date.plusDays(5), saturday);
-    vboxMap.put(date.plusDays(6), sunday);
+    vboxMap.put(startOfWeek, mondayContainer);
+    vboxMap.put(startOfWeek.plusDays(1), tuesdayContainer);
+    vboxMap.put(startOfWeek.plusDays(2), wednesdayContainer);
+    vboxMap.put(startOfWeek.plusDays(3), thursdayContainer);
+    vboxMap.put(startOfWeek.plusDays(4), fridayContainer);
+    vboxMap.put(startOfWeek.plusDays(5), saturdayContainer);
+    vboxMap.put(startOfWeek.plusDays(6), sundayContainer);
     for (VBox vbox : vboxMap.values()) {
       vbox.getChildren().clear();
     }
@@ -186,6 +211,7 @@ public class MainController implements DataController {
 
   /**
    * Creates a task pane to be displayed in the calendar view.
+   *
    * @param task to be displayed
    * @return finished task render
    */
@@ -218,24 +244,24 @@ public class MainController implements DataController {
 
     Button deleteButton = new Button("X");
     deleteButton.setStyle(
-            "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
+        "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
     deleteButton.setLayoutX(40);
     deleteButton.setLayoutY(20);
     deleteButton.setVisible(false);
     deleteButton.setOnAction(
-            unused -> {
-              Alert confirmationAlert =
-                      AlertFactory.generateConfirmationAlert(
-                              "Delete task", "Are you sure you want to delete this task?");
+        unused -> {
+          Alert confirmationAlert =
+              AlertFactory.generateConfirmationAlert(
+                  "Delete task", "Are you sure you want to delete this task?");
 
-              if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
-                deleteTask(task);
-              }
-            });
+          if (confirmationAlert.showAndWait().orElse(ButtonType.CANCEL) == ButtonType.OK) {
+            deleteTask(task);
+          }
+        });
 
     Button completeButton = new Button("✓");
     completeButton.setStyle(
-            "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
+        "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
     completeButton.setLayoutX(10);
     completeButton.setLayoutY(20);
     completeButton.setVisible(false);
@@ -245,23 +271,23 @@ public class MainController implements DataController {
     } else {
       taskBg.setFill(Color.LIGHTGRAY);
       completeButton.setStyle(
-              "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
+          "-fx-background-color: darkgrey; -fx-text-fill: white; -fx-font-weight: bold;");
     }
 
     // Show/hide buttons on hover
     cardPane.setOnMouseEntered(
-            unused -> {
-              deleteButton.setVisible(true);
-              if (task.getStatus() != Status.CLOSED) {
-                completeButton.setVisible(true);
-              }
-            });
+        unused -> {
+          deleteButton.setVisible(true);
+          if (task.getStatus() != Status.CLOSED) {
+            completeButton.setVisible(true);
+          }
+        });
 
     cardPane.setOnMouseExited(
-            unused -> {
-              deleteButton.setVisible(false);
-              completeButton.setVisible(false);
-            });
+        unused -> {
+          deleteButton.setVisible(false);
+          completeButton.setVisible(false);
+        });
 
     cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
     cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
@@ -322,9 +348,10 @@ public class MainController implements DataController {
 
   /**
    * Gets the date of this class.
+   *
    * @return the date
    */
-  public LocalDate getDate() {
-    return this.date;
+  public LocalDate getStartOfWeek() {
+    return this.startOfWeek;
   }
 }

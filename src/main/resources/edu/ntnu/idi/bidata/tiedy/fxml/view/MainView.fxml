@@ -21,66 +21,66 @@
          <children>
             <HBox prefHeight="70.0" prefWidth="848.0">
                <children>
-                  <HBox fx:id="mondayContainer">
-                     <children>
+                  <Label fx:id="mondayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/MondayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="tuesdayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="tuesdayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/TuesdayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="wednesdayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="wednesdayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/WednesdayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="thursdayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="thursdayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/ThursdayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="fridayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="fridayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/FridayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="saturdayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="saturdayLabel">
+                     <graphic>
                         <ImageView fitHeight="150.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/SaturdayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
-                  <HBox fx:id="sundayContainer">
-                     <children>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="sundayLabel">
+                     <graphic>
                         <ImageView fitHeight="64.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
                            <Image url="@../../images/labels/weekdays/SundayLabel.png" />
                         </ImageView>
-                     </children>
-                  </HBox>
+                     </graphic>
+                  </Label>
                </children>
             </HBox>
             <HBox fx:id="dayViewContainer" prefHeight="574.0" prefWidth="904.0">
                <children>
-                  <VBox fx:id="monday" />
-                  <VBox fx:id="tuesday" />
-                  <VBox fx:id="wednesday" />
-                  <VBox fx:id="thursday" />
-                  <VBox fx:id="friday" />
-                  <VBox fx:id="saturday" />
-                  <VBox fx:id="sunday" />
+                  <VBox fx:id="mondayContainer" />
+                  <VBox fx:id="tuesdayContainer" />
+                  <VBox fx:id="wednesdayContainer" />
+                  <VBox fx:id="thursdayContainer" />
+                  <VBox fx:id="fridayContainer" />
+                  <VBox fx:id="saturdayContainer" />
+                  <VBox fx:id="sundayContainer" />
                </children>
             </HBox>
          </children>
@@ -116,11 +116,11 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Label fx:id="yearTracker" prefHeight="24.0" prefWidth="56.0" />
+            <Label fx:id="yearLabel" prefHeight="24.0" prefWidth="56.0" />
             <Label fx:id="startOfWeekLabel" prefHeight="24.0" prefWidth="75.0" />
             <Label prefHeight="24.0" prefWidth="53.0" text="    |" />
             <Label fx:id="endOfWeekLabel" prefHeight="24.0" prefWidth="75.0" />
-            <Label fx:id="weekNumberDisplay" prefHeight="24.0" prefWidth="75.0" />
+            <Label fx:id="weekNumberLabel" prefHeight="24.0" prefWidth="75.0" />
          </children>
       </VBox>
    </right>

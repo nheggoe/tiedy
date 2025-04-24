@@ -40,7 +40,8 @@ public class MenuBarController {
    *
    * @param callback Consumer that will receive the filtered task collection
    */
-  public void setUpdateTaskViewPaneCallback(Consumer<Map<LocalDate, List<Task>>> callback, Supplier<LocalDate> date) {
+  public void setUpdateTaskViewPaneCallback(
+      Consumer<Map<LocalDate, List<Task>>> callback, Supplier<LocalDate> date) {
     this.date = date;
     this.updateTaskViewPaneCallback = callback;
     setupFilterListeners();
@@ -115,25 +116,37 @@ public class MenuBarController {
     }
 
     allTaskFilter.setOnAction(
-            unused ->
-                    updateTaskViewPaneCallback.accept(TiedyApp.getDataAccessFacade().getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date.get())));
+        unused ->
+            updateTaskViewPaneCallback.accept(
+                TiedyApp.getDataAccessFacade()
+                    .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date.get())));
 
     openTaskFilter.setOnAction(
-            unused ->
-                    updateTaskViewPaneCallback.accept(TiedyApp.getDataAccessFacade().getTasksByUserIdAndWeekAndStatus(UserSession.getCurrentUserId(), date.get(), Status.OPEN)));
+        unused ->
+            updateTaskViewPaneCallback.accept(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserIdAndWeekAndStatus(
+                        UserSession.getCurrentUserId(), date.get(), Status.OPEN)));
 
     inProgressTaskFilter.setOnAction(
-            unused ->
-                    updateTaskViewPaneCallback.accept(TiedyApp.getDataAccessFacade().getTasksByUserIdAndWeekAndStatus(UserSession.getCurrentUserId(), date.get(), Status.IN_PROGRESS)));
+        unused ->
+            updateTaskViewPaneCallback.accept(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserIdAndWeekAndStatus(
+                        UserSession.getCurrentUserId(), date.get(), Status.IN_PROGRESS)));
 
     closedTaskFilter.setOnAction(
-            unused ->
-                    updateTaskViewPaneCallback.accept(TiedyApp.getDataAccessFacade().getTasksByUserIdAndWeekAndStatus(UserSession.getCurrentUserId(), date.get(), Status.CLOSED)));
+        unused ->
+            updateTaskViewPaneCallback.accept(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserIdAndWeekAndStatus(
+                        UserSession.getCurrentUserId(), date.get(), Status.CLOSED)));
 
     postponedTaskFilter.setOnAction(
-            unused ->
-                    updateTaskViewPaneCallback.accept(TiedyApp.getDataAccessFacade().getTasksByUserIdAndWeekAndStatus(UserSession.getCurrentUserId(), date.get(), Status.POSTPONED)));
+        unused ->
+            updateTaskViewPaneCallback.accept(
+                TiedyApp.getDataAccessFacade()
+                    .getTasksByUserIdAndWeekAndStatus(
+                        UserSession.getCurrentUserId(), date.get(), Status.POSTPONED)));
   }
-  
-
 }

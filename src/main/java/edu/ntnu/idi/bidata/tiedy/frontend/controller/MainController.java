@@ -6,6 +6,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.Comparator;
 import javafx.fxml.FXML;
@@ -13,8 +14,11 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -35,6 +39,28 @@ public class MainController implements DataController {
 
   // Reference to the included MenuBar's controller
   @FXML private MenuBarController menuBarController;
+  @FXML private Button prevButton;
+  @FXML private Button nextButton;
+  @FXML private VBox sunday;
+  @FXML private VBox saturday;
+  @FXML private VBox friday;
+  @FXML private VBox thursday;
+  @FXML private VBox wednesday;
+  @FXML private VBox tuesday;
+  @FXML private VBox monday;
+  private LocalDate date;
+  @FXML private Label startOfWeekLabel;
+  @FXML private Label endOfWeekLabel;
+  @FXML private Label yearTracker;
+  @FXML private HBox dayViewContainer;
+  @FXML private HBox dayImageContainer;
+  @FXML private HBox mondayContainer;
+  @FXML private HBox tuesdayContainer;
+  @FXML private HBox wednesdayContainer;
+  @FXML private HBox thursdayContainer;
+  @FXML private HBox fridayContainer;
+  @FXML private HBox saturdayContainer;
+  @FXML private HBox sundayContainer;
 
   /**
    * Initializes the main scene by checking the current user session and updating the view

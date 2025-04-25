@@ -10,7 +10,11 @@ import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
 import java.time.temporal.WeekFields;
-import java.util.*;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
@@ -32,28 +36,14 @@ import javafx.scene.text.Text;
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
  * @author Nick Heggø and Odin Arvhage
- * @version 2025.04.24
+ * @version 2025.04.25
  */
 public class MainController implements DataController {
 
   @FXML private MenuBarController menuBarController;
-  @FXML private VBox mondayContainer;
-  @FXML private VBox tuesdayContainer;
-  @FXML private VBox wednesdayContainer;
-  @FXML private VBox thursdayContainer;
-  @FXML private VBox fridayContainer;
-  @FXML private VBox saturdayContainer;
-  @FXML private VBox sundayContainer;
 
-  @FXML private HBox dayViewContainer;
-
-  @FXML private Label mondayLabel;
-  @FXML private Label tuesdayLabel;
-  @FXML private Label wednesdayLabel;
-  @FXML private Label thursdayLabel;
-  @FXML private Label fridayLabel;
-  @FXML private Label saturdayLabel;
-  @FXML private Label sundayLabel;
+  @FXML private HBox dayLabels;
+  @FXML private HBox taskContainers;
 
   @FXML private Label yearLabel;
   @FXML private Label startOfWeekLabel;
@@ -75,42 +65,34 @@ public class MainController implements DataController {
    */
   @FXML
   public void initialize() {
+    setStartOfWeek(LocalDate.now());
+
+    for (var children : dayLabels.getChildren()) {
+      if (children instanceof Label label) {
+        label
+            .prefWidthProperty()
+            .bind(dayLabels.widthProperty().subtract(2).divide(dayLabels.getChildren().size()));
+      }
+    }
+
+    for (var children : taskContainers.getChildren()) {
+      if (children instanceof VBox taskContainer) {
+        taskContainer.setSpacing(5);
+        taskContainer
+            .prefWidthProperty()
+            .bind(
+                taskContainers
+                    .widthProperty()
+                    .subtract(2)
+                    .divide(taskContainers.getChildren().size()));
+        taskContainer.prefHeightProperty().bind(taskContainers.heightProperty().subtract(2));
+      }
+    }
+
+    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getStartOfWeek);
+
     register();
     updateData();
-    setStartOfWeek(LocalDate.now());
-    var taskContainers =
-        List.of(
-            mondayContainer,
-            tuesdayContainer,
-            wednesdayContainer,
-            thursdayContainer,
-            fridayContainer,
-            saturdayContainer,
-            sundayContainer);
-
-    for (var taskContainer : taskContainers) {
-      taskContainer.setSpacing(5);
-      taskContainer
-          .prefWidthProperty()
-          .bind(dayViewContainer.widthProperty().subtract(2).divide(taskContainers.size()));
-      taskContainer.prefHeightProperty().bind(dayViewContainer.heightProperty().subtract(2));
-    }
-    var dayLabels =
-        List.of(
-            mondayLabel,
-            tuesdayLabel,
-            wednesdayLabel,
-            thursdayLabel,
-            fridayLabel,
-            saturdayLabel,
-            sundayLabel);
-
-    for (var label : dayLabels) {
-      label
-          .prefWidthProperty()
-          .bind(dayViewContainer.widthProperty().subtract(2).divide(dayLabels.size()));
-    }
-    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getStartOfWeek);
   }
 
   /**
@@ -188,24 +170,24 @@ public class MainController implements DataController {
    * @param tasksToBeDisplayed map of the tasks to be rendered.
    */
   public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
-    Map<LocalDate, VBox> vboxMap = new HashMap<>();
-    vboxMap.put(startOfWeek, mondayContainer);
-    vboxMap.put(startOfWeek.plusDays(1), tuesdayContainer);
-    vboxMap.put(startOfWeek.plusDays(2), wednesdayContainer);
-    vboxMap.put(startOfWeek.plusDays(3), thursdayContainer);
-    vboxMap.put(startOfWeek.plusDays(4), fridayContainer);
-    vboxMap.put(startOfWeek.plusDays(5), saturdayContainer);
-    vboxMap.put(startOfWeek.plusDays(6), sundayContainer);
-    for (VBox vbox : vboxMap.values()) {
-      vbox.getChildren().clear();
-    }
-    for (Map.Entry<LocalDate, List<Task>> entry : tasksToBeDisplayed.entrySet()) {
-      LocalDate taskDate = entry.getKey();
-      VBox targetVBox = vboxMap.get(taskDate);
-      List<Task> taskList = entry.getValue();
-      for (Task task : taskList) {
-        targetVBox.getChildren().add(createTaskPane(task));
+    // lookup map for dayOfWeek to its corresponding container
+    var tasksByDayOfWeek = new HashMap<LocalDate, VBox>();
+    int daysToAdd = 0;
+    for (var children : taskContainers.getChildren()) {
+      if (children instanceof VBox taskContainer) {
+        tasksByDayOfWeek.put(startOfWeek.plusDays(daysToAdd++), taskContainer);
       }
+    }
+
+    tasksByDayOfWeek.values().forEach(taskContainer -> taskContainer.getChildren().clear());
+
+    for (var entry : tasksToBeDisplayed.entrySet()) {
+      var taskContainer = tasksByDayOfWeek.get(entry.getKey());
+      var tasks = entry.getValue();
+      tasks.stream()
+          .sorted(Comparator.comparing(Task::getPriority))
+          .map(this::createTaskPane)
+          .forEach(taskContainer.getChildren()::add);
     }
   }
 

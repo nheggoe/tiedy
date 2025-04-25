@@ -8,6 +8,8 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.VBox;
 
 /**
  * Controller class responsible for handling user registration functionality in the application.
@@ -18,9 +20,17 @@ import javafx.scene.control.TextField;
  */
 public class RegisterController {
 
+  @FXML private BorderPane root;
+  @FXML private VBox innerDiv;
   @FXML private TextField usernameField;
   @FXML private PasswordField passwordField;
   @FXML private PasswordField passwordRepeatField;
+
+  @FXML
+  private void initialize() {
+    innerDiv.prefWidthProperty().bind(root.widthProperty().multiply(0.6));
+    innerDiv.prefHeightProperty().bind(root.widthProperty().multiply(0.4));
+  }
 
   /**
    * Handles the user registration process. This method validates the input provided by the user,

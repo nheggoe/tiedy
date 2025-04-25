@@ -4,12 +4,12 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import org.jspecify.annotations.NonNull;
 
 /**
  * A utility class for creating and managing task-related dialogs. (subject to change)
@@ -51,9 +51,10 @@ public class DialogFactory {
   }
 
   private static void generateTaskDialog(
-      @NonNull String dialogTitle,
-      @NonNull Task existingTask,
-      @NonNull Consumer<Task> taskCallback) {
+      String dialogTitle, Task existingTask, Consumer<Task> taskCallback) {
+    Objects.requireNonNull(dialogTitle);
+    Objects.requireNonNull(existingTask);
+    Objects.requireNonNull(taskCallback);
     try {
       FXMLLoader loader =
           new FXMLLoader(

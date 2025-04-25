@@ -1,6 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
 
-import org.jspecify.annotations.NonNull;
+import java.util.Objects;
 
 /**
  * The LevelSystem class represent a user's level and experience. It contains methods to get and set
@@ -40,7 +40,8 @@ public class LevelSystem {
    *
    * @param other the LevelSystem instance to copy; must not be null
    */
-  public LevelSystem(@NonNull LevelSystem other) {
+  public LevelSystem(LevelSystem other) {
+    Objects.requireNonNull(other);
     this.currentLevel = other.currentLevel;
     this.currentExperience = other.currentExperience;
     this.totalExperience = other.totalExperience;

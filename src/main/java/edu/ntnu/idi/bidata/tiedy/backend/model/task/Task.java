@@ -4,9 +4,9 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
-import org.jspecify.annotations.NonNull;
 
 /**
  * The Task class represents a task with values like id, title, description, status, who it's
@@ -51,7 +51,8 @@ public class Task {
    *
    * @param other the Task instance to copy; must not be null
    */
-  public Task(@NonNull Task other) {
+  public Task(Task other) {
+    Objects.requireNonNull(other);
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.assignedUsers = new HashSet<>(other.assignedUsers); // shallow copy, but UUID is immutable

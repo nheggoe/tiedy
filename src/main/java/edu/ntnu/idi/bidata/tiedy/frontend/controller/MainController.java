@@ -6,15 +6,24 @@ import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
-import java.util.Collection;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import java.time.temporal.WeekFields;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.layout.FlowPane;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -26,15 +35,22 @@ import javafx.scene.text.Text;
  * application's main scene. This controller uses JavaFX components to display user tasks and
  * provides methods for initializing the view, navigating to other scenes, and adding tasks.
  *
- * @author Nick Heggø
- * @version 2025.04.12
+ * @author Nick Heggø and Odin Arvhage
+ * @version 2025.04.25
  */
 public class MainController implements DataController {
 
-  @FXML private FlowPane taskViewPane;
-
-  // Reference to the included MenuBar's controller
   @FXML private MenuBarController menuBarController;
+
+  @FXML private HBox dayLabels;
+  @FXML private HBox taskContainers;
+
+  @FXML private Label yearLabel;
+  @FXML private Label startOfWeekLabel;
+  @FXML private Label endOfWeekLabel;
+  @FXML private Label weekNumberLabel;
+
+  private LocalDate startOfWeek;
 
   /**
    * Initializes the main scene by checking the current user session and updating the view
@@ -49,48 +65,157 @@ public class MainController implements DataController {
    */
   @FXML
   public void initialize() {
-    taskViewPane.setHgap(10);
-    taskViewPane.setVgap(10);
+    setStartOfWeek(LocalDate.now());
+
+    for (var children : dayLabels.getChildren()) {
+      if (children instanceof Label label) {
+        label
+            .prefWidthProperty()
+            .bind(dayLabels.widthProperty().subtract(2).divide(dayLabels.getChildren().size()));
+      }
+    }
+
+    for (var children : taskContainers.getChildren()) {
+      if (children instanceof VBox taskContainer) {
+        taskContainer.setSpacing(5);
+        taskContainer
+            .prefWidthProperty()
+            .bind(
+                taskContainers
+                    .widthProperty()
+                    .subtract(2)
+                    .divide(taskContainers.getChildren().size()));
+        taskContainer.prefHeightProperty().bind(taskContainers.heightProperty().subtract(2));
+      }
+    }
+
+    menuBarController.setUpdateTaskViewPaneCallback(this::renderTasksByWeek, this::getStartOfWeek);
 
     register();
     updateData();
+  }
 
-    // Set up the menu bar to call updateFlowPane when filters are selected
-    if (menuBarController != null) {
-      menuBarController.setUpdateTaskViewPaneCallback(this::updateTaskViewPane);
+  /**
+   * Is called when the week button in the Main scene is pressed. Sets the date to the current week
+   * and then updates the data.
+   */
+  @FXML
+  public void onWeekButtonPressed() {
+    setStartOfWeek(LocalDate.now());
+    updateData();
+  }
+
+  /**
+   * Finds the week number based on the date.
+   *
+   * @return returns the week number
+   */
+  public int calculateWeekNumber() {
+    return startOfWeek.get(WeekFields.of(Locale.getDefault()).weekOfYear());
+  }
+
+  /** Updates the text of the labels in the Main scene. */
+  @FXML
+  public void updateLabels() {
+    startOfWeekLabel.setText(startOfWeek.getDayOfMonth() + "-" + startOfWeek.getMonth().toString());
+    endOfWeekLabel.setText(
+        startOfWeek.plusDays(6).getDayOfMonth()
+            + "-"
+            + startOfWeek.plusDays(6).getMonth().toString());
+    yearLabel.setText(startOfWeek.getYear() + "");
+    weekNumberLabel.setText("Week " + calculateWeekNumber());
+  }
+
+  /**
+   * Sets the date of the MainController. Will set the date to the first monday going back in time.
+   *
+   * @param startOfWeek date to be set
+   */
+  public void setStartOfWeek(LocalDate startOfWeek) {
+    this.startOfWeek = startOfWeek.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+  }
+
+  /** Updates the data of the Main scene. */
+  @Override
+  public void updateData() {
+    renderTasksByWeek(
+        TiedyApp.getDataAccessFacade()
+            .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), startOfWeek));
+    updateLabels();
+  }
+
+  /**
+   * Is called when the next button is pressed in the Main scene. Goes a week forward and then
+   * updates all data.
+   */
+  @FXML
+  public void onNextButtonPressed() {
+    startOfWeek = startOfWeek.plusDays(7);
+    updateData();
+  }
+
+  /**
+   * Is called when the previous button is pressed in the Main scene. Goes a week back and then
+   * updates all data.
+   */
+  @FXML
+  public void onPrevButtonPressed() {
+    startOfWeek = startOfWeek.minusDays(7);
+    updateData();
+  }
+
+  /**
+   * Renders the given map of tasks in the week view.
+   *
+   * @param tasksToBeDisplayed map of the tasks to be rendered.
+   */
+  public void renderTasksByWeek(Map<LocalDate, List<Task>> tasksToBeDisplayed) {
+    // lookup map for dayOfWeek to its corresponding container
+    var tasksByDayOfWeek = new HashMap<LocalDate, VBox>();
+    int daysToAdd = 0;
+    for (var children : taskContainers.getChildren()) {
+      if (children instanceof VBox taskContainer) {
+        tasksByDayOfWeek.put(startOfWeek.plusDays(daysToAdd++), taskContainer);
+      }
+    }
+
+    tasksByDayOfWeek.values().forEach(taskContainer -> taskContainer.getChildren().clear());
+
+    for (var entry : tasksToBeDisplayed.entrySet()) {
+      var taskContainer = tasksByDayOfWeek.get(entry.getKey());
+      var tasks = entry.getValue();
+      tasks.stream()
+          .sorted(Comparator.comparing(Task::getPriority))
+          .map(this::createTaskPane)
+          .forEach(taskContainer.getChildren()::add);
     }
   }
 
-  @Override
-  public void updateData() {
-    updateTaskViewPane(
-        TiedyApp.getDataAccessFacade().getActiveTasksByUserId(UserSession.getCurrentUserId()));
-  }
-
-  private void updateTaskViewPane(Collection<Task> tasks) {
-    taskViewPane.getChildren().clear();
-    tasks.stream()
-        .sorted(Comparator.comparing(Task::getPriority))
-        .map(this::createTaskPane)
-        .forEach(taskViewPane.getChildren()::add);
-  }
-
+  /**
+   * Creates a task pane to be displayed in the calendar view.
+   *
+   * @param task to be displayed
+   * @return finished task render
+   */
   private Pane createTaskPane(Task task) {
     Pane cardPane = new Pane();
-    cardPane.setPrefSize(120, 80);
+    cardPane.setPrefSize(110, 80);
 
-    Rectangle taskBg = new Rectangle(0, 0, 120, 80);
-    taskBg.setFill(Color.WHITE);
-    taskBg.setStroke(Color.BLACK);
+    Rectangle taskBg = new Rectangle(0, 0, 110, 80);
+    taskBg.setFill(Color.web("6495ed"));
     taskBg.setArcWidth(10);
     taskBg.setArcHeight(10);
 
-    Text rankText = new Text(10, 30, task.getTitle());
-    rankText.setFont(Font.font("Arial", FontWeight.BOLD, 18));
+    Text rankText = new Text(10, 15, task.getTitle());
+    rankText.setFont(Font.font("Arial", FontWeight.BOLD, 12));
+    rankText.setFill(Color.web("fff8dc"));
+    rankText.setWrappingWidth(90);
 
     String statusText = task.getStatus().getDisplayName();
-    Text statusIndicator = new Text(10, 65, statusText);
-    statusIndicator.setFont(Font.font("Arial", 10));
+    Text statusIndicator = new Text(10, 55, statusText);
+    statusIndicator.setFont(Font.font("Arial", 8));
+    statusIndicator.setFill(Color.web("fff8dc"));
+    statusIndicator.setWrappingWidth(90);
 
     switch (task.getStatus()) {
       case CLOSED -> statusIndicator.setFill(Color.GREEN);
@@ -102,8 +227,8 @@ public class MainController implements DataController {
     Button deleteButton = new Button("X");
     deleteButton.setStyle(
         "-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
-    deleteButton.setLayoutX(90);
-    deleteButton.setLayoutY(10);
+    deleteButton.setLayoutX(40);
+    deleteButton.setLayoutY(20);
     deleteButton.setVisible(false);
     deleteButton.setOnAction(
         unused -> {
@@ -119,8 +244,8 @@ public class MainController implements DataController {
     Button completeButton = new Button("✓");
     completeButton.setStyle(
         "-fx-background-color: limegreen; -fx-text-fill: white; -fx-font-weight: bold;");
-    completeButton.setLayoutX(60);
-    completeButton.setLayoutY(10);
+    completeButton.setLayoutX(10);
+    completeButton.setLayoutY(20);
     completeButton.setVisible(false);
 
     if (task.getStatus() != Status.CLOSED) {
@@ -147,8 +272,8 @@ public class MainController implements DataController {
         });
 
     cardPane.getChildren().addAll(taskBg, rankText, statusIndicator, deleteButton, completeButton);
-    cardPane.setPadding(new Insets(5));
     cardPane.setOnMouseClicked(unused -> showEditTaskDialog(task));
+    cardPane.setPadding(new Insets(15));
     return cardPane;
   }
 
@@ -201,5 +326,14 @@ public class MainController implements DataController {
             AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
           }
         });
+  }
+
+  /**
+   * Gets the date of this class.
+   *
+   * @return the date
+   */
+  public LocalDate getStartOfWeek() {
+    return this.startOfWeek;
   }
 }

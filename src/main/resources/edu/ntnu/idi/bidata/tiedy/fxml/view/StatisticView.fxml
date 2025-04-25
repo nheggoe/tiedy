@@ -4,8 +4,8 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0"
-            prefWidth="700.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1"
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
+            prefWidth="1000.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.StatisticController">
     <top>

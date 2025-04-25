@@ -41,7 +41,7 @@ public class TaskDialogController {
 
     // --------  start hidden advanced options  --------
     advancedOptionsPane.setExpanded(false);
-    dueDatePicker.setValue(LocalDate.now().plusDays(1));
+    dueDatePicker.setValue(LocalDate.now());
     priorityComboBox.setItems(FXCollections.observableArrayList(Priority.values()));
     priorityComboBox.setValue(Priority.NONE);
   }
@@ -57,8 +57,7 @@ public class TaskDialogController {
     // Populate fields with task data
     taskNameField.setText(task.getTitle());
     descriptionTextArea.setText(task.getDescription());
-    dueDatePicker.setValue(
-        task.getDeadline() == null ? LocalDate.now().plusDays(1) : task.getDeadline());
+    dueDatePicker.setValue((task.getDeadline() == null) ? LocalDate.now() : task.getDeadline());
     priorityComboBox.setValue(task.getPriority());
     statusComboBox.setValue(task.getStatus());
   }

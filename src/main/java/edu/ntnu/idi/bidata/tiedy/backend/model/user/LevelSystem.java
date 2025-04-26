@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
+package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
 import java.util.Objects;
 

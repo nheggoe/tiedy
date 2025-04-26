@@ -1,12 +1,15 @@
 package edu.ntnu.idi.bidata.tiedy.backend;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
+import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonGroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
 import java.time.LocalDate;
@@ -34,10 +37,12 @@ public class DataAccessFacade implements Runnable {
 
   private final UserRepository userRepository;
   private final TaskRepository taskRepository;
+  private final GroupRepository groupRepository;
 
   private DataAccessFacade() {
     userRepository = JsonUserRepository.getInstance();
     taskRepository = JsonTaskRepository.getInstance();
+    groupRepository = JsonGroupRepository.getInstance();
   }
 
   /**
@@ -67,7 +72,7 @@ public class DataAccessFacade implements Runnable {
    */
   @Override
   public void run() {
-    List.of(userRepository, taskRepository).forEach(DataRepository::saveChanges);
+    List.of(userRepository, taskRepository, groupRepository).forEach(DataRepository::saveChanges);
     LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
@@ -75,6 +80,10 @@ public class DataAccessFacade implements Runnable {
 
   private Task createDetachedCopy(Task original) {
     return new Task(original);
+  }
+
+  private Group createDetachedCopy(Group original) {
+    return new Group(original);
   }
 
   // ------------------------  User Repository Methods  ------------------------
@@ -264,5 +273,11 @@ public class DataAccessFacade implements Runnable {
       }
     }
     return mapToBeDisplayed;
+  }
+
+  // ------------------------  Group Repository  ------------------------
+
+  public List<Group> getGroupsByUserId(UUID userId) {
+    return groupRepository.getGroupsByUserId(userId).map(this::createDetachedCopy).toList();
   }
 }

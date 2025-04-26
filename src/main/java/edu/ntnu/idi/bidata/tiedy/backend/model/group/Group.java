@@ -42,6 +42,11 @@ public class Group {
     addMember(userId, true);
   }
 
+  public Group(UUID userId) {
+    this();
+    addMember(userId, true);
+  }
+
   /**
    * Creates a new Group instance by copying the data from an existing Group object.
    *
@@ -125,6 +130,10 @@ public class Group {
     }
 
     return members.replace(userId, isAdmin) != null;
+  }
+
+  public boolean isAdmin(UUID userId) {
+    return getMembers().getOrDefault(userId, false);
   }
 
   // ------------------------   Getters and Setters ------------------------

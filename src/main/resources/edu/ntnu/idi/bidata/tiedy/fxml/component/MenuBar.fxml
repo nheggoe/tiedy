@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MenuBarController">
+<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.component.MenuBarController">
     <!-- Left aligned section -->
     <HBox fx:id="leftSection" styleClass="inner-container" HBox.hgrow="ALWAYS">
         <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress">

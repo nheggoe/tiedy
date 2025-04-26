@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Predicate;
 import java.util.logging.Logger;
 
 /**
@@ -86,6 +87,10 @@ public class DataAccessFacade implements Runnable {
     return new Group(original);
   }
 
+  private User createDetachedCopy(User original) {
+    return new User(original);
+  }
+
   // ------------------------  User Repository Methods  ------------------------
 
   /**
@@ -115,6 +120,10 @@ public class DataAccessFacade implements Runnable {
    */
   public Optional<User> authenticate(String username, String plainTextPassword) {
     return userRepository.authenticate(username, plainTextPassword);
+  }
+
+  public List<User> filterUsers(Predicate<User> filterCondition) {
+    return userRepository.getAll().filter(filterCondition).map(this::createDetachedCopy).toList();
   }
 
   // ------------------------  Task Repository Methods  ------------------------
@@ -275,9 +284,25 @@ public class DataAccessFacade implements Runnable {
     return mapToBeDisplayed;
   }
 
+  public List<Task> getActiveTasksByGroupId(UUID groupId) {
+    Group group = groupRepository.getById(groupId).orElse(null);
+    if (group == null) {
+      return List.of();
+    }
+
+    return group.getMembers().keySet().stream()
+        .flatMap(taskRepository::getActiveTasksByUserId)
+        .map(this::createDetachedCopy)
+        .toList();
+  }
+
   // ------------------------  Group Repository  ------------------------
 
   public List<Group> getGroupsByUserId(UUID userId) {
     return groupRepository.getGroupsByUserId(userId).map(this::createDetachedCopy).toList();
+  }
+
+  public Group addGroup(Group group) {
+    return groupRepository.add(group);
   }
 }

@@ -1,6 +1,5 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.level.LevelSystem;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
 import java.util.Objects;

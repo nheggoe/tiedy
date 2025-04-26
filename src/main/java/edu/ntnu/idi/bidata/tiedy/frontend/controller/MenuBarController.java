@@ -98,6 +98,12 @@ public class MenuBarController {
         });
   }
 
+  @FXML
+  public void onGroupButtonPress() {
+    TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
+    taskFilterMenu.setDisable(true);
+  }
+
   /**
    * Handles the action triggered when the home button is pressed in the menubar.
    *

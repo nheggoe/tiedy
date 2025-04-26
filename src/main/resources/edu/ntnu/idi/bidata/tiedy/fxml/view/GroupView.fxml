@@ -7,40 +7,43 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0"
-            prefWidth="1000.0" styleClass="root" stylesheets="@../../css/style.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" styleClass="root" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupViewController">
     <top>
-        <fx:include fx:id="menuBar" source="../component/MenuBar.fxml"/>
+        <fx:include fx:id="menuBar" source="../component/MenuBar.fxml" />
     </top>
     <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
     <center>
-        <HBox prefHeight="277.0" prefWidth="570.0" styleClass="container">
-            <children>
-                <TableView prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                        <TableColumn prefWidth="199.0" text="Username"/>
-                    </columns>
-                </TableView>
-                <VBox prefHeight="280.0" prefWidth="140.0" styleClass="container">
-                    <children>
-                        <Button mnemonicParsing="false" text="Add &gt;&gt;" textAlignment="CENTER"/>
-                        <Button mnemonicParsing="false" text="&lt;&lt; Remove" textAlignment="CENTER">
-                            <padding>
-                                <Insets top="20.0"/>
-                            </padding>
-                        </Button>
-                    </children>
-                </VBox>
-                <TableView prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                        <TableColumn prefWidth="107.0" text="Username"/>
-                        <TableColumn prefWidth="92.0" text="Role"/>
-                    </columns>
-                </TableView>
-            </children>
-        </HBox>
+      <VBox alignment="TOP_CENTER">
+         <children>
+              <HBox fx:id="groupHBox" alignment="TOP_CENTER" prefHeight="637.0" prefWidth="952.0" style="-fx-background-color: -tiedy-yellow;" styleClass="container">
+                  <children>
+                      <TableView prefHeight="248.0" prefWidth="370.0" style="-fx-background-color: -tiedy-blue;">
+                          <columns>
+                              <TableColumn prefWidth="107.0" text="Username" />
+                              <TableColumn prefWidth="92.0" text="Role" />
+                          </columns>
+                      </TableView>
+                      <VBox alignment="CENTER" prefHeight="280.0" prefWidth="140.0" style="-fx-background-color: -tiedy-yellow;" styleClass="container">
+                          <children>
+                              <Button mnemonicParsing="false" text="Add &gt;&gt;" textAlignment="CENTER" />
+                              <Button mnemonicParsing="false" text="&lt;&lt; Remove" textAlignment="CENTER">
+                                  <padding>
+                                      <Insets top="20.0" />
+                                  </padding>
+                              </Button>
+                          </children>
+                      </VBox>
+                      <TableView prefHeight="268.0" prefWidth="348.0" style="-fx-background-color: -tiedy-blue;">
+                          <columns>
+                              <TableColumn prefWidth="199.0" text="Username" />
+                          </columns>
+                      </TableView>
+                  </children>
+              </HBox>
+         </children>
+      </VBox>
     </center>
 </BorderPane>

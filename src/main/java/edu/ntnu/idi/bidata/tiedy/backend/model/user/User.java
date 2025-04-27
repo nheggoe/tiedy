@@ -1,11 +1,10 @@
 package edu.ntnu.idi.bidata.tiedy.backend.model.user;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.user.level.LevelSystem;
 import edu.ntnu.idi.bidata.tiedy.backend.util.PasswordUtil;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Pattern;
-import org.jspecify.annotations.NonNull;
 
 /**
  * The object that represents the customers of the application.
@@ -50,7 +49,8 @@ public class User {
    *
    * @param other the User instance to copy; must not be null
    */
-  public User(@NonNull User other) {
+  public User(User other) {
+    Objects.requireNonNull(other, "User cannot be null!");
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.levelSystem = new LevelSystem(other.levelSystem);

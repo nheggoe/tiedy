@@ -3,8 +3,8 @@ package edu.ntnu.idi.bidata.tiedy.backend.model.group;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
-import org.jspecify.annotations.NonNull;
 
 /**
  * Represents a group of users, specifically family members. Provides functionality to manage the
@@ -48,7 +48,8 @@ public class Group {
    * @param other the Group instance to copy; must not be null and should contain valid values for
    *     all fields
    */
-  public Group(@NonNull Group other) {
+  public Group(Group other) {
+    Objects.requireNonNull(other, "Group cannot be null!");
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.members = new HashMap<>(other.members);

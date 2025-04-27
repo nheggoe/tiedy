@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
-<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="root" stylesheets="@../../css/style.css"
+<BorderPane prefHeight="800.0" prefWidth="1000.0" styleClass="root" stylesheets="@../../css/style.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.LoginController">
     <top>
@@ -41,7 +41,7 @@
                 <Region styleClass="region" visible="false"/>
                 <ImageView fitHeight="40.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/lables/UsernameLabel.png"/>
+                        <Image url="@../../images/labels/UsernameLabel.png"/>
                     </image>
                 </ImageView>
                 <Region styleClass="region" visible="false"/>
@@ -54,7 +54,7 @@
                 <Region layoutX="522.0" layoutY="20.0" styleClass="region" visible="false"/>
                 <ImageView fitHeight="40.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/lables/PasswordLabel.png"/>
+                        <Image url="@../../images/labels/PasswordLabel.png"/>
                     </image>
                 </ImageView>
                 <Region styleClass="region" visible="false"/>

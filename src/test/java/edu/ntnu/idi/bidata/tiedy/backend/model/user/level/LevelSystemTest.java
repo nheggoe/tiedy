@@ -2,6 +2,7 @@ package edu.ntnu.idi.bidata.tiedy.backend.model.user.level;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.user.LevelSystem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

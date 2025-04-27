@@ -25,6 +25,16 @@ public interface TaskRepository extends DataRepository<Task> {
   Stream<Task> getTasksByUserId(UUID userId);
 
   /**
+   * Retrieves a stream of active tasks assigned to a specific user. A task is considered active
+   * based on its status, typically excluding completed or archived tasks.
+   *
+   * @param userId the unique identifier of the user whose active tasks are being retrieved; must
+   *     not be null
+   * @return a stream of tasks that are active and assigned to the specified user
+   */
+  Stream<Task> getActiveTasksByUserId(UUID userId);
+
+  /**
    * Finds all tasks with a specific status.
    *
    * @param status the status to filter by

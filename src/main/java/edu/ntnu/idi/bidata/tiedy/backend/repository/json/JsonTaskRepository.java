@@ -43,6 +43,11 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
   }
 
   @Override
+  public Stream<Task> getActiveTasksByUserId(UUID userId) {
+    return getTasksByUserId(userId).filter(task -> task.getStatus() != Status.CLOSED);
+  }
+
+  @Override
   public Stream<Task> getTasksByStatus(Status status) {
     return getAll().filter(task -> task.getStatus() == status);
   }

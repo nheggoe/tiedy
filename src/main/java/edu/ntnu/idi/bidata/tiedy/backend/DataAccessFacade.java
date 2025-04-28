@@ -22,7 +22,6 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Intended to be the only class that the frontend package interacts with, it would provide all the
@@ -338,10 +337,7 @@ public class DataAccessFacade implements Runnable {
       return List.of();
     }
 
-    return Stream.concat(group.getMembers().keySet().stream(), Stream.of(groupId))
-        .flatMap(taskRepository::getActiveTasksByUserId)
-        .map(this::createDetachedCopy)
-        .toList();
+    return taskRepository.getActiveTasksByUserId(groupId).map(this::createDetachedCopy).toList();
   }
 
   // ------------------------  Group Repository  ------------------------

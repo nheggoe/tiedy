@@ -59,8 +59,8 @@
                 </VBox>
                 <VBox alignment="CENTER" spacing="15" styleClass="transparent">
                     <children>
-                        <Button mnemonicParsing="false" styleClass="action-button" text="Add &gt;&gt;" />
-                        <Button mnemonicParsing="false" styleClass="action-button" text="&lt;&lt; Remove" />
+                        <Button fx:id="addButton" mnemonicParsing="false" styleClass="action-button" text="Add &gt;&gt;" />
+                        <Button fx:id="removeButton" mnemonicParsing="false" styleClass="action-button" text="&lt;&lt; Remove" />
                     </children>
                 </VBox>
                 <VBox spacing="8" styleClass="transparent" HBox.hgrow="ALWAYS">
@@ -76,12 +76,6 @@
                         </styleClass>
                     </TableView>
                 </VBox>
-            </children>
-        </HBox>
-        <HBox alignment="CENTER_RIGHT" spacing="15" styleClass="transparent">
-            <children>
-                <Button mnemonicParsing="false" styleClass="secondary-button" text="Cancel" />
-                <Button defaultButton="true" mnemonicParsing="false" styleClass="primary-button" text="Create Group" />
             </children>
         </HBox>
     </children>

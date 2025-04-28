@@ -13,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -36,6 +37,10 @@ public class GroupTab extends Tab {
   @FXML private TableColumn<Task, String> taskTitleColumn;
   @FXML private TableColumn<Task, String> taskPriorityColumn;
   @FXML private TableColumn<Task, String> taskAssignedColumn;
+
+  // center
+  @FXML private Button addButton;
+  @FXML private Button removeButton;
 
   // right
   @FXML private TableView<User> groupLeaderBoard;
@@ -118,6 +123,39 @@ public class GroupTab extends Tab {
         param ->
             new SimpleStringProperty(group.isAdmin(param.getValue().getId()) ? "Admin" : "Member"));
     roleColumn.setSortable(true);
+
+    addButton.setOnAction(
+        unused -> {
+          try {
+            tasksTable
+                .getSelectionModel()
+                .getSelectedItem()
+                .assignUser(groupLeaderBoard.getSelectionModel().getSelectedItem().getId());
+
+            TiedyApp.getDataAccessFacade()
+                .updateTask(tasksTable.getSelectionModel().getSelectedItem());
+            TiedyApp.getDataChangeNotifier().notifyObservers();
+          } catch (NullPointerException e) {
+            AlertFactory.generateWarningAlert("Please select both a task and a user to assign.")
+                .showAndWait();
+          }
+        });
+
+    removeButton.setOnAction(
+        unused -> {
+          try {
+            tasksTable
+                .getSelectionModel()
+                .getSelectedItem()
+                .unassignUser(groupLeaderBoard.getSelectionModel().getSelectedItem().getId());
+            TiedyApp.getDataAccessFacade()
+                .updateTask(tasksTable.getSelectionModel().getSelectedItem());
+            TiedyApp.getDataChangeNotifier().notifyObservers();
+          } catch (NullPointerException e) {
+            AlertFactory.generateWarningAlert("Please select both a task and a user to unassign.")
+                .showAndWait();
+          }
+        });
 
     updateData();
   }

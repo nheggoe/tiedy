@@ -5,15 +5,14 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.task.Priority;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
-import edu.ntnu.idi.bidata.tiedy.backend.repository.DataRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.GroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.TaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.UserRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonGroupRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonTaskRepository;
 import edu.ntnu.idi.bidata.tiedy.backend.repository.json.JsonUserRepository;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DataChangeNotifier;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -30,17 +29,19 @@ import java.util.stream.Collectors;
  * @author Nick Heggø
  * @version 2025.04.12
  */
-public class DataAccessFacade implements Runnable {
+public class DataAccessFacade {
 
   private static final Logger LOGGER = Logger.getLogger(DataAccessFacade.class.getName());
 
   private static DataAccessFacade instance;
 
+  private final DataChangeNotifier notifier;
   private final UserRepository userRepository;
   private final TaskRepository taskRepository;
   private final GroupRepository groupRepository;
 
   private DataAccessFacade() {
+    notifier = DataChangeNotifier.getInstance();
     userRepository = JsonUserRepository.getInstance();
     taskRepository = JsonTaskRepository.getInstance();
     groupRepository = JsonGroupRepository.getInstance();
@@ -58,23 +59,6 @@ public class DataAccessFacade implements Runnable {
       instance = new DataAccessFacade();
     }
     return instance;
-  }
-
-  // ------------------------  Runnable  ------------------------
-
-  /**
-   * Executes a routine to persist changes in the application's repositories and logs the
-   * operation's timestamp.
-   *
-   * <p>This method iterates through relevant repositories (groupRepository, userRepository, and
-   * taskRepository) and calls their `saveChanges` method, ensuring all pending changes are saved.
-   * After completing the save operations, it logs the current time to indicate the application's
-   * state-saving operation has been performed.
-   */
-  @Override
-  public void run() {
-    List.of(userRepository, taskRepository, groupRepository).forEach(DataRepository::saveChanges);
-    LOGGER.info(() -> LocalDateTime.now() + " Application state saved");
   }
 
   // ------------------------  Defensive Copying  ------------------------
@@ -106,8 +90,9 @@ public class DataAccessFacade implements Runnable {
     if (userRepository.getUserByUsername(user.getUsername()).isPresent()) {
       return null;
     }
-
-    return userRepository.add(user);
+    User u = userRepository.add(user);
+    notifier.notifyObservers();
+    return u;
   }
 
   /**
@@ -147,7 +132,9 @@ public class DataAccessFacade implements Runnable {
    */
   public Task updateTask(Task task) {
     Objects.requireNonNull(task);
-    return taskRepository.update(task);
+    Task t = taskRepository.update(task);
+    notifier.notifyObservers();
+    return t;
   }
 
   /**
@@ -157,7 +144,9 @@ public class DataAccessFacade implements Runnable {
    */
   public boolean removeTask(UUID taskId) {
     Objects.requireNonNull(taskId);
-    return taskRepository.remove(taskId);
+    boolean status = taskRepository.remove(taskId);
+    notifier.notifyObservers();
+    return status;
   }
 
   /**
@@ -168,7 +157,9 @@ public class DataAccessFacade implements Runnable {
    */
   public Task addTask(Task task) {
     Objects.requireNonNull(task);
-    return taskRepository.add(task);
+    Task t = taskRepository.add(task);
+    notifier.notifyObservers();
+    return t;
   }
 
   /**
@@ -252,7 +243,9 @@ public class DataAccessFacade implements Runnable {
   public boolean assignTaskToUser(UUID taskId, UUID userId) {
     Objects.requireNonNull(taskId);
     Objects.requireNonNull(userId);
-    return taskRepository.assignTaskToUser(taskId, userId);
+    boolean isAssigned = taskRepository.assignTaskToUser(taskId, userId);
+    notifier.notifyObservers();
+    return isAssigned;
   }
 
   /**
@@ -347,6 +340,8 @@ public class DataAccessFacade implements Runnable {
   }
 
   public Group addGroup(Group group) {
-    return groupRepository.add(group);
+    Group g = groupRepository.add(group);
+    notifier.notifyObservers();
+    return g;
   }
 }

@@ -47,7 +47,6 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
     return getTasksByUserId(userId).filter(task -> task.getStatus() != Status.CLOSED);
   }
 
-
   @Override
   public Stream<Task> getTasksByStatus(Status status) {
     return getAll().filter(task -> task.getStatus() == status);
@@ -69,7 +68,10 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
     if (task == null) {
       return false;
     }
-    return task.assignUser(userId);
+
+    boolean isAssigned = task.assignUser(userId);
+    update(task);
+    return isAssigned;
   }
 
   @Override
@@ -78,6 +80,8 @@ public class JsonTaskRepository extends JsonRepository<Task> implements TaskRepo
     if (task == null) {
       return false;
     }
-    return task.getAssignedUsers().remove(userId);
+    boolean isUnassigned = task.getAssignedUsers().remove(userId);
+    update(task);
+    return isUnassigned;
   }
 }

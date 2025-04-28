@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend.util;
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupMemberDialogController;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
 import java.io.IOException;
 import java.util.Objects;
@@ -107,14 +108,14 @@ public class DialogFactory {
       dialog.setDialogPane(loader.load());
 
       // setup controller
-      Group controller = loader.getController();
-      controller.setTask(group);
+      GroupMemberDialogController controller = loader.getController();
+      controller.setGroup(group);
 
       // callback on the OK button
       Optional<ButtonType> result = dialog.showAndWait();
       if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
         controller.validateInput();
-        groupCallback.accept(controller.getTask());
+        groupCallback.accept(controller.getGroup());
       }
 
       // else nothing

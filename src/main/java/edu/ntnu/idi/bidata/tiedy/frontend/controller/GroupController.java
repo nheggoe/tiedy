@@ -1,8 +1,8 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import edu.ntnu.idi.bidata.tiedy.frontend.controller.component.CreateGroupTab;
-import edu.ntnu.idi.bidata.tiedy.frontend.controller.component.GroupTab;
+import edu.ntnu.idi.bidata.tiedy.frontend.component.CreateGroupTab;
+import edu.ntnu.idi.bidata.tiedy.frontend.component.GroupTab;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;

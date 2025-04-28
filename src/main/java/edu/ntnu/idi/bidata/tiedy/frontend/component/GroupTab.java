@@ -227,7 +227,5 @@ public class GroupTab extends Tab {
   }
 
   @FXML
-  private void onManageMembersButtonPress() {
-    DialogFactory.
-  }
+  private void onManageMembersButtonPress() {}
 }

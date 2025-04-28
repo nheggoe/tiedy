@@ -34,7 +34,7 @@
                         <Insets/>
                     </VBox.margin>
                 </HBox>
-                <TableView fx:id="groupMemeberTable" prefHeight="376.0" prefWidth="600.0">
+                <TableView fx:id="groupMemberTable" prefHeight="376.0" prefWidth="600.0">
                     <columns>
                         <TableColumn prefWidth="300.0" text="Username"/>
                         <TableColumn prefWidth="300.0" text="Role"/>

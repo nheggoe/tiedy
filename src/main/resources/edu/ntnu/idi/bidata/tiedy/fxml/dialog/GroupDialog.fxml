@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonType?>
 <?import javafx.scene.control.DialogPane?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<DialogPane prefHeight="503.0" prefWidth="667.0" styleClass="root" stylesheets="@../../css/style.css"
-            xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-    <content>
-        <ScrollPane prefHeight="200.0" prefWidth="200.0" styleClass="container">
-            <content>
-                <TableView fx:id="groupMemeberTable" prefHeight="376.0" prefWidth="272.0" styleClass="centered-content"
-                           stylesheets="@../../css/style.css">
-                    <columns>
-                        <TableColumn prefWidth="114.0" text="Username"/>
-                        <TableColumn prefWidth="133.5" text="Role"/>
-                    </columns>
-                </TableView>
-            </content>
-        </ScrollPane>
-    </content>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<DialogPane prefHeight="500.0" prefWidth="650.0" styleClass="dialog-pane" stylesheets="@../../css/group-style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <header>
-        <MenuBar minHeight="35.0" prefHeight="35.0" prefWidth="221.0" stylesheets="@../../css/style.css">
-            <menus>
-                <Menu mnemonicParsing="false" text="File">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Close"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="Delete"/>
-                    </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                    <items>
-                        <MenuItem mnemonicParsing="false" text="About"/>
-                    </items>
-                </Menu>
-            </menus>
-        </MenuBar>
+        <VBox spacing="10" styleClass="transparent">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
+            <Label style="-fx-font-size: 18px;" styleClass="form-label" text="Group Members" />
+            <Label style="-fx-font-style: italic;" text="View and manage group members" />
+        </VBox>
     </header>
+    <content>
+      <VBox spacing="5.0">
+         <children>
+            <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="5.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button layoutX="483.0" layoutY="10.0" mnemonicParsing="false" prefWidth="100.0" text="Add" />
+                  <Button mnemonicParsing="false" prefWidth="100.0" text="Remove" />
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+                <TableView fx:id="groupMemeberTable" prefHeight="376.0" prefWidth="600.0">
+                    <columns>
+                        <TableColumn prefWidth="300.0" text="Username" />
+                        <TableColumn prefWidth="300.0" text="Role" />
+                    </columns>
+                    <styleClass>
+                        <String fx:value="user-table" />
+                    </styleClass>
+                </TableView>
+         </children>
+      </VBox>
+    </content>
+   <buttonTypes>
+      <ButtonType fx:constant="OK" />
+      <ButtonType fx:constant="CANCEL" />
+   </buttonTypes>
 </DialogPane>

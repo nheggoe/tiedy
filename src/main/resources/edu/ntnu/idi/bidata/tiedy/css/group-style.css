@@ -312,13 +312,68 @@
 /* Dialog styles */
 .dialog-pane {
     -fx-background-color: -tiedy-background;
+    -fx-border-color: transparent;
 }
 
 .dialog-pane > .button-bar > .container {
     -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.dialog-pane > .button-bar .button {
+    -fx-background-color: -tiedy-primary;
+    -fx-text-fill: white;
+    -fx-padding: 8px 16px;
+    -fx-background-radius: 4px;
+}
+
+.dialog-pane > .button-bar .button:hover {
+    -fx-background-color: -tiedy-primary-dark;
 }
 
 .dialog-pane > .content {
     -fx-background-color: -tiedy-background;
     -fx-padding: 16px;
+    -fx-border-color: transparent;
+}
+
+.dialog-pane:header .header-panel {
+    -fx-background-color: -tiedy-primary;
+    -fx-background-radius: 4px 4px 0 0;
+    -fx-padding: 0;
+}
+
+.dialog-pane:header .header-panel .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Scroll Pane styles */
+.scroll-pane {
+    -fx-background-color: -tiedy-background;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .scroll-bar {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane > .scroll-bar > .thumb {
+    -fx-background-color: -tiedy-primary-light;
+    -fx-background-radius: 3px;
+}
+
+.scroll-pane > .scroll-bar > .thumb:hover {
+    -fx-background-color: -tiedy-primary;
+}
+
+.scroll-pane > .corner {
+    -fx-background-color: transparent;
 }

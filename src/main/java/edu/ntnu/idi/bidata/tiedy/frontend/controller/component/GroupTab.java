@@ -16,9 +16,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.VBox;
 
 public class GroupTab extends Tab {
@@ -130,6 +132,32 @@ public class GroupTab extends Tab {
               .toList();
     }
     tasksTable.setItems(FXCollections.observableArrayList(groupTasks));
+
+    // enable double click to show the edit dialog
+    tasksTable.setRowFactory(
+        tv -> {
+          TableRow<Task> row = new TableRow<>();
+
+          row.setOnMouseClicked(
+              event -> {
+                if (event.getButton() == MouseButton.PRIMARY
+                    && event.getClickCount() == 2
+                    && !row.isEmpty()) {
+                  Task selectedTask = row.getItem();
+
+                  DialogFactory.launchEditTaskDialog(
+                      selectedTask,
+                      updatedTask -> {
+                        if (TiedyApp.getDataAccessFacade().updateTask(updatedTask) != null) {
+                          TiedyApp.getDataChangeNotifier().notifyObservers();
+                        } else {
+                          AlertFactory.generateWarningAlert("Failed to update task").showAndWait();
+                        }
+                      });
+                }
+              });
+          return row;
+        });
 
     // right
     var groupMembers =

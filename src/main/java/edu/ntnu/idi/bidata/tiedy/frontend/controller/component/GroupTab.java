@@ -63,7 +63,7 @@ public class GroupTab extends Tab {
               column.setSortable(false);
               column
                   .prefWidthProperty()
-                  .bind(groupLeaderBoard.widthProperty().divide(2).subtract(1));
+                  .bind(groupLeaderBoard.widthProperty().divide(2).subtract(2));
             });
 
     // ------------------------  left  ------------------------

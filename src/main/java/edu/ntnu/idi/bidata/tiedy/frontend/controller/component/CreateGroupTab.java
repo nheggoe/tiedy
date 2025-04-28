@@ -71,7 +71,7 @@ public class CreateGroupTab extends Tab {
               column.setSortable(false);
               column
                   .prefWidthProperty()
-                  .bind(availableUserTableView.widthProperty().divide(2).subtract(1));
+                  .bind(availableUserTableView.widthProperty().divide(2).subtract(2));
             });
 
     // ------------------------  left  ------------------------

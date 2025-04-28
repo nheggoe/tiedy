@@ -4,7 +4,7 @@
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="755.0" styleClass="root" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupController">
+<BorderPane fx:id="root" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="528.0" prefWidth="755.0" styleClass="root" stylesheets="@../../css/group-style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupController">
     <top>
         <fx:include fx:id="menuBar" source="../component/MenuBar.fxml" />
     </top>
@@ -12,6 +12,6 @@
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
     </padding>
     <center>
-        <TabPane fx:id="groupTabPane" />
+        <TabPane fx:id="groupTabPane" styleClass="tab-pane" />
     </center>
 </BorderPane>

@@ -1,0 +1,324 @@
+/* Modern Tiedy Style */
+* {
+    /* Modern color palette */
+    -tiedy-primary: #4a6baf;
+    -tiedy-primary-light: #6b8cd0;
+    -tiedy-primary-dark: #304a7a;
+    -tiedy-secondary: #f0f3f8;
+    -tiedy-accent: #ff7043;
+    -tiedy-text-dark: #2c3e50;
+    -tiedy-text-light: #ffffff;
+    -tiedy-border: #dfe4ea;
+    -tiedy-background: #FFF8DC;
+    -tiedy-error: #e74c3c;
+    -tiedy-success: #2ecc71;
+
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+    -fx-font-size: 14px;
+}
+
+.root {
+    -fx-background-color: -tiedy-background;
+    -fx-padding: 15px;
+}
+
+/* Container styles */
+.container {
+    -fx-background-color: -tiedy-secondary;
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-border-color: transparent;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+    -fx-padding: 16px;
+    -fx-spacing: 16px;
+}
+
+/* Form elements */
+.form-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-font-size: 14px;
+}
+
+.table-header {
+    -fx-font-weight: bold;
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-font-size: 14px;
+    -fx-padding: 0 0 5px 0;
+    /*-fx-background-color: -tiedy-primary;*/
+}
+
+.text-field {
+    -fx-background-color: white;
+    -fx-border-color: -tiedy-border;
+    -fx-border-radius: 4px;
+    -fx-background-radius: 4px;
+    -fx-padding: 8px 12px;
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-prompt-text-fill: derive(-tiedy-text-dark, 50%);
+    -fx-effect: none;
+    -fx-focus-traversable: true;
+}
+
+.text-field:focused {
+    -fx-border-color: -tiedy-primary;
+    -fx-background-insets: 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(74, 107, 175, 0.25), 4, 0, 0, 0);
+}
+
+/* Table styles */
+.user-table {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: -tiedy-border;
+    -fx-padding: 0;
+}
+
+.user-table .column-header {
+    -fx-background-color: -tiedy-secondary;
+    -fx-border-color: transparent -tiedy-border -tiedy-border transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 8px 15px;
+}
+
+.user-table .column-header-background {
+    -fx-background-color: -tiedy-secondary;
+    -fx-background-radius: 4px 4px 0 0;
+    -fx-padding: 0;
+}
+
+.user-table .column-header .label {
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-font-weight: bold;
+    -fx-alignment: center-left;
+}
+
+.user-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent -tiedy-border transparent;
+    -fx-border-width: 0 0 1px 0;
+    -fx-padding: 2px 0;
+}
+
+.user-table .table-row-cell:selected {
+    -fx-background-color: derive(-tiedy-primary-light, 70%);
+}
+
+.user-table .table-row-cell:empty {
+    -fx-background-color: white;
+}
+
+.user-table .table-cell {
+    -fx-alignment: center-left;
+    -fx-padding: 8px 15px;
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-border-color: transparent;
+}
+
+/* Button styles */
+.button {
+    -fx-background-color: -tiedy-secondary;
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: -tiedy-border;
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-font-weight: normal;
+}
+
+.button:hover {
+    -fx-background-color: derive(-tiedy-secondary, -5%);
+}
+
+.button:pressed {
+    -fx-background-color: derive(-tiedy-secondary, -10%);
+}
+
+.primary-button {
+    -fx-background-color: -tiedy-primary;
+    -fx-text-fill: -tiedy-text-light;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+}
+
+.primary-button:hover {
+    -fx-background-color: -tiedy-primary-dark;
+}
+
+.primary-button:pressed {
+    -fx-background-color: derive(-tiedy-primary-dark, -10%);
+}
+
+.secondary-button {
+    -fx-background-color: -tiedy-secondary;
+    -fx-text-fill: -tiedy-primary;
+    -fx-border-color: -tiedy-primary;
+}
+
+.secondary-button:hover {
+    -fx-background-color: derive(-tiedy-secondary, -5%);
+}
+
+.action-button {
+    -fx-background-color: -tiedy-primary-light;
+    -fx-text-fill: -tiedy-text-light;
+    -fx-border-color: transparent;
+    -fx-min-width: 100px;
+}
+
+.action-button:hover {
+    -fx-background-color: -tiedy-primary;
+}
+
+/* Tool Bar styles */
+.tool-bar {
+    -fx-background-color: transparent;
+    -fx-border-width: 0;
+    -fx-padding: 5px 0;
+}
+
+.tool-bar .button {
+    -fx-background-color: -tiedy-primary;
+    -fx-text-fill: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 6px 12px;
+}
+
+.tool-bar .button:hover {
+    -fx-background-color: -tiedy-primary-dark;
+}
+
+/* Menu Bar styles */
+.menu-bar {
+    -fx-background-color: -tiedy-primary;
+    -fx-background-radius: 4px;
+    -fx-padding: 2px;
+}
+
+.menu-bar .menu {
+    -fx-background-color: transparent;
+}
+
+.menu-bar .menu:hover {
+    -fx-background-color: -tiedy-primary-dark;
+}
+
+.menu-bar .menu .label {
+    -fx-text-fill: white;
+}
+
+.menu-bar .menu-item {
+    -fx-background-color: white;
+}
+
+.menu-bar .menu-item:hover {
+    -fx-background-color: -tiedy-secondary;
+}
+
+.menu-bar .menu-item .label {
+    -fx-text-fill: -tiedy-text-dark;
+}
+
+/* Context Menu styles */
+.context-menu {
+    -fx-background-color: white;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-border-color: -tiedy-border;
+    -fx-padding: 5px;
+}
+
+/* Filter button */
+.filter-button {
+    -fx-background-color: -tiedy-secondary;
+    -fx-border-color: -tiedy-primary;
+    -fx-text-fill: -tiedy-primary;
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-padding: 8px 16px;
+    -fx-font-weight: bold;
+}
+
+.filter-button:hover {
+    -fx-background-color: -tiedy-primary-light;
+    -fx-text-fill: white;
+    -fx-border-color: transparent;
+}
+
+/* Utility classes */
+.transparent {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Tab styles */
+.tab-pane {
+    -fx-tab-min-width: 90px;
+    -fx-tab-max-width: 200px;
+    -fx-tab-min-height: 30px;
+    -fx-border-color: transparent;
+}
+
+.tab-pane .tab-header-area {
+    -fx-background-color: transparent;
+    -fx-padding: 2px 0 0 0;
+}
+
+.tab-pane .tab-header-background {
+    -fx-background-color: -tiedy-secondary;
+    -fx-background-radius: 4px 4px 0 0;
+    -fx-border-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: -tiedy-secondary;
+    -fx-background-radius: 4px 4px 0 0;
+    -fx-padding: 6px 12px;
+    -fx-focus-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.tab-pane .tab:selected {
+    -fx-background-color: -tiedy-primary-light;
+}
+
+.tab-pane .tab:hover {
+    -fx-background-color: derive(-tiedy-secondary, -5%);
+}
+
+.tab-pane .tab:selected:hover {
+    -fx-background-color: -tiedy-primary;
+}
+
+.tab-pane .tab-label {
+    -fx-text-fill: -tiedy-text-dark;
+    -fx-font-weight: normal;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: -tiedy-text-light;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab-content-area {
+    -fx-background-color: -tiedy-background;
+    -fx-border-color: -tiedy-border;
+    -fx-border-width: 1px 0 0 0;
+}
+
+/* Dialog styles */
+.dialog-pane {
+    -fx-background-color: -tiedy-background;
+}
+
+.dialog-pane > .button-bar > .container {
+    -fx-background-color: transparent;
+}
+
+.dialog-pane > .content {
+    -fx-background-color: -tiedy-background;
+    -fx-padding: 16px;
+}

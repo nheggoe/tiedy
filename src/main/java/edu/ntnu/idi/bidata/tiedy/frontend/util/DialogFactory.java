@@ -1,5 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.util;
 
+import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
@@ -74,6 +75,46 @@ public class DialogFactory {
       if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
         controller.validateInput();
         taskCallback.accept(controller.getTask());
+      }
+
+      // else nothing
+
+    } catch (IllegalArgumentException e) {
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+    } catch (IOException e) {
+      AlertFactory.generateErrorAlert("Error loading dialog: " + e.getMessage()).showAndWait();
+    }
+  }
+
+  public static void launchGroupMemberDialog(Group group, Consumer<Group> groupCallback) {
+    generateGroupDialog("Manage Group Members", group, groupCallback);
+  }
+
+  private static void generateGroupDialog(
+      String dialogTitle, Group group, Consumer<Group> groupCallback) {
+    Objects.requireNonNull(dialogTitle, "dialogTitle must not be null");
+    Objects.requireNonNull(group, "existingTask must not be null");
+    Objects.requireNonNull(groupCallback, "taskCallback must not be null");
+    try {
+      FXMLLoader loader =
+          new FXMLLoader(
+              TiedyApp.class.getResource(
+                  "/edu/ntnu/idi/bidata/tiedy/fxml/dialog/GroupDialog.fxml"));
+
+      // setup dialog
+      Dialog<ButtonType> dialog = new Dialog<>();
+      dialog.setTitle(dialogTitle);
+      dialog.setDialogPane(loader.load());
+
+      // setup controller
+      Group controller = loader.getController();
+      controller.setTask(group);
+
+      // callback on the OK button
+      Optional<ButtonType> result = dialog.showAndWait();
+      if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
+        controller.validateInput();
+        groupCallback.accept(controller.getTask());
       }
 
       // else nothing

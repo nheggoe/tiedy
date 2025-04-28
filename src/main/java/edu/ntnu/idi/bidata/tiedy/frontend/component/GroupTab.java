@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.frontend.controller.component;
+package edu.ntnu.idi.bidata.tiedy.frontend.component;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
@@ -224,5 +224,10 @@ public class GroupTab extends Tab {
             AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
           }
         });
+  }
+
+  @FXML
+  private void onManageMembersButtonPress() {
+    DialogFactory.
   }
 }

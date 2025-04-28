@@ -10,6 +10,7 @@ import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javafx.fxml.FXML;
@@ -32,7 +33,7 @@ public class MenuBarController {
   @FXML private MenuItem inProgressTaskFilter;
   @FXML private MenuItem postponedTaskFilter;
   @FXML private MenuItem closedTaskFilter;
-  private Supplier<LocalDate> date;
+  private Supplier<LocalDate> startOfWeekSupplier;
   private Consumer<Map<LocalDate, List<Task>>> updateTaskViewPaneCallback;
 
   /**
@@ -42,8 +43,8 @@ public class MenuBarController {
    */
   public void setUpdateTaskViewPaneCallback(
       Consumer<Map<LocalDate, List<Task>>> callback, Supplier<LocalDate> date) {
-    this.date = date;
-    this.updateTaskViewPaneCallback = callback;
+    this.updateTaskViewPaneCallback = Objects.requireNonNull(callback);
+    this.startOfWeekSupplier = Objects.requireNonNull(date);
     setupFilterListeners();
   }
 
@@ -125,34 +126,39 @@ public class MenuBarController {
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
-                    .getActiveTasksByUserIdAndWeek(UserSession.getCurrentUserId(), date.get())));
+                    .getActiveTasksByUserIdAndWeek(
+                        UserSession.getCurrentUserId(), startOfWeekSupplier.get())));
 
     openTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserIdAndWeekAndStatus(
-                        UserSession.getCurrentUserId(), date.get(), Status.OPEN)));
+                        UserSession.getCurrentUserId(), startOfWeekSupplier.get(), Status.OPEN)));
 
     inProgressTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserIdAndWeekAndStatus(
-                        UserSession.getCurrentUserId(), date.get(), Status.IN_PROGRESS)));
+                        UserSession.getCurrentUserId(),
+                        startOfWeekSupplier.get(),
+                        Status.IN_PROGRESS)));
 
     closedTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserIdAndWeekAndStatus(
-                        UserSession.getCurrentUserId(), date.get(), Status.CLOSED)));
+                        UserSession.getCurrentUserId(), startOfWeekSupplier.get(), Status.CLOSED)));
 
     postponedTaskFilter.setOnAction(
         unused ->
             updateTaskViewPaneCallback.accept(
                 TiedyApp.getDataAccessFacade()
                     .getTasksByUserIdAndWeekAndStatus(
-                        UserSession.getCurrentUserId(), date.get(), Status.POSTPONED)));
+                        UserSession.getCurrentUserId(),
+                        startOfWeekSupplier.get(),
+                        Status.POSTPONED)));
   }
 }

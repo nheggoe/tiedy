@@ -52,9 +52,9 @@ public class DialogFactory {
 
   private static void generateTaskDialog(
       String dialogTitle, Task existingTask, Consumer<Task> taskCallback) {
-    Objects.requireNonNull(dialogTitle);
-    Objects.requireNonNull(existingTask);
-    Objects.requireNonNull(taskCallback);
+    Objects.requireNonNull(dialogTitle, "dialogTitle must not be null");
+    Objects.requireNonNull(existingTask, "existingTask must not be null");
+    Objects.requireNonNull(taskCallback, "taskCallback must not be null");
     try {
       FXMLLoader loader =
           new FXMLLoader(

@@ -41,7 +41,7 @@ public class LevelSystem {
    * @param other the LevelSystem instance to copy; must not be null
    */
   public LevelSystem(LevelSystem other) {
-    Objects.requireNonNull(other);
+    Objects.requireNonNull(other, "Cannot copy from null LevelSystem!");
     this.currentLevel = other.currentLevel;
     this.currentExperience = other.currentExperience;
     this.totalExperience = other.totalExperience;

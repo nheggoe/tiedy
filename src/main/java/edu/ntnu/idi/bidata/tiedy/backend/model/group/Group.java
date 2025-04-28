@@ -54,7 +54,7 @@ public class Group {
    *     all fields
    */
   public Group(Group other) {
-    Objects.requireNonNull(other);
+    Objects.requireNonNull(other, "Group cannot be null!");
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.members = new HashMap<>(other.members);

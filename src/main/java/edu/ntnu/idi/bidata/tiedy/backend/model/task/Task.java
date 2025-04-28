@@ -52,7 +52,7 @@ public class Task {
    * @param other the Task instance to copy; must not be null
    */
   public Task(Task other) {
-    Objects.requireNonNull(other);
+    Objects.requireNonNull(other, "Task cannot be null!");
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.assignedUsers = new HashSet<>(other.assignedUsers); // shallow copy, but UUID is immutable

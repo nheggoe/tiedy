@@ -89,20 +89,20 @@
    <right>
       <VBox maxWidth="120.0" minWidth="80.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonPressed">
-               <graphic>
-                  <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../images/buttons/NextButton.png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Button>
             <Button fx:id="prevButton" mnemonicParsing="false" onAction="#onPrevButtonPressed">
                <graphic>
                   <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../../images/buttons/PreviousButton.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Button>
+            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#onNextButtonPressed">
+               <graphic>
+                  <ImageView fitHeight="150.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../images/buttons/NextButton.png" />
                      </image>
                   </ImageView>
                </graphic>

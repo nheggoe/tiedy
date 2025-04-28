@@ -50,7 +50,7 @@ public class User {
    * @param other the User instance to copy; must not be null
    */
   public User(User other) {
-    Objects.requireNonNull(other);
+    Objects.requireNonNull(other, "User cannot be null!");
     this.id = other.id;
     this.createdAt = other.createdAt;
     this.levelSystem = new LevelSystem(other.levelSystem);

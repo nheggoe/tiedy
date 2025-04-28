@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:id="root" prefHeight="570.0" prefWidth="731.0" spacing="20" styleClass="container" stylesheets="@../../css/group-style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox fx:id="root" prefHeight="664.0" prefWidth="998.0" spacing="20" styleClass="container" stylesheets="@../../css/group-style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
@@ -50,10 +50,11 @@
             <children>
                 <VBox spacing="8" styleClass="transparent" HBox.hgrow="ALWAYS">
                     <Label styleClass="table-header" text="Tasks" />
-                    <TableView fx:id="tasksTable" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tasksTable" prefHeight="323.0" prefWidth="265.0" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="groupTasksColumn" minWidth="5.0" prefWidth="185.0" text="Tasks" />
-                     <TableColumn prefWidth="75.0" text="Assigned Member" />
+                            <TableColumn fx:id="taskTitleColumn" minWidth="5.0" prefWidth="141.0" text="Title" />
+                     <TableColumn fx:id="taskPriorityColumn" minWidth="5.0" prefWidth="141.0" text="Priority" />
+                            <TableColumn fx:id="taskAssignedColumn" prefWidth="128.0" text="Assigned Member" />
                         </columns>
                         <styleClass>
                             <String fx:value="user-table" />
@@ -67,14 +68,12 @@
                     </children>
                 </VBox>
                 <VBox spacing="8" styleClass="transparent" HBox.hgrow="ALWAYS">
-                    <HBox spacing="10" styleClass="transparent">
-                        <Label styleClass="table-header" text="Selected Users" HBox.hgrow="ALWAYS" />
-                        <Label styleClass="table-header" text="Admin" />
-                    </HBox>
+                     <Label styleClass="table-header" text="LeaderBoard" />
                     <TableView fx:id="groupLeaderBoard" VBox.vgrow="ALWAYS">
                         <columns>
-                            <TableColumn fx:id="usernameColumn" prefWidth="107.0" text="Selected Users" />
-                            <TableColumn fx:id="levelColumn" prefWidth="92.0" text="Admin" />
+                            <TableColumn fx:id="userColumn" prefWidth="107.0" text="User" />
+                     <TableColumn fx:id="levelColumn" prefWidth="107.0" text="Level" />
+                            <TableColumn fx:id="roleColumn" prefWidth="92.0" text="Role" />
                         </columns>
                         <styleClass>
                             <String fx:value="user-table" />

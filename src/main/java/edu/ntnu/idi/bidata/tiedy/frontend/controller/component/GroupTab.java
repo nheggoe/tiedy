@@ -22,12 +22,18 @@ public class GroupTab extends Tab {
 
   @FXML private VBox root;
   @FXML private TextField searchBox;
-  @FXML private TableView<Task> tasksTable;
-  @FXML private TableColumn<Task, String> groupTasksColumn;
 
+  // left
+  @FXML private TableView<Task> tasksTable;
+  @FXML private TableColumn<Task, String> taskTitleColumn;
+  @FXML private TableColumn<Task, String> taskPriorityColumn;
+  @FXML private TableColumn<Task, String> taskAssignedColumn;
+
+  // right
   @FXML private TableView<User> groupLeaderBoard;
-  @FXML private TableColumn<User, String> usernameColumn;
+  @FXML private TableColumn<User, String> userColumn;
   @FXML private TableColumn<User, Integer> levelColumn;
+  @FXML private TableColumn<User, String> roleColumn;
 
   private final Group group;
 
@@ -54,34 +60,43 @@ public class GroupTab extends Tab {
   public void initialize() {
     searchBox.textProperty().addListener(unused -> updateData());
 
-    List.of(groupTasksColumn, usernameColumn, levelColumn)
-        .forEach(
-            column -> {
-              column.setReorderable(false);
-              column.setEditable(false);
-              column.setResizable(false);
-              column.setSortable(false);
-              column
-                  .prefWidthProperty()
-                  .bind(groupLeaderBoard.widthProperty().divide(2).subtract(2));
-            });
+    for (var table : List.of(tasksTable, groupLeaderBoard)) {
+      table.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
+    }
+
+    for (var column :
+        List.of(
+            taskTitleColumn,
+            taskPriorityColumn,
+            taskAssignedColumn,
+            userColumn,
+            levelColumn,
+            roleColumn)) {
+      column.setReorderable(false);
+      column.setEditable(false);
+      column.setResizable(false);
+      column.setSortable(false);
+      column.prefWidthProperty().bind(tasksTable.widthProperty().divide(3).subtract(2));
+    }
 
     // ------------------------  left  ------------------------
-    // table
-    tasksTable.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
-    // column
-    groupTasksColumn.prefWidthProperty().bind(tasksTable.widthProperty().subtract(2));
-    groupTasksColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+    taskTitleColumn.setCellValueFactory(new PropertyValueFactory<>("title"));
+    taskPriorityColumn.setCellValueFactory(
+        param -> new SimpleStringProperty(param.getValue().getPriority().getDisplayName()));
+    taskAssignedColumn.setCellValueFactory(
+        param ->
+            new SimpleStringProperty(
+                param.getValue().getAssignedUsers().isEmpty() ? "None" : "Yes"));
 
     // ------------------------  right  ------------------------
-    // table
-    groupLeaderBoard.prefWidthProperty().bind(root.widthProperty().multiply(0.4));
-    // colum
-    usernameColumn.setCellValueFactory(
+    userColumn.setCellValueFactory(
         param -> new SimpleStringProperty(param.getValue().getUsername()));
     levelColumn.setCellValueFactory(
         param -> new ReadOnlyObjectWrapper<>(param.getValue().getCurrentLevel()));
     levelColumn.setSortable(true);
+    roleColumn.setCellValueFactory(
+        param ->
+            new SimpleStringProperty(group.isAdmin(param.getValue().getId()) ? "Admin" : "Member"));
 
     updateData();
   }

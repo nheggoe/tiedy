@@ -3,9 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
@@ -22,21 +20,13 @@
         <VBox spacing="8" styleClass="transparent">
             <children>
                 <Label styleClass="form-label" text="Group Name:" />
-                <TextField promptText="Enter group name" />
+            <Label fx:id="groupNameLabel" layoutX="11.0" layoutY="11.0" styleClass="form-label" text="Group Name:" />
             </children>
         </VBox>
         <VBox spacing="8" styleClass="transparent">
             <children>
                 <Label styleClass="form-label" text="Description:" />
-                <TextField promptText="Enter description">
-                    <contextMenu>
-                        <ContextMenu>
-                            <items>
-                                <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                            </items>
-                        </ContextMenu>
-                    </contextMenu>
-                </TextField>
+            <Label fx:id="groupDescriptionLabel" layoutX="11.0" layoutY="11.0" styleClass="form-label" text="Description:" />
             </children>
         </VBox>
         <ToolBar prefHeight="40.0" prefWidth="200.0" styleClass="transparent">
@@ -49,7 +39,13 @@
         <HBox alignment="CENTER" spacing="20" styleClass="transparent" VBox.vgrow="ALWAYS">
             <children>
                 <VBox spacing="8" styleClass="transparent" HBox.hgrow="ALWAYS">
-                    <Label styleClass="table-header" text="Tasks" />
+               <HBox prefHeight="36.0" prefWidth="299.0">
+                  <children>
+                          <Label prefHeight="23.0" prefWidth="58.0" styleClass="table-header" text="Tasks" />
+                     <Region prefHeight="0.0" prefWidth="215.0" HBox.hgrow="ALWAYS" />
+                     <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#onNewTaskButtonPress" prefHeight="36.0" prefWidth="120.0" text="New Task" />
+                  </children>
+               </HBox>
                     <TableView fx:id="tasksTable" prefHeight="323.0" prefWidth="265.0" VBox.vgrow="ALWAYS">
                         <columns>
                             <TableColumn fx:id="taskTitleColumn" minWidth="5.0" prefWidth="141.0" text="Title" />

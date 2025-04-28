@@ -1,17 +1,11 @@
 package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 
-import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.component.CreateGroupTab;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.component.GroupTab;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.util.Objects;
 import java.util.logging.Logger;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 
 public class GroupController implements DataController {
@@ -34,18 +28,5 @@ public class GroupController implements DataController {
         .forEach(groupTabPane.getTabs()::addAll);
 
     groupTabPane.getTabs().add(new CreateGroupTab());
-  }
-
-  private Tab createTab(Group group) {
-    Objects.requireNonNull(group);
-    return new Tab(group.getName(), null);
-  }
-
-  private Tab createNewGroupTab() {
-    try {
-      return new Tab("New Group", FXMLLoader.load(Path.of("src/main/resources").toUri().toURL()));
-    } catch (IOException e) {
-      throw new IllegalStateException("Could not load CreateGroup.fxml", e);
-    }
   }
 }

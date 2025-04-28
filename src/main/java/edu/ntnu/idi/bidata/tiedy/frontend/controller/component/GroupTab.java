@@ -4,6 +4,8 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
+import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;
 import java.io.IOException;
 import java.util.List;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -11,6 +13,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -22,6 +25,9 @@ public class GroupTab extends Tab {
 
   @FXML private VBox root;
   @FXML private TextField searchBox;
+
+  @FXML private Label groupNameLabel;
+  @FXML private Label groupDescriptionLabel;
 
   // left
   @FXML private TableView<Task> tasksTable;
@@ -58,6 +64,8 @@ public class GroupTab extends Tab {
 
   @FXML
   public void initialize() {
+    groupNameLabel.setText(group.getName());
+    groupDescriptionLabel.setText(group.getDescription());
     searchBox.textProperty().addListener(unused -> updateData());
 
     for (var table : List.of(tasksTable, groupLeaderBoard)) {
@@ -84,9 +92,19 @@ public class GroupTab extends Tab {
     taskPriorityColumn.setCellValueFactory(
         param -> new SimpleStringProperty(param.getValue().getPriority().getDisplayName()));
     taskAssignedColumn.setCellValueFactory(
-        param ->
-            new SimpleStringProperty(
-                param.getValue().getAssignedUsers().isEmpty() ? "None" : "Yes"));
+        param -> {
+          var userIds = param.getValue().getAssignedUsers();
+
+          return new SimpleStringProperty(
+              userIds.isEmpty()
+                  ? "None"
+                  : TiedyApp.getDataAccessFacade()
+                      .getUserNamesByIds(List.copyOf(userIds))
+                      .toString());
+        });
+
+    taskTitleColumn.setSortable(true);
+    taskPriorityColumn.setSortable(true);
 
     // ------------------------  right  ------------------------
     userColumn.setCellValueFactory(
@@ -97,11 +115,13 @@ public class GroupTab extends Tab {
     roleColumn.setCellValueFactory(
         param ->
             new SimpleStringProperty(group.isAdmin(param.getValue().getId()) ? "Admin" : "Member"));
+    roleColumn.setSortable(true);
 
     updateData();
   }
 
   private void updateData() {
+    // left
     var groupTasks = TiedyApp.getDataAccessFacade().getActiveTasksByGroupId(group.getId());
     if (!searchBox.getText().isBlank()) {
       groupTasks =
@@ -110,9 +130,33 @@ public class GroupTab extends Tab {
               .toList();
     }
     tasksTable.setItems(FXCollections.observableArrayList(groupTasks));
+
+    // right
     var groupMembers =
         TiedyApp.getDataAccessFacade()
             .filterUsers(user -> group.getMembers().containsKey(user.getId()));
     groupLeaderBoard.setItems(FXCollections.observableArrayList(groupMembers));
+  }
+
+  @FXML
+  private void onNewTaskButtonPress() {
+    DialogFactory.launchTaskCreationDialog(
+        createdTask -> {
+          if (TiedyApp.getDataAccessFacade().addTask(createdTask) != null) {
+
+            if (TiedyApp.getDataAccessFacade()
+                .assignTaskToUser(createdTask.getId(), group.getId())) {
+
+              TiedyApp.getDataChangeNotifier().notifyObservers();
+              AlertFactory.generateInfoAlert("Success", "Task created successfully!").showAndWait();
+
+            } else {
+              AlertFactory.generateWarningAlert("Failed to assign task to user").showAndWait();
+            }
+
+          } else {
+            AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
+          }
+        });
   }
 }

@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
+import java.util.stream.Stream;
 
 /**
  * Intended to be the only class that the frontend package interacts with, it would provide all the
@@ -124,6 +125,14 @@ public class DataAccessFacade implements Runnable {
 
   public List<User> filterUsers(Predicate<User> filterCondition) {
     return userRepository.getAll().filter(filterCondition).map(this::createDetachedCopy).toList();
+  }
+
+  public List<String> getUserNamesByIds(List<UUID> userIds) {
+    return userRepository
+        .getAll()
+        .filter(user -> userIds.contains(user.getId()))
+        .map(User::getUsername)
+        .toList();
   }
 
   // ------------------------  Task Repository Methods  ------------------------
@@ -290,7 +299,7 @@ public class DataAccessFacade implements Runnable {
       return List.of();
     }
 
-    return group.getMembers().keySet().stream()
+    return Stream.concat(group.getMembers().keySet().stream(), Stream.of(groupId))
         .flatMap(taskRepository::getActiveTasksByUserId)
         .map(this::createDetachedCopy)
         .toList();

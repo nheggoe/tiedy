@@ -34,7 +34,7 @@
                         <Insets />
                     </VBox.margin>
                 </HBox>
-            <HBox spacing="5.0">
+            <HBox fx:id="parent" spacing="5.0">
                <children>
                   <VBox>
                      <children>

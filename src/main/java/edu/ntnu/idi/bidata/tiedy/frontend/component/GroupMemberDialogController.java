@@ -5,11 +5,13 @@ import edu.ntnu.idi.bidata.tiedy.backend.model.user.User;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 
 /**
  * A controller class that manages the dialog for viewing and modifying the members of a group.
@@ -20,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class GroupMemberDialogController {
 
+  @FXML private HBox parent;
   @FXML private TableView<User> availableUserTable;
   @FXML private TableView<User> groupMemberTable;
   @FXML private TableColumn<User, String> availableUsernameColumn;
@@ -30,6 +33,13 @@ public class GroupMemberDialogController {
   /** Initializes the dialog components. */
   @FXML
   public void initialize() {
+    for (var table : List.of(availableUserTable, groupMemberTable)) {
+      table.prefWidthProperty().bind(parent.widthProperty().multiply(0.48));
+      for (var column : table.getColumns()) {
+        column.prefWidthProperty().bind(table.widthProperty().subtract(2));
+      }
+    }
+
     availableUsernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
     memberNameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
   }
@@ -40,8 +50,17 @@ public class GroupMemberDialogController {
 
   public void setGroup(Group group) {
     this.group = group;
+    updateData();
+  }
+
+  private void updateData() {
+    var availableUsers =
+        TiedyApp.getDataAccessFacade()
+            .filterUsers(user -> !group.getMembers().containsKey(user.getId()));
+    availableUserTable.setItems(FXCollections.observableArrayList(availableUsers));
     var users =
         TiedyApp.getDataAccessFacade().getUsersByIds(new ArrayList<>(group.getMembers().keySet()));
+
     groupMemberTable.setItems(FXCollections.observableArrayList(users));
   }
 
@@ -53,6 +72,7 @@ public class GroupMemberDialogController {
         throw new IllegalArgumentException("Please select an user to add.");
       }
       group.addMember(user.getId(), false);
+      updateData();
     } catch (IllegalArgumentException e) {
       AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }
@@ -69,6 +89,7 @@ public class GroupMemberDialogController {
         throw new IllegalArgumentException("You cannot remove an admin from the group.");
       }
       group.removeMember(user.getId());
+      updateData();
     } catch (IllegalArgumentException e) {
       AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
     }

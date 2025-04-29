@@ -24,7 +24,7 @@ import javafx.scene.control.Dialog;
  * interactive user input handling.
  *
  * @author Nick Heggø
- * @version 2025.04.13
+ * @version 2025.04.29
  */
 public class DialogFactory {
 
@@ -114,7 +114,6 @@ public class DialogFactory {
       // callback on the OK button
       Optional<ButtonType> result = dialog.showAndWait();
       if (result.orElse(ButtonType.CANCEL) == ButtonType.OK) {
-        controller.validateInput();
         groupCallback.accept(controller.getGroup());
       }
 

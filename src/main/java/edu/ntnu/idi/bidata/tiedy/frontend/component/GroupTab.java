@@ -166,7 +166,8 @@ public class GroupTab extends Tab {
     if (!searchBox.getText().isBlank()) {
       groupTasks =
           groupTasks.stream()
-              .filter(task -> task.getTitle().contains(searchBox.getText()))
+              .filter(
+                  task -> task.getTitle().toLowerCase().contains(searchBox.getText().toLowerCase()))
               .toList();
     }
     tasksTable.setItems(FXCollections.observableArrayList(groupTasks));

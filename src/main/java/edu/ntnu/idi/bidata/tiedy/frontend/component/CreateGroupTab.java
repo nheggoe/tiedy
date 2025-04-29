@@ -127,7 +127,28 @@ public class CreateGroupTab extends Tab {
   }
 
   @FXML
-  private void onRemoveButtonPress() {}
+  private void onRemoveButtonPress() {
+    try {
+
+      User user = groupTableView.getSelectionModel().getSelectedItem();
+      if (user == null) {
+        throw new IllegalArgumentException("Please select an user to remove.");
+      }
+
+      if (group.isAdmin(user.getId())) {
+        throw new IllegalArgumentException("You cannot remove an admin from the group.");
+      } else {
+        group.removeMember(user.getId());
+      }
+
+      updateData();
+
+    } catch (IllegalArgumentException e) {
+      AlertFactory.generateWarningAlert(e.getMessage()).showAndWait();
+    } catch (IllegalStateException e) {
+      AlertFactory.generateErrorAlert(e.getMessage()).showAndWait();
+    }
+  }
 
   @FXML
   private void onCreateGroupButtonPress() {

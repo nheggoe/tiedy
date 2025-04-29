@@ -114,6 +114,10 @@ public class DataAccessFacade {
     return userRepository.getAll().filter(filterCondition).map(this::createDetachedCopy).toList();
   }
 
+  public List<User> getUsersByIds(List<UUID> userIds) {
+    return userRepository.getAll().filter(user -> userIds.contains(user.getId())).toList();
+  }
+
   public List<String> getUserNamesByIds(List<UUID> userIds) {
     return userRepository
         .getAll()

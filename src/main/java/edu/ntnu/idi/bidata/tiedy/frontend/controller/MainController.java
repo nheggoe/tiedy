@@ -3,6 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend.controller;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
+import edu.ntnu.idi.bidata.tiedy.frontend.component.MenuBarController;
 import edu.ntnu.idi.bidata.tiedy.frontend.session.UserSession;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.AlertFactory;
 import edu.ntnu.idi.bidata.tiedy.frontend.util.DialogFactory;

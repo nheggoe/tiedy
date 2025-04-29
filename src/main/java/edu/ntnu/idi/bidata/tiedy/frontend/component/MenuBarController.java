@@ -1,4 +1,4 @@
-package edu.ntnu.idi.bidata.tiedy.frontend.controller;
+package edu.ntnu.idi.bidata.tiedy.frontend.component;
 
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Status;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
@@ -97,6 +97,12 @@ public class MenuBarController {
             AlertFactory.generateWarningAlert("Failed to create task").showAndWait();
           }
         });
+  }
+
+  @FXML
+  public void onGroupButtonPress() {
+    TiedyApp.getSceneManager().switchScene(SceneName.GROUP);
+    taskFilterMenu.setDisable(true);
   }
 
   /**

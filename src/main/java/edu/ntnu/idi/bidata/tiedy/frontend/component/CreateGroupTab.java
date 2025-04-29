@@ -20,8 +20,11 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
 
 /**
+ * A controller class that manages the Tab within {@link
+ * edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupController} for creating a new group.
+ *
  * @author Nick Heggø
- * @version 2025.04.18
+ * @version 2025.04.29
  */
 public class CreateGroupTab extends Tab {
 

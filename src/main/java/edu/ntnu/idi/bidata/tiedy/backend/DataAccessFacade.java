@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Predicate;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -30,8 +29,6 @@ import java.util.stream.Collectors;
  * @version 2025.04.29
  */
 public class DataAccessFacade {
-
-  private static final Logger LOGGER = Logger.getLogger(DataAccessFacade.class.getName());
 
   private static DataAccessFacade instance;
 

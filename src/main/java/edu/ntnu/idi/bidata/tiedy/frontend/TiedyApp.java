@@ -86,7 +86,12 @@ public class TiedyApp extends Application {
         .add(new Image("edu/ntnu/idi/bidata/tiedy/images/TiedyApplicationIcon.png"));
     primaryStage.setMinWidth(1000);
     primaryStage.setMinHeight(800);
-    primaryStage.setOnCloseRequest(unused -> onClose());
+    primaryStage.setOnCloseRequest(
+        windowEvent -> {
+          if (!onClose()) {
+            windowEvent.consume();
+          }
+        });
     sceneManager.setPrimaryStage(primaryStage);
     sceneManager.switchScene(SceneName.LOGIN);
   }
@@ -111,7 +116,7 @@ public class TiedyApp extends Application {
    *
    * <p>Calls {@code Platform.exit()} when the OK button is pressed
    */
-  public static void onClose() {
+  public static boolean onClose() {
     Optional<ButtonType> result =
         AlertFactory.generateConfirmationAlert(
                 "Exit", "Are you sure you want to exit the application?")
@@ -121,5 +126,6 @@ public class TiedyApp extends Application {
       LOGGER.info("Exiting program...");
       Platform.exit();
     }
+    return false;
   }
 }

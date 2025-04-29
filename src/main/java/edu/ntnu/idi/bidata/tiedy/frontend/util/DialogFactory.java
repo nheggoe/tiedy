@@ -3,7 +3,7 @@ package edu.ntnu.idi.bidata.tiedy.frontend.util;
 import edu.ntnu.idi.bidata.tiedy.backend.model.group.Group;
 import edu.ntnu.idi.bidata.tiedy.backend.model.task.Task;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupMemberDialogController;
+import edu.ntnu.idi.bidata.tiedy.frontend.component.GroupMemberDialogController;
 import edu.ntnu.idi.bidata.tiedy.frontend.controller.TaskDialogController;
 import java.io.IOException;
 import java.util.Objects;

@@ -12,7 +12,7 @@
 <?import java.lang.String?>
 <DialogPane prefHeight="500.0" prefWidth="650.0" styleClass="dialog-pane" stylesheets="@../../css/group-style.css"
             xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.GroupMemberDialogController">
+            fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.component.GroupMemberDialogController">
     <header>
         <VBox spacing="10" styleClass="transparent">
             <padding>

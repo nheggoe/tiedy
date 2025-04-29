@@ -339,6 +339,25 @@ public class DataAccessFacade {
 
   // ------------------------  Group Repository  ------------------------
 
+  /**
+   * Updates an existing group in the repository. Notifies observers after a successful update.
+   *
+   * @param group the Group object to be updated; must not be null
+   * @return the updated Group object
+   */
+  public Group updateGroup(Group group) {
+    Objects.requireNonNull(group);
+    Group g = groupRepository.update(group);
+    notifier.notifyObservers();
+    return g;
+  }
+
+  /**
+   * Retrieves a list of groups that a specific user is associated with.
+   *
+   * @param userId the unique identifier (UUID) of the user whose groups are to be retrieved; must not be null
+   * @return a list of Group objects associated with the specified user; if no groups are found, returns an empty list
+   */
   public List<Group> getGroupsByUserId(UUID userId) {
     return groupRepository.getGroupsByUserId(userId).map(this::createDetachedCopy).toList();
   }

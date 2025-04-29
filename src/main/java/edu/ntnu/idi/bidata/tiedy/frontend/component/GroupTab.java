@@ -48,7 +48,7 @@ public class GroupTab extends Tab {
   @FXML private TableColumn<User, Integer> levelColumn;
   @FXML private TableColumn<User, String> roleColumn;
 
-  private final Group group;
+  private Group group;
 
   public GroupTab(Group group) {
     if (group == null) {
@@ -228,5 +228,9 @@ public class GroupTab extends Tab {
   }
 
   @FXML
-  private void onManageMembersButtonPress() {}
+  private void onManageMembersButtonPress() {
+    DialogFactory.launchGroupMemberDialog(
+        group,
+        updatedGroup -> this.group = TiedyApp.getDataAccessFacade().updateGroup(updatedGroup));
+  }
 }

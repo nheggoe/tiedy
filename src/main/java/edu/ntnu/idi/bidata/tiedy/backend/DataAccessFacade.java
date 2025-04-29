@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * necessary public interface.
  *
  * @author Nick Heggø
- * @version 2025.04.12
+ * @version 2025.04.29
  */
 public class DataAccessFacade {
 
@@ -110,14 +110,36 @@ public class DataAccessFacade {
     return userRepository.authenticate(username, plainTextPassword);
   }
 
+  /**
+   * Filters the list of users based on the provided filter condition and returns a list of detached
+   * user copies.
+   *
+   * @param filterCondition the condition to filter users; a predicate that determines whether a
+   *     user should be included in the result
+   * @return a list of users that satisfy the filter condition with each user as a detached copy
+   */
   public List<User> filterUsers(Predicate<User> filterCondition) {
     return userRepository.getAll().filter(filterCondition).map(this::createDetachedCopy).toList();
   }
 
+  /**
+   * Retrieves a list of users based on the provided list of user IDs.
+   *
+   * @param userIds a list of user IDs to find matching users
+   * @return a list of User objects whose IDs match the provided user IDs
+   */
   public List<User> getUsersByIds(List<UUID> userIds) {
     return userRepository.getAll().filter(user -> userIds.contains(user.getId())).toList();
   }
 
+  /**
+   * Retrieves the usernames of the users corresponding to the provided list of unique user IDs.
+   *
+   * @param userIds a list of UUIDs representing the unique identifiers of the users, whose
+   *     usernames need to be retrieved; must not be null
+   * @return a list of strings containing the usernames of the users whose IDs match the provided
+   *     list; if no matches are found, returns an empty list
+   */
   public List<String> getUserNamesByIds(List<UUID> userIds) {
     return userRepository
         .getAll()
@@ -321,20 +343,29 @@ public class DataAccessFacade {
         .collect(Collectors.groupingBy(Task::getDeadline));
   }
 
-  private Predicate<Task> filterTasksForCurrentWeek(LocalDate startOfWeek) {
-    Objects.requireNonNull(startOfWeek);
-    Predicate<Task> beforeThisWeek = task -> task.getDeadline().isBefore(startOfWeek);
-    Predicate<Task> afterThisWeek = task -> task.getDeadline().isAfter(startOfWeek.plusDays(6));
-    return Predicate.not(beforeThisWeek).and(Predicate.not(afterThisWeek));
-  }
-
+  /**
+   * Retrieves a list of active tasks associated with a specific group. Active tasks are tasks that
+   * are not in the CLOSED status. If the group does not exist or no tasks are found, an empty list
+   * is returned.
+   *
+   * @param groupId the unique identifier (UUID) of the group whose active tasks are to be
+   *     retrieved; must not be null
+   * @return a list of Task objects that are active and belong to the specified group; returns an
+   *     empty list if no tasks meet the criteria or the group does not exist
+   */
   public List<Task> getActiveTasksByGroupId(UUID groupId) {
     Group group = groupRepository.getById(groupId).orElse(null);
     if (group == null) {
       return List.of();
     }
-
     return taskRepository.getActiveTasksByUserId(groupId).map(this::createDetachedCopy).toList();
+  }
+
+  private Predicate<Task> filterTasksForCurrentWeek(LocalDate startOfWeek) {
+    Objects.requireNonNull(startOfWeek);
+    Predicate<Task> beforeThisWeek = task -> task.getDeadline().isBefore(startOfWeek);
+    Predicate<Task> afterThisWeek = task -> task.getDeadline().isAfter(startOfWeek.plusDays(6));
+    return Predicate.not(beforeThisWeek).and(Predicate.not(afterThisWeek));
   }
 
   // ------------------------  Group Repository  ------------------------
@@ -355,13 +386,21 @@ public class DataAccessFacade {
   /**
    * Retrieves a list of groups that a specific user is associated with.
    *
-   * @param userId the unique identifier (UUID) of the user whose groups are to be retrieved; must not be null
-   * @return a list of Group objects associated with the specified user; if no groups are found, returns an empty list
+   * @param userId the unique identifier (UUID) of the user whose groups are to be retrieved; must
+   *     not be null
+   * @return a list of Group objects associated with the specified user; if no groups are found,
+   *     returns an empty list
    */
   public List<Group> getGroupsByUserId(UUID userId) {
     return groupRepository.getGroupsByUserId(userId).map(this::createDetachedCopy).toList();
   }
 
+  /**
+   * Adds a new group to the repository and notifies observers of the change.
+   *
+   * @param group the Group object to be added; must not be null
+   * @return the added Group object
+   */
   public Group addGroup(Group group) {
     Group g = groupRepository.add(group);
     notifier.notifyObservers();

@@ -128,6 +128,13 @@ public class Task {
     return assignedUsers.add(userId);
   }
 
+  public boolean unassignUser(UUID userId) {
+    if (!assignedUsers.contains(userId)) {
+      return false;
+    }
+    return assignedUsers.remove(userId);
+  }
+
   public String getTitle() {
     return title;
   }

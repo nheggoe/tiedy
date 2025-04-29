@@ -7,10 +7,10 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 
-<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.controller.MenuBarController">
+<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.component.MenuBarController">
     <!-- Left aligned section -->
     <HBox fx:id="leftSection" styleClass="inner-container" HBox.hgrow="ALWAYS">
-        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -19,7 +19,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress">
+        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -28,7 +28,7 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress">
+        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -37,7 +37,16 @@
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onProfileButtonPress">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onGroupButtonPress" style="-fx-background-color: #FFF8DC;">
+            <graphic>
+                <ImageView fitHeight="91.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/buttons/GroupButton.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>

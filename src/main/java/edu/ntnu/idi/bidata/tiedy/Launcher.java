@@ -1,10 +1,6 @@
 package edu.ntnu.idi.bidata.tiedy;
 
-import edu.ntnu.idi.bidata.tiedy.backend.DataAccessFacade;
 import edu.ntnu.idi.bidata.tiedy.frontend.TiedyApp;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -32,17 +28,9 @@ public class Launcher {
   /**
    * The entry point of the application.
    *
-   * <p>This method initializes a scheduled executor service to periodically save application data,
-   * starts the main application, and ensures data persistence before the application shuts down.
-   *
    * @param args the command-line arguments passed to the application
    */
   public static void main(String[] args) {
-    try (ScheduledExecutorService scheduledService = Executors.newSingleThreadScheduledExecutor()) {
-      scheduledService.scheduleWithFixedDelay(
-          DataAccessFacade.getInstance(), 1, 1, TimeUnit.MINUTES);
-      TiedyApp.main(args);
-      DataAccessFacade.getInstance().run(); // save before shutdown
-    }
+    TiedyApp.main(args);
   }
 }

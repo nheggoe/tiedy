@@ -59,18 +59,26 @@ public abstract class JsonRepository<T> implements DataRepository<T> {
   public T add(T entity) {
     UUID id = idExtractor.apply(entity);
     entities.put(id, entity);
+    saveChanges();
+    refresh();
     return entity;
   }
 
   @Override
   public T update(T entity) {
     UUID id = idExtractor.apply(entity);
-    return entities.computeIfPresent(id, (k, v) -> entity);
+    T ent = entities.computeIfPresent(id, (k, v) -> entity);
+    saveChanges();
+    refresh();
+    return ent;
   }
 
   @Override
   public boolean remove(UUID id) {
-    return entities.remove(id) != null;
+    boolean status = entities.remove(id) != null;
+    saveChanges();
+    refresh();
+    return status;
   }
 
   @Override

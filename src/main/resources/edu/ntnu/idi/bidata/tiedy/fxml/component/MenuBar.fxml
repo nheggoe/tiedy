@@ -6,54 +6,51 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css"
-      xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.component.MenuBarController">
+
+<HBox fx:id="menuBar" prefHeight="0.0" prefWidth="381.0" styleClass="container" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="edu.ntnu.idi.bidata.tiedy.frontend.component.MenuBarController">
     <!-- Left aligned section -->
     <HBox fx:id="leftSection" styleClass="inner-container" HBox.hgrow="ALWAYS">
-        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" onAction="#onHomeButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/HomeButton.png"/>
+                        <Image url="@../../images/buttons/HomeButton.png" />
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress">
+        <Button mnemonicParsing="false" onAction="#onStatisticsButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/StatsButton.png"/>
+                        <Image url="@../../images/buttons/StatsButton.png" />
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress">
+        <Button mnemonicParsing="false" onAction="#onNewTaskButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/CreateTaskButton.png"/>
+                        <Image url="@../../images/buttons/CreateTaskButton.png" />
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false"
-                onAction="#onGroupButtonPress">
+        <Button alignment="CENTER" contentDisplay="GRAPHIC_ONLY" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#onGroupButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
                 <ImageView fitHeight="91.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/GroupButton.png"/>
+                        <Image url="@../../images/buttons/GroupButton.png" />
                     </image>
                 </ImageView>
             </graphic>
         </Button>
-        <Button mnemonicParsing="false" onAction="#onProfileButtonPress">
+        <Button mnemonicParsing="false" onAction="#onProfileButtonPress" style="-fx-background-color: #FFF8DC;">
             <graphic>
-                <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true"
-                           preserveRatio="true">
+                <ImageView fx:id="profileButton" fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/ProfileButton.png"/>
+                        <Image url="@../../images/buttons/ProfileButton.png" />
                     </image>
                 </ImageView>
             </graphic>
@@ -64,16 +61,16 @@
     <HBox fx:id="rightSection" prefHeight="100.0" prefWidth="99.0" styleClass="inner-container">
         <MenuButton fx:id="taskFilterMenu" mnemonicParsing="false" styleClass="back-button">
             <items>
-                <MenuItem fx:id="allTaskFilter" mnemonicParsing="false" text="All"/>
-                <MenuItem fx:id="openTaskFilter" mnemonicParsing="false" text="Open"/>
-                <MenuItem fx:id="inProgressTaskFilter" mnemonicParsing="false" text="In Progress"/>
-                <MenuItem fx:id="postponedTaskFilter" mnemonicParsing="false" text="Postponed"/>
-                <MenuItem fx:id="closedTaskFilter" mnemonicParsing="false" text="Closed"/>
+                <MenuItem fx:id="allTaskFilter" mnemonicParsing="false" text="All" />
+                <MenuItem fx:id="openTaskFilter" mnemonicParsing="false" text="Open" />
+                <MenuItem fx:id="inProgressTaskFilter" mnemonicParsing="false" text="In Progress" />
+                <MenuItem fx:id="postponedTaskFilter" mnemonicParsing="false" text="Postponed" />
+                <MenuItem fx:id="closedTaskFilter" mnemonicParsing="false" text="Closed" />
             </items>
             <graphic>
                 <ImageView fitHeight="64.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../images/buttons/FilterButton.png"/>
+                        <Image url="@../../images/buttons/FilterButton.png" />
                     </image>
                 </ImageView>
             </graphic>

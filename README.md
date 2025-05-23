@@ -1,3 +1,11 @@
+Authors:
+========
+[@nheggoe](https://github.com/nheggoe)
+
+[@odinarvhage](https://github.com/odinarvhage)
+
+[@IdaCeline](https://github.com/IdaCeline)
+
 Project Description
 ===================
 Tiedy is a to-do app aimed at solving the modern problem of time management.

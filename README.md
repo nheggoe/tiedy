@@ -18,11 +18,26 @@ Project Structure
 
 Running the Project
 ===================
-Java 21 is required to run this project.
-After ensuring the correct Java version has been installed, run the following command:
+
+This project requires [Java JDK 21](https://whichjdk.com/) to be installed on the system.
+It is being developed and tested using the [Liberica Full JDK 21](https://bell-sw.com/libericajdk/).
+
+Before running any commands, check if the correct version is installed on the system by typing:
+
 ```bash
-chmod +x mvnw
+java --version
 ```
+
+If you have the correct java version installed, you may proceed to build the project from source.
+
+1. Go to the project directory.
+
+```bash
+cd <project-root>
+```
+
+2. Run the following command in the terminal to build and run the project.
+
 ```bash
 ./mvnw -q
 ```
